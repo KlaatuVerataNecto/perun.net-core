@@ -20,6 +20,7 @@ namespace ui.web
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -33,11 +34,11 @@ namespace ui.web
             services.AddSession();
             services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
             // Add framework services.
-            //services.AddMvc(options =>
-            //{
-            //    options.SslPort = 44372;
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
+            services.AddMvc(options =>
+            {
+                options.SslPort = 44361;
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
 
             services.AddMvc();
         }
@@ -45,6 +46,7 @@ namespace ui.web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Logging
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -68,13 +70,19 @@ namespace ui.web
                 AutomaticChallenge = true
             });
 
-            // Google Login
-            app.UseGoogleAuthentication(new GoogleOptions()
-            {
-                ClientId = "aa",
-                ClientSecret = "aaa"
-            });
 
+            // Google Login
+            var googleOptions = new GoogleOptions
+            {
+                ClientId = ConfigVariables.GoogleClientId,
+                ClientSecret = ConfigVariables.GoogleClientSecret,
+                AutomaticChallenge = true,
+            };
+            googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+            googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+            app.UseGoogleAuthentication(googleOptions);
+
+            // Setup
             app.UseStaticFiles();
             app.UseSession();
 

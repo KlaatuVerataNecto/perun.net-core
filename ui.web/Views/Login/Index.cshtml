@@ -7,6 +7,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
 <h2>Login</h2>
+
+<a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a>
+
 <form asp-action="index">
     <div class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
