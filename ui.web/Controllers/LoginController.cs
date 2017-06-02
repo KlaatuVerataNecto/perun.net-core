@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using persistance.dapper.repository;
 using ui.web.Config;
 using ui.web.Infrastructure.Auth;
 using ui.web.Models.User;
@@ -8,6 +9,13 @@ namespace ui.web.Controllers
 {
     public class LoginController : Controller
     {
+        private IUserQueries _userQueries;
+
+        public LoginController(IUserQueries userQueries)
+        {
+            _userQueries = userQueries;
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -23,6 +31,8 @@ namespace ui.web.Controllers
             {
                 return View("Index", model);
             }
+
+            var user1 =_userQueries.Get("user", "pass");
 
             // TODO: Get object from database
             dynamic user = new System.Dynamic.ExpandoObject();

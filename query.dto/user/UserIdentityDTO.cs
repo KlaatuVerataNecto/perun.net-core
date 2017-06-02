@@ -7,5 +7,6 @@
         public static string email { get; set; }
         public static string roles { get; set; }
         public static string avatar { get; set; }
+        public static string provider { get; set; }
     }
 }

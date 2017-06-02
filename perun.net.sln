@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "persistance.dapper", "persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "query.dto", "query.dto\query.dto.csproj", "{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "persistance.ef", "persistance.ef\persistance.ef.csproj", "{979DE068-9A16-4697-8FDE-775C7C4F5445}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979DE068-9A16-4697-8FDE-775C7C4F5445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979DE068-9A16-4697-8FDE-775C7C4F5445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979DE068-9A16-4697-8FDE-775C7C4F5445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979DE068-9A16-4697-8FDE-775C7C4F5445}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

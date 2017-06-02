@@ -15,12 +15,16 @@ using Microsoft.Extensions.Logging;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
-using persistance.dapper.common;
-using persistance.dapper.repository;
-using ui.web.Config;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore;
+
+using persistance.ef.common;
+using persistance.dapper.common;
+using persistance.dapper.repository;
+using ui.web.Config;
+
 
 namespace ui.web
 {
@@ -51,6 +55,9 @@ namespace ui.web
                 new SimpleInjectorViewComponentActivator(container));
 
             services.UseSimpleInjectorAspNetRequestScoping(container);
+
+            // Add DbContext
+            services.AddDbContext<EFContext>(x => x.UseMySql(Configuration.GetConnectionString("MySQLDatabase")));
 
             // Add mini profiler
             services.AddMiniProfiler();
