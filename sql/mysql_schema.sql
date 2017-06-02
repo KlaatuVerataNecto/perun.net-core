@@ -10,7 +10,7 @@ CREATE TABLE users (
 	PRIMARY KEY (id)
  );
  
-DROP TABLE IF EXISTS users_logins;
+DROP TABLE IF EXISTS users_login;
 CREATE TABLE users_login(
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_id INT(11) NOT NULL,

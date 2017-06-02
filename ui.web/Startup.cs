@@ -18,13 +18,11 @@ using SimpleInjector.Lifestyles;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.EntityFrameworkCore;
-
-using persistance.ef.common;
+//using Elmah.Io.AspNetCore;
 using persistance.dapper.common;
 using persistance.dapper.repository;
 using ui.web.Config;
-
+using infrastructure.user.services;
 
 namespace ui.web
 {
@@ -48,7 +46,7 @@ namespace ui.web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Simple Injector
+            // Add Simple Injector.
             services.AddSingleton<IControllerActivator>(
                       new SimpleInjectorControllerActivator(container));
             services.AddSingleton<IViewComponentActivator>(
@@ -56,16 +54,14 @@ namespace ui.web
 
             services.UseSimpleInjectorAspNetRequestScoping(container);
 
-            // Add DbContext
-            services.AddDbContext<EFContext>(x => x.UseMySql(Configuration.GetConnectionString("MySQLDatabase")));
-
-            // Add mini profiler
+            // Add mini profiler.
             services.AddMiniProfiler();
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddMemoryCache();
             services.AddSession();
             services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+           
             // Add framework services.
             services.AddMvc(options =>
             {
@@ -119,6 +115,9 @@ namespace ui.web
             googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
             app.UseGoogleAuthentication(googleOptions);
 
+
+            // Add Elmah.
+
             // Setup
             app.UseStaticFiles();
             app.UseSession();
@@ -166,35 +165,40 @@ namespace ui.web
             container.RegisterMvcControllers(app);
             container.RegisterMvcViewComponents(app);
 
-            // Connection string
+            // Connection string:
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");
             
-            // register Dapper
+            // Register Dapper.NET:
             container.Register<IDbConn>(() => new DbConn(connectionString));
            
-            // Repositories for Dapper.NET
-            var queryRepositoryAssembly = new[] { typeof(UserQueries).GetTypeInfo().Assembly };
-            var queryRepositoryTypes = container.GetTypesToRegister(typeof(DapperService<>), queryRepositoryAssembly);
+            // Repositories for Dapper.NET:
+            var repositoryAssembly = new[] { typeof(UserRepository).GetTypeInfo().Assembly };
+            var repositoryTypes = container.GetTypesToRegister(typeof(DapperService<>), repositoryAssembly);
 
-            foreach (Type implementationType in queryRepositoryTypes)
+            foreach (Type implementationType in repositoryTypes)
             {
                 Type serviceType = implementationType.GetInterfaces().Where(i => !i.GetTypeInfo().IsGenericType).Single();
                 container.Register(serviceType, implementationType, Lifestyle.Transient);
             }
 
-            // Add application services. For instance:
-            //container.Register<IUserRepository, SqlUserRepository>(Lifestyle.Scoped);
+            // Register services for infrastructure.user:
+            var userServicesAssembly = typeof(UserAuthentiactionService).GetTypeInfo().Assembly;
 
-            //// Cross-wire ASP.NET services (if any). For instance:
-            //container.RegisterSingleton(app.ApplicationServices.GetService<ILoggerFactory>());
+            var userRegistrations =
+                from type in userServicesAssembly.GetExportedTypes()
+                where type.Namespace.StartsWith("infrastructure.user.services")
+                where type.GetInterfaces().Any()
+                select new
+                {
+                    Service = type.GetInterfaces().Single(),
+                    Implementation = type
+                };
 
-            //// The following registers a Func<T> delegate that can be injected as singleton,
-            //// and on invocation resolves a MVC IViewBufferScope service for that request.
-            //container.RegisterSingleton<Func<IViewBufferScope>>(
-            //    () => app.GetRequestService<IViewBufferScope>());
+            foreach (var reg in userRegistrations)
+            {
+                container.Register(reg.Service, reg.Implementation, Lifestyle.Transient);
+            }
 
-            //// NOTE: Do prevent cross-wired instances as much as possible.
-            //// See: https://simpleinjector.org/blog/2016/07/
         }
     }
 }

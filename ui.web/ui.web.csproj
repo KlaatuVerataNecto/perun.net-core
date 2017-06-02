@@ -8,6 +8,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Elmah.Io.Extensions.Logging" Version="3.1.22-pre" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
@@ -33,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\persistance.dapper\persistance.dapper.csproj" />
-    <ProjectReference Include="..\persistance.ef\persistance.ef.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using infrastructure.user.services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using persistance.dapper.repository;
@@ -9,11 +10,11 @@ namespace ui.web.Controllers
 {
     public class LoginController : Controller
     {
-        private IUserQueries _userQueries;
+        private IUserAuthentiactionService _userAuthentiactionService;
 
-        public LoginController(IUserQueries userQueries)
+        public LoginController(IUserAuthentiactionService userAuthentiactionService)
         {
-            _userQueries = userQueries;
+            _userAuthentiactionService = userAuthentiactionService;
         }
 
         [HttpGet]
@@ -27,22 +28,25 @@ namespace ui.web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(LoginModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) return View("Index", model);
+                       
+            var userIdentity = _userAuthentiactionService.login(model.email, model.password);
+
+            if(userIdentity == null )
             {
+                // TODO: Get error message fro resource file 
+                ModelState.AddModelError("email","Incorrect email or password.");
                 return View("Index", model);
             }
 
-            var user1 =_userQueries.Get("user", "pass");
-
-            // TODO: Get object from database
-            dynamic user = new System.Dynamic.ExpandoObject();
-            user.id = 1;
-            user.username = "klaatuveratanecto";
-            user.email = model.email;
-            user.roles = "localuser";
-            user.avatar = "placeholder.jpg";
-
-            HttpContext.Authentication.SignInAsync(ConfigVariables.AuthSchemeName, ClaimsPrincipalFactory.Build(user.id, user.username, model.email, user.roles, user.avatar));
+            HttpContext.Authentication.SignInAsync(ConfigVariables.AuthSchemeName, 
+                ClaimsPrincipalFactory.Build(
+                    userIdentity.UserId, 
+                    userIdentity.Username,
+                    userIdentity.Email,
+                    userIdentity.Roles,
+                    userIdentity.Avatar)
+                );
             return RedirectToAction("Index", "Home");
         }
     }
