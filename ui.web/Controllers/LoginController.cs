@@ -1,7 +1,6 @@
 using infrastructure.user.services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using persistance.dapper.repository;
 using ui.web.Config;
 using ui.web.Infrastructure.Auth;
 using ui.web.Models.User;
@@ -34,7 +33,7 @@ namespace ui.web.Controllers
 
             if(userIdentity == null )
             {
-                // TODO: Get error message fro resource file 
+                // TODO: Get error message for resource file 
                 ModelState.AddModelError("email","Incorrect email or password.");
                 return View("Index", model);
             }

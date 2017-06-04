@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Elmah.Io.Extensions.Logging" Version="3.1.22-pre" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
@@ -33,6 +34,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\infrastructure.i18n\infrastructure.i18n.csproj" />
     <ProjectReference Include="..\persistance.dapper\persistance.dapper.csproj" />
   </ItemGroup>
 

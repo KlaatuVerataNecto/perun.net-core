@@ -23,6 +23,11 @@ using persistance.dapper.common;
 using persistance.dapper.repository;
 using ui.web.Config;
 using infrastructure.user.services;
+using FluentValidation.AspNetCore;
+using FluentValidation.Attributes;
+using FluentValidation;
+using ui.web.Infrastructure.FluentValidators;
+using System.Collections.Generic;
 
 namespace ui.web
 {
@@ -69,7 +74,11 @@ namespace ui.web
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            services.AddMvc();
+            services.AddTransient<IUserRegistrationService, UserRegistrationService>();
+
+            services
+                .AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -199,6 +208,25 @@ namespace ui.web
                 container.Register(reg.Service, reg.Implementation, Lifestyle.Transient);
             }
 
+            ///* Register Validations */
+
+            //var assemblies = new List<Assembly>();
+            //assemblies.Add(typeof(Startup).GetTypeInfo().Assembly);
+            //container.Register<IValidatorFactory, ApplicationValidatorFactory>(Lifestyle.Singleton);
+            //container.Register(typeof(IValidator<>), assemblies);
+            //container.RegisterConditional(typeof(IValidator<>), typeof(ValidateNothingDecorator<>), Lifestyle.Singleton, context => !context.Handled);
+
+            // Register Simple Injector validation factory in FV
+            //FluentValidationModelValidatorProvider.Configure(provider =>
+            //{
+            //    provider.ValidatorFactory = new ApplicationValidatorFactory(container);
+            //    provider.AddImplicitRequiredValidator = false;
+            //    provider.Add(typeof(UniqueEmailValidator), (metadata, context, description, validator) => new UniqueEmailPropertyValidator(metadata, context, description, validator));
+            //    provider.Add(typeof(UniqueUsernameValidator), (metadata, context, description, validator) => new UniqueUsernamePropertyValidator(metadata, context, description, validator));
+            //    provider.Add(typeof(StringNoSpacesValidator), (metadata, context, description, validator) => new StringNoSpacesPropertyValidator(metadata, context, description, validator));
+            //    provider.Add(typeof(PasswordStrengthValidator), (metadata, context, description, validator) => new PasswordStrengthPropertyValidator(metadata, context, description, validator));
+            //}
+            //);
         }
     }
 }
