@@ -74,11 +74,11 @@ namespace ui.web
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            services.AddTransient<IUserRegistrationService, UserRegistrationService>();
-
-            services
-                .AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            // TODO: Get Fluent Validation working with custom validators on the client  
+            //services.AddTransient<IUserRegistrationService, UserRegistrationService>();          
+            //services
+            //    .AddMvc()
+            //    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -208,7 +208,7 @@ namespace ui.web
                 container.Register(reg.Service, reg.Implementation, Lifestyle.Transient);
             }
 
-            ///* Register Validations */
+            // Register Fluent Validations
 
             //var assemblies = new List<Assembly>();
             //assemblies.Add(typeof(Startup).GetTypeInfo().Assembly);
