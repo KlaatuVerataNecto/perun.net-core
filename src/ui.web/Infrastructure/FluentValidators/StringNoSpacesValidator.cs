@@ -7,13 +7,6 @@ using System.Linq;
 
 namespace ui.web.Infrastructure.FluentValidators
 {
-    public static class MyValidatorExtensions
-    {
-        //public static IRuleBuilderOptions<T, IList<TElement>> StringMustNotHaveSpaces<T, TElement>(this IRuleBuilder<T, IList<TElement>> ruleBuilder)
-        //{
-        //    return ruleBuilder.SetValidator(new StringNoSpacesValidator());
-        //}
-    }
     public class StringNoSpacesValidator : PropertyValidator
     {
         public StringNoSpacesValidator()

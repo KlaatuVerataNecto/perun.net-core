@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ui.web", "ui.web\ui.web.csproj", "{897C54AC-DBF6-4108-9E38-7D4AAD773771}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ui.web", "ui.web\ui.web.csproj", "{897C54AC-DBF6-4108-9E38-7D4AAD773771}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "query.dto", "query.dto\query.dto.csproj", "{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.dto", "query.dto\query.dto.csproj", "{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.user", "infrastructure.user\infrastructure.user.csproj", "{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.user", "infrastructure.user\infrastructure.user.csproj", "{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastucture.libs", "infrastucture.libs\infrastucture.libs.csproj", "{9F4618CA-F542-4302-9517-D12154294702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastucture.libs", "infrastucture.libs\infrastucture.libs.csproj", "{9F4618CA-F542-4302-9517-D12154294702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.i18n", "infrastructure.i18n\infrastructure.i18n.csproj", "{69762B4F-D8DC-4F36-877C-B3ADF93B39CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.i18n", "infrastructure.i18n\infrastructure.i18n.csproj", "{69762B4F-D8DC-4F36-877C-B3ADF93B39CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
