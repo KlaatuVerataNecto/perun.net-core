@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,11 +12,11 @@ namespace ui.web.Infrastructure.ModelValidators
         {
             string str = value as string;
             if (value == null)
-                return new ValidationResult("Nooooooo1!");
+                return new ValidationResult(base.ErrorMessage);
 
             if (str.Any(x => Char.IsWhiteSpace(x)))
             {
-                return new ValidationResult("Noooooooooo2!");
+                return new ValidationResult(base.ErrorMessage);
             }
 
             return ValidationResult.Success;
@@ -31,7 +30,7 @@ namespace ui.web.Infrastructure.ModelValidators
             }
 
             MergeAttribute(context.Attributes, "data-val", "true");
-            MergeAttribute(context.Attributes, "data-val-nospaces", "Noooooooo3!");
+            MergeAttribute(context.Attributes, "data-val-nospaces", base.ErrorMessage);
 
         }
 

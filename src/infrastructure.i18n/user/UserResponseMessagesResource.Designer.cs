@@ -449,15 +449,6 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parece que has rechazado los permisos que pedimos al Facebook.
-        /// </summary>
-        public static string oauth_permissions_facebook_message {
-            get {
-                return ResourceManager.GetString("oauth_permissions_facebook_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Intenta otra vez.
         /// </summary>
         public static string oauth_try_again_button {
@@ -526,6 +517,15 @@ namespace infrastructure.i18n.user {
         public static string password_no_match {
             get {
                 return ResourceManager.GetString("password_no_match", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password can&apos;t contain spaces..
+        /// </summary>
+        public static string password_nospaces {
+            get {
+                return ResourceManager.GetString("password_nospaces", resourceCulture);
             }
         }
         
@@ -697,15 +697,6 @@ namespace infrastructure.i18n.user {
         public static string vpassword_empty {
             get {
                 return ResourceManager.GetString("vpassword_empty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to La dirección Web tiene que tener entre 2 y 250 caracteres.
-        /// </summary>
-        public static string website_not_in_range {
-            get {
-                return ResourceManager.GetString("website_not_in_range", resourceCulture);
             }
         }
     }

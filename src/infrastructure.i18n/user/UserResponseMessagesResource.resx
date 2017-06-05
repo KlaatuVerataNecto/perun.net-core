@@ -255,9 +255,6 @@
   <data name="username_not_in_range" xml:space="preserve">
     <value>Username is too short.</value>
   </data>
-  <data name="website_not_in_range" xml:space="preserve">
-    <value>La dirección Web tiene que tener entre 2 y 250 caracteres</value>
-  </data>
   <data name="firstname_not_in_range" xml:space="preserve">
     <value>First name should be between 2 y 80 characters</value>
   </data>
@@ -306,9 +303,6 @@
   <data name="oauth_facebook_wall" xml:space="preserve">
     <value>Sirve para compartir tu votos en forma automatica, nunca publicaremos en tu muro sin tu previo permiso.</value>
   </data>
-  <data name="oauth_permissions_facebook_message" xml:space="preserve">
-    <value>Parece que has rechazado los permisos que pedimos al Facebook</value>
-  </data>
   <data name="oauth_permission_title" xml:space="preserve">
     <value>No fuimos capaces de darte de alta</value>
   </data>
@@ -332,5 +326,8 @@
   </data>
   <data name="username_empty_or_spaces" xml:space="preserve">
     <value>Username can't be empty or contain spaces.</value>
+  </data>
+  <data name="password_nospaces" xml:space="preserve">
+    <value>Your password can't contain spaces.</value>
   </data>
 </root>
