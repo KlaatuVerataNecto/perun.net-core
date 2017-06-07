@@ -1,13 +1,12 @@
 ﻿using Dapper;
 using System.Linq;
 using persistance.dapper.common;
-using query.dto.user;
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
 
 namespace persistance.dapper.repository
 {
-    public class UserRepository : DapperService<UserIdentityDTO>, IUserRepository
+    public class UserRepository : DapperService, IUserRepository
     {
         private const string PROVIDER_LOCAL = "Local";
 

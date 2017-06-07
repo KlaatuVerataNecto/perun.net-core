@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ui.web", "ui.web\ui.web.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.dto", "query.dto\query.dto.csproj", "{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.user", "infrastructure.user\infrastructure.user.csproj", "{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastucture.libs", "infrastucture.libs\infrastucture.libs.csproj", "{9F4618CA-F542-4302-9517-D12154294702}"
@@ -29,10 +27,6 @@ Global
 		{51824C10-DBE7-4558-9615-FA2CB9B44CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51824C10-DBE7-4558-9615-FA2CB9B44CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51824C10-DBE7-4558-9615-FA2CB9B44CE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8ED9F6E-92C0-4AB7-98A3-35382CBB4655}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}.Release|Any CPU.ActiveCfg = Release|Any CPU

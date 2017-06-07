@@ -3,9 +3,7 @@
     public interface IDbConn
     {     string ConnectionString();
     }
-    public interface IDapperService<T>
-    {
-    }
+
     public class DbConn : IDbConn
     {
         private string _conn;
@@ -20,7 +18,7 @@
             return _conn;
         }
     }
-    public abstract class DapperService<T> : IDapperService<T> where T : class
+    public abstract class DapperService
     {
         public readonly string _connectionString;
 

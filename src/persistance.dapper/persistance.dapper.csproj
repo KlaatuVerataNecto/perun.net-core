@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\infrastructure.user\infrastructure.user.csproj" />
-    <ProjectReference Include="..\query.dto\query.dto.csproj" />
   </ItemGroup>
 
 </Project>
