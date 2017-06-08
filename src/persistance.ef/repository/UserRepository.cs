@@ -21,6 +21,7 @@ namespace persistance.ef.repository
                                                 x.provider == PROVIDER_LOCAL &&
                                                 x.User.is_locked == false)
                                                 .SingleOrDefault();
+            if (obj == null) return null; 
 
             return new UserAuthDB
             {

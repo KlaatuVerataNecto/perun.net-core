@@ -154,7 +154,7 @@ namespace ui.web
 
             // Connection string:
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");
-            
+
             // Register Dapper.NET:
             //container.Register<IDbConn>(() => new DbConn(connectionString));
 
@@ -170,7 +170,8 @@ namespace ui.web
             //}
 
             // Register EF
-            container.Register<IEFContext>(() => new EFContext(connectionString));
+            container.Register<IEFContext>(() => new EFContext(connectionString), Lifestyle.Transient);
+
             var repositoryAssembly = new[] { typeof(UserRepository).GetTypeInfo().Assembly };
             var repositoryTypes = container.GetTypesToRegister(typeof(UserRepository), repositoryAssembly);
             foreach (Type implementationType in repositoryTypes)
