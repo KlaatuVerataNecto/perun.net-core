@@ -18,10 +18,13 @@ using SimpleInjector.Lifestyles;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
-using persistance.dapper.common;
-using persistance.dapper.repository;
+//using persistance.dapper.common;
+//using persistance.dapper.repository;
 using ui.web.Config;
 using infrastructure.user.services;
+using persistance.ef.common;
+using persistance.ef.repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ui.web
 {
@@ -153,15 +156,25 @@ namespace ui.web
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");
             
             // Register Dapper.NET:
-            container.Register<IDbConn>(() => new DbConn(connectionString));
+            //container.Register<IDbConn>(() => new DbConn(connectionString));
 
-            // Repositories for Dapper.NET:
+            //// Repositories for Dapper.NET:
+            //var repositoryAssembly = new[] { typeof(UserRepository).GetTypeInfo().Assembly };
+            //var repositoryTypes = container.GetTypesToRegister(typeof(DapperService), repositoryAssembly);
+
+            //foreach (Type implementationType in repositoryTypes)
+            //{
+            //    //Type serviceType = implementationType.GetInterfaces().Where(i => !i.GetTypeInfo().IsGenericType).Single();
+            //    Type serviceType = implementationType.GetInterfaces().Single();
+            //    container.Register(serviceType, implementationType, Lifestyle.Transient);
+            //}
+
+            // Register EF
+            container.Register<IEFContext>(() => new EFContext(connectionString));
             var repositoryAssembly = new[] { typeof(UserRepository).GetTypeInfo().Assembly };
-            var repositoryTypes = container.GetTypesToRegister(typeof(DapperService), repositoryAssembly);
-
+            var repositoryTypes = container.GetTypesToRegister(typeof(UserRepository), repositoryAssembly);
             foreach (Type implementationType in repositoryTypes)
-            {
-                //Type serviceType = implementationType.GetInterfaces().Where(i => !i.GetTypeInfo().IsGenericType).Single();
+            {                
                 Type serviceType = implementationType.GetInterfaces().Single();
                 container.Register(serviceType, implementationType, Lifestyle.Transient);
             }
