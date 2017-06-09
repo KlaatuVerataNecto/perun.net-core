@@ -29,8 +29,8 @@ namespace persistance.ef.common
 
             modelBuilder.Entity<Login>()
                 .ToTable("users_login")
-                .HasOne(d=>d.User)
-                .WithMany(d=>d.Logins)
+                .HasOne(d => d.User)
+                .WithMany(d => d.Logins)
                 .HasForeignKey(e => e.user_id);
         }
 

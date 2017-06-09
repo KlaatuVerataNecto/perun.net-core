@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using infrastructure.libs.validators;
 
 namespace infrastucture.libs.cryptography
 {
@@ -40,6 +41,9 @@ namespace infrastucture.libs.cryptography
 
         public static string GenerateSaltedHash(string plainText, string salt)
         {
+            CustomValidators.NotNull(plainText, "plainText is required."); CustomValidators.NotNull(plainText, "plainText is required.");
+            CustomValidators.NotNull(salt, "salt is required.");
+
             byte[] _salt = Encoding.UTF8.GetBytes(salt);
             byte[] _plainText = Encoding.UTF8.GetBytes(plainText);
             HashAlgorithm algorithm = SHA256.Create();

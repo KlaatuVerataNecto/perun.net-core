@@ -12,6 +12,5 @@ namespace infrastructure.user.models
         public string avatar { get; set; }
         public string provider { get; set; }
         public string salt { get; set; }
-
     }
 }

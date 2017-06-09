@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <RuntimeIdentifiers>win7-x64;win7-x86;win8-x64;ubuntu.16.04-x64;</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -25,6 +26,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.0-alpha6-79" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.0-alpha6-79" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.2" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.0.7" />
   </ItemGroup>

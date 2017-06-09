@@ -23,7 +23,6 @@ namespace infrastructure.user.services
             _userRepository = userRepository;
         }
 
-        /* TODO: can be done using read model */
         public UserIdentity login(string email, string password)
         {
             UserAuthDB userAuthDB = _userRepository.GetByEmail(email);

@@ -5,5 +5,7 @@ namespace infrastructure.user.interfaces
 {   public interface IUserRepository
     {
         UserAuthDB GetByEmail(string email);
+        bool IsUsernameAvailable(string username);
+        bool IsEmailAvailable(string email);
     }
 }

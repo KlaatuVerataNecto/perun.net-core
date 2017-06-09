@@ -18,13 +18,10 @@ using SimpleInjector.Lifestyles;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
-//using persistance.dapper.common;
-//using persistance.dapper.repository;
 using ui.web.Config;
 using infrastructure.user.services;
 using persistance.ef.common;
 using persistance.ef.repository;
-using Microsoft.EntityFrameworkCore;
 
 namespace ui.web
 {
@@ -57,8 +54,9 @@ namespace ui.web
             services.UseSimpleInjectorAspNetRequestScoping(container);
 
             // Add mini profiler.
-            services.AddMiniProfiler();
-
+            services.AddMiniProfiler()
+                    .AddEntityFramework();
+           
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddMemoryCache();
             services.AddSession();
@@ -80,8 +78,8 @@ namespace ui.web
             container.Verify();
 
             // Logging
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {
@@ -132,7 +130,7 @@ namespace ui.web
                 SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter(),
 
                 // Control storage
-                Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60)),
+                Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60)),              
 
             });
 
