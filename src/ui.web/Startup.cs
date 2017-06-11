@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Routing;
@@ -18,10 +17,13 @@ using SimpleInjector.Lifestyles;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Serilog;
+
 using ui.web.Config;
 using infrastructure.user.services;
 using persistance.ef.common;
 using persistance.ef.repository;
+
 
 namespace ui.web
 {
@@ -31,6 +33,11 @@ namespace ui.web
 
         public Startup(IHostingEnvironment env)
         {
+            Log.Logger = new LoggerConfiguration()
+               .Enrich.FromLogContext()
+               .WriteTo.RollingFile(ConfigVariables.LogFile)
+               .CreateLogger();
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -61,23 +68,34 @@ namespace ui.web
             services.AddMemoryCache();
             services.AddSession();
             services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-           
+
             // Add framework services.
-            services.AddMvc(options =>
-            {
-                options.SslPort = 44361;
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
+            services.AddMvc();
+            //services.AddMvc(options =>
+            //{
+            //    options.SslPort = 44361;
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
+
+            // Add Configuration 
+            services.AddOptions();
+
+            // Add our Config object so it can be injected
+            //services.Configure<AppSettings>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMemoryCache cache)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMemoryCache cache, IApplicationLifetime appLifetime)
         {
             // Initalize Simple Injector
             InitializeContainer(app);
             container.Verify();
 
             // Logging
+            loggerFactory.AddSerilog();
+            //// Ensure any buffered events are sent at shutdown
+            appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
+
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
 
@@ -113,6 +131,15 @@ namespace ui.web
             googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
             app.UseGoogleAuthentication(googleOptions);
 
+            // status code page
+
+            app.UseStatusCodePages(async context =>
+            {
+                context.HttpContext.Response.ContentType = "text/plain";
+                await context.HttpContext.Response.WriteAsync(
+                    "Status code page, status code: " +
+                    context.HttpContext.Response.StatusCode);
+            });
 
             // Add Elmah.
 

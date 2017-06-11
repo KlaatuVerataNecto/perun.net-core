@@ -8,5 +8,7 @@
 
         public static string AuthSchemeGoogle { get { return "Google"; } }
         public static string AuthSchemeFacebook { get { return "Facebook"; } }
+
+        public static string LogFile { get { return "log/peruncore-{Date}.log"; } }
     }
 }

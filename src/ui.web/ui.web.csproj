@@ -8,6 +8,17 @@
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\js\custom.validation.js" />
+    <Content Include="wwwroot\js\custom.validation.min.js" />
+    <Content Include="wwwroot\js\site - Copy.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\js\site - Copy.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
@@ -28,6 +39,8 @@
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.0-alpha6-79" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.0-alpha6-79" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.2" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.0.7" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +50,9 @@
     <ProjectReference Include="..\infrastructure.i18n\infrastructure.i18n.csproj" />
     <ProjectReference Include="..\persistance.dapper\persistance.dapper.csproj" />
     <ProjectReference Include="..\persistance.ef\persistance.ef.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="log\" />
   </ItemGroup>
 
 </Project>
