@@ -5,26 +5,22 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-//using SimpleInjector;
-//using SimpleInjector.Integration.AspNetCore.Mvc;
-//using SimpleInjector.Lifestyles;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Serilog;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 using peruncore.Config;
 using infrastructure.user.services;
 using persistance.ef.common;
 using persistance.ef.repository;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+
 
 namespace peruncore
 {
@@ -32,18 +28,21 @@ namespace peruncore
     {
         public Startup(IHostingEnvironment env)
         {
-            Log.Logger = new LoggerConfiguration()
-               .Enrich.FromLogContext()
-               .WriteTo.RollingFile(ConfigVariables.LogFile)
-               .CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+            //   .Enrich.FromLogContext()
+            //   .WriteTo.RollingFile(ConfigVariables.LogFile)
+            //   .CreateLogger();
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables()
+                .Build();
 
-            Configuration = builder.Build();
+            var logger = new LoggerConfiguration()
+                              .ReadFrom.Configuration(builder)
+                              .CreateLogger();
         }
 
         public IContainer ApplicationContainer { get; private set; }
@@ -109,7 +108,7 @@ namespace peruncore
             // Ensure any buffered events are sent at shutdown
             appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             // error handling 
