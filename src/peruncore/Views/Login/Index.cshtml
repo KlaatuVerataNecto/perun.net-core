@@ -1,0 +1,32 @@
+@model peruncore.Models.User.LoginModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+<h2>Login</h2>
+
+<a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a>
+
+<form asp-action="index">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="email" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="email" class="form-control" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <label asp-for="password" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="password" class="form-control" />
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit">Login</button>
+    </div>
+</form>
+
