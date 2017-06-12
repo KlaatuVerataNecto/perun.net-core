@@ -14,12 +14,6 @@
   <ItemGroup>
     <Content Include="wwwroot\js\custom.validation.js" />
     <Content Include="wwwroot\js\custom.validation.min.js" />
-    <Content Include="wwwroot\js\site - Copy.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\js\site - Copy.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
@@ -59,6 +53,8 @@
     <ProjectReference Include="..\persistance.ef\persistance.ef.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="log\" />
+    <Folder Include="log\" />
     <Folder Include="log\" />
     <Folder Include="log\" />
   </ItemGroup>

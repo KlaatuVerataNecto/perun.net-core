@@ -28,11 +28,6 @@ namespace peruncore
     {
         public Startup(IHostingEnvironment env)
         {
-            //Log.Logger = new LoggerConfiguration()
-            //   .Enrich.FromLogContext()
-            //   .WriteTo.RollingFile(ConfigVariables.LogFile)
-            //   .CreateLogger();
-
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -40,9 +35,11 @@ namespace peruncore
                 .AddEnvironmentVariables()
                 .Build();
 
-            var logger = new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration()
                               .ReadFrom.Configuration(builder)
                               .CreateLogger();
+
+            Configuration = builder;
         }
 
         public IContainer ApplicationContainer { get; private set; }
@@ -71,6 +68,9 @@ namespace peruncore
             // Add Configuration 
             services.AddOptions();
             //services.Configure<MyOptions>(Configuration);
+
+            // Data protection 
+            services.AddDataProtection();
 
             // DI
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");
@@ -107,9 +107,6 @@ namespace peruncore
             loggerFactory.AddSerilog();
             // Ensure any buffered events are sent at shutdown
             appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
-
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             // error handling 
             if (env.IsDevelopment())
