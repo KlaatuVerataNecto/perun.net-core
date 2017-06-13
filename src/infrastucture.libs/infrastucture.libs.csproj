@@ -4,4 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ImageSharp.Drawing" Version="1.0.0-alpha9-00134" />
+  </ItemGroup>
 </Project>
