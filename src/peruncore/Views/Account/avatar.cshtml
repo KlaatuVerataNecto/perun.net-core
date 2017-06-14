@@ -4,19 +4,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>testing</h1>
-
-<form method="post" enctype="multipart/form-data" asp-controller="avatar" asp-action="upload">
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form:</p>
-            <input type="file" name="avatar_image" multiple />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Upload" />
-        </div>
-    </div>
-</form>
-
+<div class="col-md-4 col-md-offset-4">
+    <p>Upload</p>
+    <hr />
+        <form method="post" enctype="multipart/form-data" asp-controller="avatar" asp-action="upload">
+                <div class="form-group">
+                    <label class="btn btn-default btn-file">
+                        Browse <input type="file" name="avatar_image" hidden>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Upload</button>
+                </div>
+        </form>
+</div>

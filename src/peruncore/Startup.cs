@@ -67,7 +67,8 @@ namespace peruncore
 
             // Add Configuration 
             services.AddOptions();
-            //services.Configure<MyOptions>(Configuration);
+            services.Configure<AuthSchemeSettings>(Configuration.GetSection("AuthSchemeSettings"));
+            services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
 
             // Data protection 
             services.AddDataProtection();
@@ -119,13 +120,16 @@ namespace peruncore
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            // read config 
+            var authSchemeSettings = Configuration.GetSection("AuthSchemeSettings:Default");
+
             // DI
             appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
 
             // Own implementation
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                AuthenticationScheme = ConfigVariables.AuthSchemeName,
+                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Default").Value,
                 LoginPath = new PathString("/Account/Unauthorized/"),
                 AccessDeniedPath = new PathString("/Account/Forbidden/"),
                 AutomaticAuthenticate = true,
@@ -136,8 +140,8 @@ namespace peruncore
             // Google Login
             var googleOptions = new GoogleOptions
             {
-                ClientId = ConfigVariables.GoogleClientId,
-                ClientSecret = ConfigVariables.GoogleClientSecret,
+                ClientId = Configuration.GetSection("SocialLoginSettings:GoogleClientId").Value ,
+                ClientSecret = Configuration.GetSection("SocialLoginSettings:GoogleClientSecret").Value,
                 AutomaticChallenge = true,
             };
             googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");

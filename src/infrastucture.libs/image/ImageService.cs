@@ -8,9 +8,10 @@ namespace infrastucture.libs.image
     {
         private string _sourcefilePath;
         private string _savePathFile;
-        private int _quality;
-        private int _width;
-        private int _heigh;
+        // TODO:
+        //private int _quality;
+        //private int _width;
+        //private int _heigh;
 
         public string SourceFilePath { get => _sourcefilePath; }
         public string SavePathFile { get => _savePathFile; }

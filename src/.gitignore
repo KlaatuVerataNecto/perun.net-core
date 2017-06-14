@@ -234,3 +234,5 @@ _Pvt_Extensions
 .fake/
 
 !infrastructure.user
+
+peruncore/wwwroot/images/*

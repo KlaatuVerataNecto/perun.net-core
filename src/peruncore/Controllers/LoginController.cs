@@ -1,6 +1,8 @@
-using infrastructure.user.services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
+using infrastructure.user.services;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
@@ -10,10 +12,11 @@ namespace peruncore.Controllers
     public class LoginController : Controller
     {
         private IUserAuthentiactionService _userAuthentiactionService;
-
-        public LoginController(IUserAuthentiactionService userAuthentiactionService)
+        private readonly AuthSchemeSettings _authSchemeSettings;
+        public LoginController(IUserAuthentiactionService userAuthentiactionService, IOptions<AuthSchemeSettings> authSchemeSettings)
         {
             _userAuthentiactionService = userAuthentiactionService;
+            _authSchemeSettings = authSchemeSettings.Value;
         }
 
         [HttpGet]
@@ -38,7 +41,7 @@ namespace peruncore.Controllers
                 return View("Index", model);
             }
 
-            HttpContext.Authentication.SignInAsync(ConfigVariables.AuthSchemeName, 
+            HttpContext.Authentication.SignInAsync(_authSchemeSettings.Default, 
                 ClaimsPrincipalFactory.Build(
                     userIdentity.UserId, 
                     userIdentity.Username,
