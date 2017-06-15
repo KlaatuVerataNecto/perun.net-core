@@ -1,5 +1,4 @@
-﻿using SkiaSharp;
-using System;
+﻿using ImageSharp;
 using System.IO;
 
 namespace infrastucture.libs.image
@@ -33,28 +32,14 @@ namespace infrastucture.libs.image
         // TODO: quality, resize params
         public static string ResizeAndSave(ImageConfig config)
         {
-            using (var input = File.OpenRead(config.SourceFilePath))
+            using (FileStream stream = File.OpenRead(config.SourceFilePath))
+            using (FileStream output = File.OpenWrite(config.SavePathFile))
+            using (Image<Rgba32> image = Image.Load<Rgba32>(stream))
             {
-                using (var inputStream = new SKManagedStream(input))
-                {
-                    using (var original = SKBitmap.Decode(inputStream))
-                    {
-                        using (var resized = original.Resize(new SKImageInfo(100, 100), SKBitmapResizeMethod.Lanczos3))
-                        {
-                            if (resized == null) return null;
-
-                            using (var image = SKImage.FromBitmap(resized))
-                            {
-                                using (var output = File.OpenWrite(config.SavePathFile))
-                                {
-                                    image.Encode(SKEncodedImageFormat.Jpeg, 90).SaveTo(output);
-                                }
-                            }
-                        }
-                    }
-                }
+                image.Resize(image.Width / 2, image.Height / 2)
+                     .Grayscale()
+                     .Save(output);
             }
-
             return Path.GetFileName(config.SavePathFile);
         }
     }
