@@ -1,19 +1,23 @@
-using infrastucture.libs.image;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using peruncore.Config;
-using peruncore.Models.User;
 using System;
 using System.IO;
+
+using infrastucture.libs.image;
+using peruncore.Config;
+using peruncore.Models.User;
 
 namespace peruncore.Controllers
 {
     public class AvatarController : Controller
     {
         private readonly ImageUploadSettings _imageUploadSettings;
-        public AvatarController(IOptions<ImageUploadSettings> imageUploadSettings)
+        private readonly ILogger _logger;
+        public AvatarController(IOptions<ImageUploadSettings> imageUploadSettings, ILogger<AvatarController> logger)
         {
             _imageUploadSettings = imageUploadSettings.Value;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -30,6 +34,8 @@ namespace peruncore.Controllers
             var config = new ImageConfig()
                             .CreateConfigFromImageFile(filePath)
                             .WithSaveTo(filePathToSave);
+
+            _logger.LogInformation("Temporary image to upload:" + filePath);
 
             var image = ImageService.ResizeAndSave(config);
 
