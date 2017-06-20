@@ -69,7 +69,8 @@ namespace peruncore
             services.AddOptions();
             services.Configure<AuthSchemeSettings>(Configuration.GetSection("AuthSchemeSettings"));
             services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
-
+            services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
+            
             // Data protection 
             services.AddDataProtection();
 

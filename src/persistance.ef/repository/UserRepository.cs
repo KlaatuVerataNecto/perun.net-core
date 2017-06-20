@@ -3,6 +3,8 @@ using infrastructure.user.models;
 using persistance.ef.common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using persistance.ef.entity;
+using System;
 
 namespace persistance.ef.repository
 {
@@ -49,5 +51,41 @@ namespace persistance.ef.repository
                 avatar = obj.User.avatar,
             };
          }
+
+        public UserAuthDB Add(string username, string email, string hashed_password, string salt, string provider)
+        {
+            var rightNow = DateTime.Now;
+
+            var obj = new Login
+            {
+                email = email,
+                password = hashed_password,
+                salt = salt,
+                provider = provider,
+                date_created = rightNow,
+                User = new User
+                {
+                    username = username,
+                    is_locked = false,
+                    date_created = rightNow,
+                    last_seen = rightNow
+                }
+            };
+
+            _efContext.Logins.Add(obj);
+
+             // TODO: Automapper
+            return new UserAuthDB
+            {
+                id = obj.User.id,
+                username = obj.User.username,
+                salt = obj.salt,
+                password = obj.password,
+                email = obj.email,
+                provider = obj.provider,
+                roles = obj.User.roles,
+                avatar = obj.User.avatar,
+            };
+        }
     }
 }

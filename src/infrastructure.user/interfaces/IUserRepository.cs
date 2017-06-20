@@ -7,5 +7,6 @@ namespace infrastructure.user.interfaces
         UserAuthDB GetByEmail(string email);
         bool IsUsernameAvailable(string username);
         bool IsEmailAvailable(string email);
+        UserAuthDB Add(string username, string email, string hashed_password, string salt, string provider);
     }
 }
