@@ -36,9 +36,7 @@ namespace infrastucture.libs.image
             using (FileStream output = File.OpenWrite(config.SavePathFile))
             using (Image<Rgba32> image = Image.Load<Rgba32>(stream))
             {
-                image.Resize(image.Width / 2, image.Height / 2)
-                     .Grayscale()
-                     .Save(output);
+                image.Resize(image.Width / 2, image.Height / 2).Save(output);
             }
             return Path.GetFileName(config.SavePathFile);
         }

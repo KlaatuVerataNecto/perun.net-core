@@ -236,3 +236,4 @@ _Pvt_Extensions
 !infrastructure.user
 
 peruncore/wwwroot/images/*
+peruncore/wwwroot/upload/*

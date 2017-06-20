@@ -23,19 +23,17 @@ namespace peruncore.Controllers
         [HttpPost]
         public ActionResult upload(UserAvatarModel model)
         {
-            var filePath = Path.GetTempFileName();
+            string filePathUploaded = _imageUploadSettings.UploadPath + Path.DirectorySeparatorChar + Guid.NewGuid().ToString() + _imageUploadSettings.DefaultImageExtension;
+            string filePathResized = _imageUploadSettings.AvatarImagePath + Path.DirectorySeparatorChar + Guid.NewGuid().ToString() + _imageUploadSettings.DefaultImageExtension;
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            using (var stream = new FileStream(filePathUploaded, FileMode.Create))
             {
-                model.avatar_image.CopyToAsync(stream);
+                model.avatar_image.CopyTo(stream);
             }
 
-            string filePathToSave = _imageUploadSettings.AvatarImagePath + Path.DirectorySeparatorChar + Guid.NewGuid().ToString() + _imageUploadSettings.DefaultImageExtension;
             var config = new ImageConfig()
-                            .CreateConfigFromImageFile(filePath)
-                            .WithSaveTo(filePathToSave);
-
-            _logger.LogInformation("Temporary image to upload:" + filePath);
+                                .CreateConfigFromImageFile(filePathUploaded)
+                                .WithSaveTo(filePathResized);
 
             var image = ImageService.ResizeAndSave(config);
 
