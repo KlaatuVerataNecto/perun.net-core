@@ -1,17 +1,19 @@
 # perun.net-core
 ASP.NET MVC Core 1.1 base project with custom user and social logins
 
-Simple web application project template powered by ASP.NET Core 1.1 that features the following:
+Simple web application project template powered by ASP.NET Core 1.1 that at the moment features:
 
 - Powered by ASP.NET Core 1.1.
 - Runs on Linux (Ubuntu Server).
 - Uses MySQL for database.
 - Combines custom login system with social logins (Google, Facebook).
-- Unobtrusive validation
-- Remote validation
-- Avatar image upload (in progress).
-- Multilanguage support (in progress).
-- Unit Tests (todo)
+- Unobtrusive validation.
+- Remote validation.
+
+Todo:
+- Avatar image upload (already in progress).
+- Multilanguage support.
+- Unit Tests.
 
 It features the following libraries:
 - Entity Framework Core - ORM used to access database.

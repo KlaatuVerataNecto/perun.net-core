@@ -44,7 +44,7 @@ namespace persistance.ef.repository
                 id = obj.User.id,
                 username = obj.User.username,
                 salt = obj.salt,
-                password = obj.password,
+                password = obj.passwd,
                 email = obj.email,
                 provider = obj.provider,
                 roles = obj.User.roles,
@@ -59,7 +59,7 @@ namespace persistance.ef.repository
             var obj = new Login
             {
                 email = email,
-                password = hashed_password,
+                passwd = hashed_password,
                 salt = salt,
                 provider = provider,
                 date_created = rightNow,
@@ -73,6 +73,7 @@ namespace persistance.ef.repository
             };
 
             _efContext.Logins.Add(obj);
+            _efContext.SaveChanges();
 
              // TODO: Automapper
             return new UserAuthDB
@@ -80,7 +81,7 @@ namespace persistance.ef.repository
                 id = obj.User.id,
                 username = obj.User.username,
                 salt = obj.salt,
-                password = obj.password,
+                password = obj.passwd,
                 email = obj.email,
                 provider = obj.provider,
                 roles = obj.User.roles,

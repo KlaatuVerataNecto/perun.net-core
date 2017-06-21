@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using persistance.ef.entity;
 
 namespace persistance.ef.common
@@ -7,6 +8,7 @@ namespace persistance.ef.common
 
         DbSet<User> Users { get; set; }
         DbSet<Login> Logins { get; set; }
+        void SaveChanges();
     }
 
     public class EFContext : DbContext, IEFContext
@@ -18,6 +20,7 @@ namespace persistance.ef.common
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Login> Logins { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,5 +40,10 @@ namespace persistance.ef.common
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
                 .UseMySql(_connectionString);
+
+        void IEFContext.SaveChanges()
+        {
+            base.SaveChanges();
+        }
     }
 }

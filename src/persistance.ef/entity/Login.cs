@@ -6,7 +6,7 @@ namespace persistance.ef.entity
     {
         public int id { get; set; }
         public string email { get; set; }
-        public string password { get; set; }
+        public string passwd { get; set; }
         public string salt { get; set; }
 	    public int? external_id { get; set; }
 	    public string provider { get; set; }
