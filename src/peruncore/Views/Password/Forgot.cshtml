@@ -1,4 +1,4 @@
-@model peruncore.Models.User.LoginModel
+@model peruncore.Models.User.ForgotModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,9 +7,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
 <div class="col-md-6 col-md-offset-3">
-    <p>Login</p>
+    <p>Forgot</p>
     <hr />
-    <form asp-action="index">
+    <form asp-action="BeginForgot">
         <div class="form-horizontal">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -18,13 +18,6 @@
                     <input asp-for="email" class="form-control" />
                     <span asp-validation-for="email" class="text-danger"></span>
                 </div>
-             </div>
-            <div class="form-group">
-                <label asp-for="password" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="password" class="form-control" />
-                    <span asp-validation-for="password" class="text-danger"></span>
-                </div>
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -32,11 +25,7 @@
                 </div>
             </div>
         </div>
-        <hr />
-        <a asp-action="Forgot" asp-controller="Password">I forgot my password</a>
-        <hr />
-        <p>or use on the social logins:</p>
-        <p><a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a></p>
     </form>
 </div>
+
 

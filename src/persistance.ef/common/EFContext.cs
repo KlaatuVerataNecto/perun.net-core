@@ -13,10 +13,10 @@ namespace persistance.ef.common
 
     public class EFContext : DbContext, IEFContext
     {
-        private string _connectionString;
-        public EFContext(string connectionString)
+        private IConnectionStringProvider _connectionStringProvider;
+        public EFContext(IConnectionStringProvider connectionStringProvider)
         {
-            _connectionString = connectionString;
+            _connectionStringProvider = connectionStringProvider;
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Login> Logins { get; set; }
@@ -39,7 +39,7 @@ namespace persistance.ef.common
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
-                .UseMySql(_connectionString);
+                .UseMySql(_connectionStringProvider.ConnectionString);
 
         void IEFContext.SaveChanges()
         {

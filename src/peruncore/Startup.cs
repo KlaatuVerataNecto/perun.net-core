@@ -79,9 +79,15 @@ namespace peruncore
            
             // Create the container builder.
             var builder = new ContainerBuilder();
-            // Register EF       
-            builder.RegisterInstance(new EFContext(connectionString)).As<IEFContext>();
-            
+
+            // Register EF
+            builder.RegisterInstance(new ConnectionStringProvider { ConnectionString = connectionString })
+                .As<IConnectionStringProvider>()
+                .AsSelf();
+
+            builder.RegisterType<EFContext>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<EFContext>().AsSelf();
+
             // Register Repositories
             var repositoryAssembly = typeof(UserRepository).GetTypeInfo().Assembly;
             builder.RegisterAssemblyTypes(repositoryAssembly)
