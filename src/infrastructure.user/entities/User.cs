@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace persistance.ef.entity
+namespace infrastructure.user.entities
 {
     public class User
     {

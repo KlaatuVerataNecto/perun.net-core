@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace persistance.ef.entity
+namespace infrastructure.user.entities
 {
     public class Login
     {
@@ -14,5 +14,7 @@ namespace persistance.ef.entity
         public DateTime date_created { get; set; }
         public int user_id { get; set; }
         public User User { get; set; }
+        public UserPassword UserPasswordReset { get; set; }
+        public UserEmail UserEmailChange { get; set; }
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using persistance.ef.entity;
+﻿using Microsoft.EntityFrameworkCore;
+using infrastructure.user.entities;
 
 namespace persistance.ef.common
 {
@@ -20,7 +19,7 @@ namespace persistance.ef.common
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Login> Logins { get; set; }
-
+        public DbSet<UserPassword> UserChanges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +34,18 @@ namespace persistance.ef.common
                 .HasOne(d => d.User)
                 .WithMany(d => d.Logins)
                 .HasForeignKey(e => e.user_id);
+
+            modelBuilder.Entity<UserPassword>()
+                .ToTable("users_password")
+                .HasOne(d => d.Login)
+                .WithOne(d => d.UserPasswordReset)
+                .HasForeignKey<UserPassword>(e => e.user_login_id);
+
+            modelBuilder.Entity<UserEmail>()
+                .ToTable("users_email")
+                .HasOne(d => d.Login)
+                .WithOne(d => d.UserEmailChange)
+                .HasForeignKey<UserPassword>(e => e.user_login_id);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

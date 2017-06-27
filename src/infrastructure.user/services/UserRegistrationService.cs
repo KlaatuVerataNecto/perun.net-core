@@ -29,8 +29,8 @@ namespace infrastructure.user.services
             string salt = CryptographicService.GenerateRandomString(_saltLength);
             string hashed_password = CryptographicService.GenerateSaltedHash(password, salt);
 
-            var userAuthDB = _userRepository.Add(username, email, hashed_password, salt, provider);
-            return new UserIdentity(userAuthDB.id, userAuthDB.username, userAuthDB.email, userAuthDB.provider, userAuthDB.roles, userAuthDB.avatar);
+            var login = _userRepository.Add(username, email, hashed_password, salt, provider);
+            return new UserIdentity(login.id, login.User.username, login.email, login.provider, login.User.roles, login.User.avatar);
         }
     }
 }

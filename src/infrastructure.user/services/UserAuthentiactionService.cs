@@ -25,13 +25,13 @@ namespace infrastructure.user.services
 
         public UserIdentity login(string email, string password)
         {
-            UserAuthDB userAuthDB = _userRepository.GetByEmail(email);
+            var login = _userRepository.GetByEmail(email);
 
-            if (userAuthDB == null) return null;
-            string hashed_password = CryptographicService.GenerateSaltedHash(password, userAuthDB.salt);
+            if (login == null) return null;
+            string hashed_password = CryptographicService.GenerateSaltedHash(password, login.salt);
             
-            if (userAuthDB.password != hashed_password) return null;
-            return new UserIdentity(userAuthDB.id, userAuthDB.username, userAuthDB.email, userAuthDB.provider, userAuthDB.roles, userAuthDB.avatar);
+            if (login.passwd != hashed_password) return null;
+            return new UserIdentity(login.id, login.User.username, login.email, login.provider, login.User.roles, login.User.avatar);
         }
     }    
 }

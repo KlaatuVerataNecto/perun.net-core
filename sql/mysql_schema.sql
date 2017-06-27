@@ -24,15 +24,23 @@ CREATE TABLE users_login(
 	PRIMARY KEY (id)
  );
  
-DROP TABLE IF EXISTS users_reset;
-CREATE TABLE users_reset(
+DROP TABLE IF EXISTS users_password;
+CREATE TABLE users_password(
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_login_id INT(11) NOT NULL,
-	reminder_token_expiry_date DATETIME NULL,
-	reminder_token VARCHAR(150) NULL,
+	token_expiry_date DATETIME NULL,
+	token VARCHAR(150) NULL,
+	date_created DATETIME NULL,
+	PRIMARY KEY (id)
+ );
+
+ DROP TABLE IF EXISTS users_email;
+CREATE TABLE users_email(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	user_login_id INT(11) NOT NULL,
 	newemail VARCHAR(250) NULL,
-	newemail_token VARCHAR(150) NULL,
-	new_email_token_expiry_date DATETIME NULL,
+	token VARCHAR(150) NULL,
+	token_expiry_date DATETIME NULL,
 	date_created DATETIME NULL,
 	PRIMARY KEY (id)
  );
