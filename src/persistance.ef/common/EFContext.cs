@@ -38,14 +38,14 @@ namespace persistance.ef.common
             modelBuilder.Entity<UserPassword>()
                 .ToTable("users_password")
                 .HasOne(d => d.Login)
-                .WithOne(d => d.UserPasswordReset)
+                .WithOne(d => d.UserPasswordReset)                
                 .HasForeignKey<UserPassword>(e => e.user_login_id);
 
             modelBuilder.Entity<UserEmail>()
                 .ToTable("users_email")
                 .HasOne(d => d.Login)
                 .WithOne(d => d.UserEmailChange)
-                .HasForeignKey<UserPassword>(e => e.user_login_id);
+                .HasForeignKey<UserEmail>(e => e.user_login_id);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

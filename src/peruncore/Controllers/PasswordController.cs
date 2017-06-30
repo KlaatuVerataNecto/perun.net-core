@@ -30,6 +30,7 @@ namespace peruncore.Controllers
         public IActionResult BeginForgot(ForgotModel model)
         {
             var userReset = _userPasswordService.generateResetToken(model.email, _authSettings.ResetTokenLength, _authSettings.ExpiryDays);
+            ViewBag.Token = userReset.PasswordToken;
             return View();
         }
     }

@@ -1,4 +1,5 @@
 ﻿
+using infrastructure.user.entities;
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
 using infrastucture.libs.cryptography;
@@ -29,7 +30,25 @@ namespace infrastructure.user.services
             string salt = CryptographicService.GenerateRandomString(_saltLength);
             string hashed_password = CryptographicService.GenerateSaltedHash(password, salt);
 
-            var login = _userRepository.Add(username, email, hashed_password, salt, provider);
+            // TODO: Automapper
+            var rightNow = DateTime.Now;
+            var obj = new Login
+            {
+                email = email,
+                passwd = hashed_password,
+                salt = salt,
+                provider = provider,
+                date_created = rightNow,
+                User = new User
+                {
+                    username = username,
+                    is_locked = false,
+                    date_created = rightNow,
+                    last_seen = rightNow
+                }
+            };
+
+            var login = _userRepository.AddLogin(obj);
             return new UserIdentity(login.id, login.User.username, login.email, login.provider, login.User.roles, login.User.avatar);
         }
     }

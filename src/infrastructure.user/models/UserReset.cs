@@ -22,5 +22,9 @@ namespace infrastructure.user.models
             _passwordToken = passwordToken;
             _passwordTokenExpiryDate = passwordTokenExpiryDate;
         }
+
+        public string PasswordToken {
+            get { return _passwordToken; }
+        }
     }
 }

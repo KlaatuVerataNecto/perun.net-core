@@ -6,7 +6,7 @@ namespace infrastructure.user.interfaces
         Login GetByEmail(string email);
         bool IsUsernameAvailable(string username);
         bool IsEmailAvailable(string email);
-        Login AddLogin(string username, string email, string hashed_password, string salt, string provider);
-        Login AddUserPassword(string username, string email, string hashed_password, string salt, string provider);
+        Login AddLogin(Login obj);
+        void UpdateLogin(Login obj);
     }
 }

@@ -4,6 +4,7 @@ namespace infrastructure.user.entities
 {
     public class UserEmail
     {
+        public int id { get; set; }
         public Login Login { get; set; }
         public int user_login_id { get; set; }
         public DateTime date_created { get; set; }    

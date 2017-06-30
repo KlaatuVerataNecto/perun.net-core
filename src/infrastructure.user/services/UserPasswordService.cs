@@ -31,24 +31,24 @@ namespace infrastructure.user.services
                 return new UserReset(
                     login.user_id, 
                     login.email,
-                    login.UserPasswordReset.password_token,
-                    login.UserPasswordReset.password_token_expiry_date
+                    login.UserPasswordReset.token,
+                    login.UserPasswordReset.token_expiry_date
                     );
             var now = DateTime.Now;
 
             login.UserPasswordReset = new UserPassword {
                 date_created = now,
-                password_token = CryptographicService.GenerateRandomString(tokenLength),
-                password_token_expiry_date = now.AddDays(expiryDays)
+                token = CryptographicService.GenerateRandomString(tokenLength),
+                token_expiry_date = now.AddDays(expiryDays)
             };
 
-            _userRepository.AddUserPassword();
+            _userRepository.UpdateLogin(login);
 
             return new UserReset(
                 login.User.id, 
                 login.email, 
-                login.UserPasswordReset.password_token, 
-                login.UserPasswordReset.password_token_expiry_date
+                login.UserPasswordReset.token, 
+                login.UserPasswordReset.token_expiry_date
             );
         }
     }
