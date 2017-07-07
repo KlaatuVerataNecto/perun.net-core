@@ -29,7 +29,8 @@ CREATE TABLE users_password(
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_login_id INT(11) NOT NULL,
 	token_expiry_date DATETIME NULL,
-	token VARCHAR(150) NULL,
+	token VARCHAR(150) NULL,	
+	date_modified DATETIME NULL,	
 	date_created DATETIME NULL,
 	PRIMARY KEY (id)
  );
@@ -41,6 +42,7 @@ CREATE TABLE users_email(
 	newemail VARCHAR(250) NULL,
 	token VARCHAR(150) NULL,
 	token_expiry_date DATETIME NULL,
+	date_modified DATETIME NULL,	
 	date_created DATETIME NULL,
 	PRIMARY KEY (id)
  );

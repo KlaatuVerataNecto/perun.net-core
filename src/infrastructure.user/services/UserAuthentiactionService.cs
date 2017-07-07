@@ -1,19 +1,9 @@
 ﻿using infrastructure.user.interfaces;
 using infrastructure.user.models;
 using infrastucture.libs.cryptography;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace infrastructure.user.services
 {
-    public interface IUserAuthentiactionService
-    {
-        UserIdentity login(string email, string password);
-    }
-
     public class UserAuthentiactionService : IUserAuthentiactionService
     {
         private readonly IUserRepository _userRepository;

@@ -1,4 +1,4 @@
-using infrastructure.user.services;
+using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

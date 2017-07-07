@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="models\" />
+    <Folder Include="entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\infrastucture.libs\infrastucture.libs.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using infrastructure.user.services;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
+using infrastructure.user.interfaces;
 
 namespace peruncore.Controllers
 {

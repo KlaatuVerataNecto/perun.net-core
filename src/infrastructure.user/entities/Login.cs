@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace infrastructure.user.entities
 {
@@ -14,7 +15,7 @@ namespace infrastructure.user.entities
         public DateTime date_created { get; set; }
         public int user_id { get; set; }
         public User User { get; set; }
-        public UserPassword UserPasswordReset { get; set; }
-        public UserEmail UserEmailChange { get; set; }
+        public ICollection<UserPassword> UserPasswordResets { get; set; }
+        public ICollection<UserEmail> UserEmailChanges { get; set; }
     }
 }

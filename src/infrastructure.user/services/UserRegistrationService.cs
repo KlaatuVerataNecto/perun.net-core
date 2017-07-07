@@ -7,11 +7,6 @@ using System;
 
 namespace infrastructure.user.services
 {
-    public interface IUserRegistrationService
-    {
-        UserIdentity Signup(string username, string email, string password, string provider, int saltLength);
-    }
-
     public class UserRegistrationService : IUserRegistrationService
     {
         private const int _saltLength = 16;

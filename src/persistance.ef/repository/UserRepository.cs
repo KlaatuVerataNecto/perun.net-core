@@ -2,7 +2,6 @@
 using persistance.ef.common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System;
 using infrastructure.user.entities;
 
 namespace persistance.ef.repository
@@ -31,6 +30,21 @@ namespace persistance.ef.repository
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
+                                .Where(x => x.email == email
+                                                && x.provider == PROVIDER_LOCAL
+                                                && x.User.is_locked == false
+                                                ).SingleOrDefault();
+            if (obj == null) return null;
+
+            return obj;
+        }
+
+        public Login GetByEmailWithResetInfo(string email)
+        {
+            var obj = _efContext.Logins
+                                .Include(l => l.User)
+                                .Include(l => l.UserPasswordResets)
+                                .Include(l => l.UserEmailChanges)
                                 .Where(x => x.email == email
                                                 && x.provider == PROVIDER_LOCAL
                                                 && x.User.is_locked == false

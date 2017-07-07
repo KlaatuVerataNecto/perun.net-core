@@ -20,7 +20,7 @@ using peruncore.Config;
 using infrastructure.user.services;
 using persistance.ef.common;
 using persistance.ef.repository;
-
+using infrastructure.email.interfaces;
 
 namespace peruncore
 {
@@ -70,7 +70,8 @@ namespace peruncore
             services.Configure<AuthSchemeSettings>(Configuration.GetSection("AuthSchemeSettings"));
             services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
-            
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
             // Data protection 
             services.AddDataProtection();
 
@@ -100,6 +101,8 @@ namespace peruncore
                    .Where(t => t.Name.EndsWith("Service"))
                    .AsImplementedInterfaces();
 
+            // Register Email Settings 
+            services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
 
             builder.Populate(services);
             var container = builder.Build();

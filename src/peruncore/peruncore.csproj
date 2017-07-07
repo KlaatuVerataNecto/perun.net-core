@@ -48,6 +48,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\infrastructure.email\infrastructure.email.csproj" />
     <ProjectReference Include="..\infrastructure.i18n\infrastructure.i18n.csproj" />
     <ProjectReference Include="..\persistance.dapper\persistance.dapper.csproj" />
     <ProjectReference Include="..\persistance.ef\persistance.ef.csproj" />

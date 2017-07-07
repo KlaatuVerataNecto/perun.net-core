@@ -10,3 +10,10 @@ jQuery.validator.unobtrusive.adapters.add("nospaces", function (options) {
     }
 });
 
+jQuery.validator.unobtrusive.adapters.add("passwordmeter", function (options) {
+    options.rules["passwordmeter"] = true;
+    if (options.message) {
+        options.messages["passwordmeter"] = options.message;
+    }
+});
+

@@ -27,25 +27,27 @@ namespace persistance.ef.common
                 .ToTable("users")
                 .HasMany(x=>x.Logins)
                 .WithOne(x=>x.User)
-                .HasForeignKey(x=>x.user_id);
+                .HasForeignKey(x=>x.user_id)
+                .IsRequired();
 
             modelBuilder.Entity<Login>()
                 .ToTable("users_login")
                 .HasOne(d => d.User)
                 .WithMany(d => d.Logins)
-                .HasForeignKey(e => e.user_id);
+                .HasForeignKey(e => e.user_id)
+                .IsRequired();
 
             modelBuilder.Entity<UserPassword>()
                 .ToTable("users_password")
                 .HasOne(d => d.Login)
-                .WithOne(d => d.UserPasswordReset)                
-                .HasForeignKey<UserPassword>(e => e.user_login_id);
+                .WithMany(d => d.UserPasswordResets)
+                .HasForeignKey(e => e.user_login_id);
 
             modelBuilder.Entity<UserEmail>()
                 .ToTable("users_email")
                 .HasOne(d => d.Login)
-                .WithOne(d => d.UserEmailChange)
-                .HasForeignKey<UserEmail>(e => e.user_login_id);
+                .WithMany(d => d.UserEmailChanges)
+                .HasForeignKey(e => e.user_login_id);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
