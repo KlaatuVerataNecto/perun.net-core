@@ -31,7 +31,7 @@ namespace infrastructure.user.services
             // check if reset token exists 
             if (login.UserPasswordResets == null)
             {
-                login.UserPasswordResets = new List<UserPassword>();
+                login.UserPasswordResets = new List<UserPasswordDb>();
             }
 
             var passwordReset = login.UserPasswordResets.Where(x => x.token_expiry_date >= now).SingleOrDefault();
@@ -47,7 +47,7 @@ namespace infrastructure.user.services
             }
 
             // create new password reset token 
-            passwordReset = new UserPassword
+            passwordReset = new UserPasswordDb
             {
                 date_created = now,
                 token = CryptographicService.GenerateRandomString(tokenLength),

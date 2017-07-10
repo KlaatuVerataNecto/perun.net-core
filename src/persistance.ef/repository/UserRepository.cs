@@ -26,7 +26,7 @@ namespace persistance.ef.repository
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
         }
 
-        public Login GetByEmail(string email)
+        public LoginDb GetByEmail(string email)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
@@ -39,7 +39,7 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public Login GetByEmailWithResetInfo(string email)
+        public LoginDb GetByEmailWithResetInfo(string email)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
@@ -54,7 +54,7 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public Login AddLogin(Login obj)
+        public LoginDb AddLogin(LoginDb obj)
         {
             _efContext.Logins.Add(obj);
             _efContext.SaveChanges();
@@ -62,7 +62,7 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public void UpdateLogin(Login obj)
+        public void UpdateLogin(LoginDb obj)
         {
             _efContext.Logins.Update(obj);
             _efContext.SaveChanges();

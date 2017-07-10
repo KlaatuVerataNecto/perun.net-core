@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\infrastructure.email\infrastructure.email.csproj" />
     <ProjectReference Include="..\infrastructure.user\infrastructure.user.csproj" />
   </ItemGroup>
 

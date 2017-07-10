@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace infrastructure.user.entities
 {
-    public class Login
+    public class LoginDb
     {
         public int id { get; set; }
         public string email { get; set; }
@@ -14,8 +14,8 @@ namespace infrastructure.user.entities
         public string access_token { get; set; }
         public DateTime date_created { get; set; }
         public int user_id { get; set; }
-        public User User { get; set; }
-        public ICollection<UserPassword> UserPasswordResets { get; set; }
-        public ICollection<UserEmail> UserEmailChanges { get; set; }
+        public UserDb User { get; set; }
+        public ICollection<UserPasswordDb> UserPasswordResets { get; set; }
+        public ICollection<UserEmailDb> UserEmailChanges { get; set; }
     }
 }

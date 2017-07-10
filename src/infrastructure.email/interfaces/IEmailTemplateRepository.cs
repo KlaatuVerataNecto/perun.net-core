@@ -1,9 +1,10 @@
 ﻿
-using infrastructure.email.models;
+using infrastructure.email.entities;
+
 namespace infrastructure.email.repository
 {
     public interface IEmailTemplateRepository
     {
-        EmailTemplate getTemplateByType(string templateTypeName);
+        EmailTemplateDb getTemplateByType(string templateTypeName);
     }
 }

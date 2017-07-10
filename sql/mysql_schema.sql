@@ -35,7 +35,7 @@ CREATE TABLE users_password(
 	PRIMARY KEY (id)
  );
 
- DROP TABLE IF EXISTS users_email;
+DROP TABLE IF EXISTS users_email;
 CREATE TABLE users_email(
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_login_id INT(11) NOT NULL,
@@ -46,3 +46,26 @@ CREATE TABLE users_email(
 	date_created DATETIME NULL,
 	PRIMARY KEY (id)
  );
+
+DROP TABLE IF EXISTS email_template;
+CREATE TABLE email_template (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  email_subject text NOT NULL,
+  email_body text NOT NULL,
+  template_type varchar(15) DEFAULT NULL,
+  sender_name varchar(100) DEFAULT NULL,
+  sender_email varchar(100) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS email_queue;
+CREATE TABLE email_queue (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  receiver varchar(200) NOT NULL,
+  sender varchar(200) NOT NULL,
+  email_subject text NOT NULL,
+  email_body text NOT NULL,
+  date_sent datetime DEFAULT NULL,
+  is_sent tinyint(1) NOT NULL,
+  PRIMARY KEY (id)
+);

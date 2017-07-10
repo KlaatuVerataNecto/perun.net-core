@@ -7,25 +7,25 @@ using MailKit.Net.Smtp;
 
 namespace infrastructure.email.services
 {
-    public class EmailMessageSender : IEmailSender
+    public class EmailSenderService : IEmailSenderService
     {
         private readonly IEmailSettingsService _emailSettingsService;
 
-        public EmailMessageSender(IEmailSettingsService emailSettingsService)
+        public EmailSenderService(IEmailSettingsService emailSettingsService)
         {
             _emailSettingsService = emailSettingsService;
         }
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public Task SendEmailAsync(string emailTo, string emailFrom, string emailFromName,  string subject, string body)
         {
-            Execute(email, subject, message).Wait();
+            Execute(emailTo, emailFrom,emailFromName, subject, body).Wait();
             return Task.FromResult(0);
         }
 
-        public async Task Execute(string emailTo, string subject, string body)
+        public async Task Execute(string emailTo, string emailFrom, string emailFromName, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(_emailSettingsService.GetFromname(), _emailSettingsService.GetFrom()));
+            message.From.Add(new MailboxAddress(emailFromName, emailFrom));
             message.To.Add(new MailboxAddress(emailTo));
             message.Subject = subject;
 
@@ -46,6 +46,7 @@ namespace infrastructure.email.services
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
                 // Note: only needed if the SMTP server requires authentication
+                // if you use Gmail, allow access by less secure apps  
                 client.Authenticate(_emailSettingsService.GetUsername(), _emailSettingsService.GetPassword());
 
                 await client.SendAsync(message);

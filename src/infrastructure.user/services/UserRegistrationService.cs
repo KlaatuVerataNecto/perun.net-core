@@ -27,14 +27,14 @@ namespace infrastructure.user.services
 
             // TODO: Automapper
             var rightNow = DateTime.Now;
-            var obj = new Login
+            var obj = new LoginDb
             {
                 email = email,
                 passwd = hashed_password,
                 salt = salt,
                 provider = provider,
                 date_created = rightNow,
-                User = new User
+                User = new UserDb
                 {
                     username = username,
                     is_locked = false,

@@ -21,6 +21,7 @@ using infrastructure.user.services;
 using persistance.ef.common;
 using persistance.ef.repository;
 using infrastructure.email.interfaces;
+using infrastructure.email.services;
 
 namespace peruncore
 {
@@ -98,6 +99,12 @@ namespace peruncore
             // Register User Services 
             var userInfrastructureAssembly = typeof(UserAuthentiactionService).GetTypeInfo().Assembly;
             builder.RegisterAssemblyTypes(userInfrastructureAssembly)
+                   .Where(t => t.Name.EndsWith("Service"))
+                   .AsImplementedInterfaces();
+
+            // Register User Services 
+            var emailInfrastructureAssembly = typeof(EmailService).GetTypeInfo().Assembly;
+            builder.RegisterAssemblyTypes(emailInfrastructureAssembly)
                    .Where(t => t.Name.EndsWith("Service"))
                    .AsImplementedInterfaces();
 

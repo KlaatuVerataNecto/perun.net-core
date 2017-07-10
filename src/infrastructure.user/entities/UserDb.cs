@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace infrastructure.user.entities
 {
-    public class User
+    public class UserDb
     {
         public int id { get; set; }
         public string username { get; set; }
@@ -12,6 +12,6 @@ namespace infrastructure.user.entities
         public DateTime date_created { get; set; }
         public string avatar { get; set; }
         public bool is_locked { get; set; }
-        public ICollection<Login> Logins { get; set; }
+        public ICollection<LoginDb> Logins { get; set; }
     }
 }

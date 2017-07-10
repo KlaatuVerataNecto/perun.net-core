@@ -9,15 +9,15 @@ namespace infrastructure.email.services
     public class EmailService : IEmailService
     {   
         private readonly IEmailTemplateService _emailTemplateService;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailSenderService _emailSenderService;
 
         public EmailService(
                IEmailTemplateService emailTemplateService,
-               IEmailSender emailSender
+               IEmailSenderService emailSenderService
                )
         {
             _emailTemplateService = emailTemplateService;
-            _emailSender = emailSender;
+            _emailSenderService = emailSenderService;
         }
 
         public void sendPasswordReminder(string emailTo, string token, DateTime expiryDate)
@@ -30,7 +30,7 @@ namespace infrastructure.email.services
             var emailToSend = _emailTemplateService.GetPasswordReminderTemplate(
                  emailTo, token, expiryDate
             );
-            _emailSender.SendEmailAsync(emailToSend.Receiver, emailToSend.Subject, emailToSend.Body);
+            _emailSenderService.SendEmailAsync(emailToSend.Receiver, emailToSend.Sender, emailToSend.SenderName, emailToSend.Subject, emailToSend.Body);
         }
 
 

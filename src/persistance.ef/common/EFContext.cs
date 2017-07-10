@@ -1,12 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using infrastructure.user.entities;
+using infrastructure.email.entities;
 
 namespace persistance.ef.common
 {
     public interface IEFContext {
 
-        DbSet<User> Users { get; set; }
-        DbSet<Login> Logins { get; set; }
+        DbSet<UserDb> Users { get; set; }
+        DbSet<LoginDb> Logins { get; set; }
+        DbSet<UserPasswordDb> UserChanges { get; set; }
+        DbSet<EmailTemplateDb> EmailTemplates { get; set; }
+        DbSet<EmailQueueDb> EmailQueueItems { get; set; }
         void SaveChanges();
     }
 
@@ -17,37 +21,45 @@ namespace persistance.ef.common
         {
             _connectionStringProvider = connectionStringProvider;
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Login> Logins { get; set; }
-        public DbSet<UserPassword> UserChanges { get; set; }
+        public DbSet<UserDb> Users { get; set; }
+        public DbSet<LoginDb> Logins { get; set; }
+        public DbSet<UserPasswordDb> UserChanges { get; set; }        
+        public DbSet<EmailTemplateDb> EmailTemplates { get; set; }
+        public DbSet<EmailQueueDb> EmailQueueItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserDb>()
                 .ToTable("users")
                 .HasMany(x=>x.Logins)
                 .WithOne(x=>x.User)
                 .HasForeignKey(x=>x.user_id)
                 .IsRequired();
 
-            modelBuilder.Entity<Login>()
+            modelBuilder.Entity<LoginDb>()
                 .ToTable("users_login")
                 .HasOne(d => d.User)
                 .WithMany(d => d.Logins)
                 .HasForeignKey(e => e.user_id)
                 .IsRequired();
 
-            modelBuilder.Entity<UserPassword>()
+            modelBuilder.Entity<UserPasswordDb>()
                 .ToTable("users_password")
                 .HasOne(d => d.Login)
                 .WithMany(d => d.UserPasswordResets)
                 .HasForeignKey(e => e.user_login_id);
 
-            modelBuilder.Entity<UserEmail>()
+            modelBuilder.Entity<UserEmailDb>()
                 .ToTable("users_email")
                 .HasOne(d => d.Login)
                 .WithMany(d => d.UserEmailChanges)
                 .HasForeignKey(e => e.user_login_id);
+
+            modelBuilder.Entity<EmailTemplateDb>()
+                .ToTable("email_template");
+
+            modelBuilder.Entity<EmailQueueDb>()
+                .ToTable("email_queue");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

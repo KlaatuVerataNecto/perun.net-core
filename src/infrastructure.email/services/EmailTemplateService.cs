@@ -26,8 +26,8 @@ namespace infrastructure.email.services
 
             CustomValidators.NotNull(emailTemplate, "emailTemplate is null or empty.");
 
-            var body = emailTemplate.Body.Replace("{link}", token);
-            return new Email(emailTemplate.Sender, emailTo, emailTemplate.Subject, body);
+            var body = emailTemplate.email_body.Replace("{link}", token);
+            return new Email(emailTemplate.sender_email,emailTemplate.sender_name ,emailTo, emailTemplate.email_subject, body);
         }
     }
 }
