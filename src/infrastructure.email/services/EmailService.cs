@@ -6,57 +6,37 @@ using System;
 
 namespace infrastructure.email.services
 {
-
-
-
     public class EmailService : IEmailService
-    {
-        private readonly IEmailSettingsService _emailSettingsService;
-        private readonly IEmailRepository _emailRepository;
-        private readonly IEmailTemplateRepository _emailTemplateRepository;
+    {   
         private readonly IEmailTemplateService _emailTemplateService;
-
-        private const string RESEND_PASSWORD_TEMPLATE = "resend_password";
+        private readonly IEmailSender _emailSender;
 
         public EmailService(
-               IEmailRepository emailRepository, 
-               IEmailTemplateRepository emailTemplateRepository,
-               IEmailSettingsService emailSettingsService,
-               IEmailTemplateService emailTemplateService
+               IEmailTemplateService emailTemplateService,
+               IEmailSender emailSender
                )
         {
-            _emailRepository = emailRepository;
-            _emailTemplateRepository = emailTemplateRepository;
-            _emailSettingsService = emailSettingsService;
             _emailTemplateService = emailTemplateService;
+            _emailSender = emailSender;
         }
 
-        public bool sendPasswordReminder(string emailTo, string token, DateTime expiryDate)
+        public void sendPasswordReminder(string emailTo, string token, DateTime expiryDate)
         {
             CustomValidators.StringNotNullorEmpty(emailTo, "emailTo is null or empty");
             CustomValidators.StringNotNullorEmpty(token, "token is null or empty");
             CustomValidators.NotNull(expiryDate, "expiryDate is null");
 
-            //var emailTemplate = _emailTemplateRepository.getTemplateByType(RESEND_PASSWORD_TEMPLATE);
-            //var emailToSend = _emailTemplateService.SetPasswordReminderTemplate(
-            //    emailTemplate, emailTo, token, expiryDate
-            //);
-
-            throw new NotImplementedException();
-
-            /* TODO: email template check */
-
-            //var mailer = new AsyncEmailer();
-            //mail.to = email.Receiver;
-            //mail.subject = email.Subject;
-            //mail.body = email.Body;
-            //mailer.SendThat(mail);
-
-            //email.EmailSent();
-            //var saved_email = _emailRepository.Add(email);
-
-            //return (saved_email != null);
+           // get Email Template and set it up 
+            var emailToSend = _emailTemplateService.GetPasswordReminderTemplate(
+                 emailTo, token, expiryDate
+            );
+            _emailSender.SendEmailAsync(emailToSend.Receiver, emailToSend.Subject, emailToSend.Body);
         }
+
+
+
+
+
 
         //public bool TEMPsendPasswordReminder(MailMessage mail, string url)
         //{

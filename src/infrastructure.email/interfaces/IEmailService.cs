@@ -5,7 +5,7 @@ namespace infrastructure.email.interfaces
 {
     public interface IEmailService
     {
-        bool sendPasswordReminder(string emailTo, string token, DateTime expiryDate);
+        void sendPasswordReminder(string emailTo, string token, DateTime expiryDate);
         //    bool sendChangeEmail(MailMessage mail, string url);
         //    bool sendUserAccountInfo(MailMessage mail, string username, string password /*string firstname, string lastname*/);
         //}

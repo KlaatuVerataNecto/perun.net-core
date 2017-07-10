@@ -12,7 +12,7 @@ namespace infrastructure.libs.validators
             {
                 if (string.IsNullOrEmpty(msg))
                 {
-                    msg = "A object instance can't be null";
+                    msg = "A object instance can't be null.";
                 }
 
                 throw new ArgumentNullException(msg);
@@ -25,7 +25,7 @@ namespace infrastructure.libs.validators
             {
                 if (string.IsNullOrEmpty(msg))
                 {
-                    msg = "A object instance can't be null";
+                    msg = "A object instance can't be null.";
                 }
 
                 throw new ArgumentNullException(msg);
@@ -66,6 +66,26 @@ namespace infrastructure.libs.validators
             if (a == null || b == null)
                 return false;
             return a.Equals(b);
-        }  
+        }
+
+        public static void DateTimeIsInFuture(object theObj, string msg)
+        {
+            if (theObj == null)
+            {
+                msg = "A object instance can't be null.";
+                throw new ArgumentNullException(msg);
+            }
+
+            if (theObj.GetType() != typeof(DateTime))
+            {
+                msg = "A object instance is not of DateTime type.";
+                throw new ArgumentNullException(msg);
+            }
+
+            if (((DateTime)theObj) <= DateTime.Now)
+            {
+                throw new ArgumentNullException(msg);
+            }
+        }
     }
 }

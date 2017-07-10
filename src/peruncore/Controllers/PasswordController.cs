@@ -1,3 +1,4 @@
+using infrastructure.email.interfaces;
 using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,13 @@ namespace peruncore.Controllers
     public class PasswordController : Controller
     {
         private IUserPasswordService _userPasswordService;
+        private IEmailService _emailService;
         private readonly AuthSettings _authSettings;
-        public PasswordController(IUserPasswordService userPasswordService, IOptions<AuthSettings> authSettings)
+        public PasswordController(IUserPasswordService userPasswordService, IEmailService emailService, IOptions<AuthSettings> authSettings)
         {
             _authSettings = authSettings.Value;
             _userPasswordService = userPasswordService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -31,6 +34,7 @@ namespace peruncore.Controllers
         {
             var userReset = _userPasswordService.generateResetToken(model.email, _authSettings.ResetTokenLength, _authSettings.ExpiryDays);
             ViewBag.Token = userReset.PasswordToken;
+            _emailService.sendPasswordReminder(userReset.EmailTo, userReset.PasswordToken, userReset.PasswordTokenExpiryDate);
             return View();
         }
     }
