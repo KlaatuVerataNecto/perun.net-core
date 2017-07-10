@@ -20,15 +20,15 @@ namespace infrastructure.email.services
             _emailSenderService = emailSenderService;
         }
 
-        public void sendPasswordReminder(string emailTo, string token, DateTime expiryDate)
+        public void sendPasswordReminder(string emailTo, string link, DateTime expiryDate)
         {
             CustomValidators.StringNotNullorEmpty(emailTo, "emailTo is null or empty");
-            CustomValidators.StringNotNullorEmpty(token, "token is null or empty");
+            CustomValidators.StringNotNullorEmpty(link, "link is null or empty");
             CustomValidators.NotNull(expiryDate, "expiryDate is null");
 
            // get Email Template and set it up 
             var emailToSend = _emailTemplateService.GetPasswordReminderTemplate(
-                 emailTo, token, expiryDate
+                 emailTo, link, expiryDate
             );
             _emailSenderService.SendEmailAsync(emailToSend.Receiver, emailToSend.Sender, emailToSend.SenderName, emailToSend.Subject, emailToSend.Body);
         }

@@ -2,8 +2,11 @@ using infrastructure.email.interfaces;
 using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Options;
 using peruncore.Config;
+using peruncore.Infrastructure.Extensions;
 using peruncore.Models.User;
 
 namespace peruncore.Controllers
@@ -33,9 +36,24 @@ namespace peruncore.Controllers
         public IActionResult BeginForgot(ForgotModel model)
         {
             var userReset = _userPasswordService.generateResetToken(model.email, _authSettings.ResetTokenLength, _authSettings.ExpiryDays);
-            ViewBag.Token = userReset.PasswordToken;
-            _emailService.sendPasswordReminder(userReset.EmailTo, userReset.PasswordToken, userReset.PasswordTokenExpiryDate);
+
+            string url = CustomUrlHelperExtensions.AbsoluteAction(
+                new UrlHelper(this.ControllerContext),
+                "reset",
+                "password",
+                new { token = userReset.PasswordToken }
+            );
+            
+            _emailService.sendPasswordReminder(userReset.EmailTo, url, userReset.PasswordTokenExpiryDate);
+            ViewBag.Token = url;
             return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Reset(string token)
+        {
+            return Content(token);
         }
     }
 }

@@ -5,6 +5,6 @@ namespace infrastructure.email.interfaces
 {
     public interface IEmailTemplateService
     {
-        Email GetPasswordReminderTemplate(string emailTo, string token, DateTime expiryDate);
+        Email GetPasswordReminderTemplate(string emailTo, string link, DateTime expiryDate);
     }
 }

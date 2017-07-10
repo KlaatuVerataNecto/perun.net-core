@@ -17,16 +17,16 @@ namespace infrastructure.email.services
             _emailTemplateRepository = emailTemplateRepository;
         }
 
-        public Email GetPasswordReminderTemplate(string emailTo,string token, DateTime expiryDate)
+        public Email GetPasswordReminderTemplate(string emailTo,string link, DateTime expiryDate)
         {
-            CustomValidators.StringNotNullorEmpty(token, "token string is null or empty.");
+            CustomValidators.StringNotNullorEmpty(link, "link string is null or empty.");
             CustomValidators.DateTimeIsInFuture(expiryDate, "expiryDate is not a future date.");
 
             var emailTemplate = _emailTemplateRepository.getTemplateByType(RESEND_PASSWORD_TEMPLATE);
 
             CustomValidators.NotNull(emailTemplate, "emailTemplate is null or empty.");
 
-            var body = emailTemplate.email_body.Replace("{link}", token);
+            var body = emailTemplate.email_body.Replace("{link}", link);
             return new Email(emailTemplate.sender_email,emailTemplate.sender_name ,emailTo, emailTemplate.email_subject, body);
         }
     }
