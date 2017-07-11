@@ -15,7 +15,7 @@ namespace peruncore.Controllers
         [AcceptVerbs("Get", "Post")]
         public IActionResult VerifyEmail(string email)
         {
-            if (_userRepository.IsEmailAvailable(email))
+            if (_userRepository.isEmailAvailable(email))
             {
                 return Json(data: true);
             }
@@ -27,7 +27,7 @@ namespace peruncore.Controllers
         [AcceptVerbs("Get", "Post")]
         public IActionResult VerifyUsername(string username)
         {
-            if (_userRepository.IsUsernameAvailable(username))
+            if (_userRepository.isUsernameAvailable(username))
             {
                 return Json(data: true);
             }

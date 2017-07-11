@@ -23,6 +23,11 @@ namespace infrastructure.user.models
             _passwordTokenExpiryDate = passwordTokenExpiryDate;
         }
 
+        public int UserId
+        {
+            get { return _userid; }
+        }
+
         public string EmailTo
         {
             get { return _email; }

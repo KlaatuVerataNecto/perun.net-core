@@ -36,12 +36,12 @@ namespace peruncore.Controllers
         public IActionResult BeginForgot(ForgotModel model)
         {
             var userReset = _userPasswordService.generateResetToken(model.email, _authSettings.ResetTokenLength, _authSettings.ExpiryDays);
-
+          
             string url = CustomUrlHelperExtensions.AbsoluteAction(
                 new UrlHelper(this.ControllerContext),
                 "reset",
                 "password",
-                new { token = userReset.PasswordToken }
+                new { id = userReset.UserId, token = userReset.PasswordToken }
             );
             
             _emailService.sendPasswordReminder(userReset.EmailTo, url, userReset.PasswordTokenExpiryDate);
@@ -51,9 +51,14 @@ namespace peruncore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Reset(string token)
+        public IActionResult Reset(int id, string token)
         {
-            return Content(token);
+            var userReset = _userPasswordService.verifyToken(id,token);
+            if(userReset == null)
+            {
+                // TODO: redirect to error, create log entry
+            }
+            return View();
         }
     }
 }

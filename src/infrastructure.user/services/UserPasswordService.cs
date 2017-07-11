@@ -19,7 +19,7 @@ namespace infrastructure.user.services
 
         public UserReset generateResetToken(string email, int tokenLength, int expiryDays)
         {
-            var login = _userRepository.GetByEmailWithResetInfo(email);
+            var login = _userRepository.getByEmailWithResetInfo(email);
 
             if (login == null)
             {
@@ -56,14 +56,36 @@ namespace infrastructure.user.services
             
             // update database
             login.UserPasswordResets.Add(passwordReset);
-            _userRepository.UpdateLogin(login);
+            _userRepository.updateLogin(login);
 
+            // TODO: Automapper
             return new UserReset(
                 login.User.id, 
                 login.email,
                 passwordReset.token,
                 passwordReset.token_expiry_date
             );
+        }
+
+        public UserReset verifyToken(int userId, string token)
+        {
+            var login = _userRepository.getByIdWithResetInfo(userId);
+            var passwordReset = login.UserPasswordResets.Where(x => 
+                                        x.token == token && 
+                                        x.token_expiry_date >= DateTime.Now
+                                        ).SingleOrDefault();
+            if (passwordReset != null)
+            {
+                // TODO: Automapper
+                return new UserReset(
+                    login.User.id,
+                    login.email,
+                    passwordReset.token,
+                    passwordReset.token_expiry_date
+                );
+            }
+
+            return null;
         }
     }
 }

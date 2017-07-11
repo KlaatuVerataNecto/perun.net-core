@@ -16,17 +16,17 @@ namespace persistance.ef.repository
             _efContext = context;
         }
 
-        public bool IsUsernameAvailable(string username)
+        public bool isUsernameAvailable(string username)
         {
             return !_efContext.Users.Any(x => x.username.ToLower() == username.ToLower());
         }
 
-        public bool IsEmailAvailable(string email)
+        public bool isEmailAvailable(string email)
         {
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
         }
 
-        public LoginDb GetByEmail(string email)
+        public LoginDb getByEmail(string email)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
@@ -39,7 +39,7 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public LoginDb GetByEmailWithResetInfo(string email)
+        public LoginDb getByEmailWithResetInfo(string email)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
@@ -54,7 +54,21 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public LoginDb AddLogin(LoginDb obj)
+        public LoginDb getByIdWithResetInfo(int id)
+        {
+            var obj = _efContext.Logins
+                                .Include(l => l.User)
+                                .Include(l => l.UserPasswordResets)
+                                .Include(l => l.UserEmailChanges)
+                                .Where(x => x.user_id == id
+                                                && x.provider == PROVIDER_LOCAL
+                                                && x.User.is_locked == false
+                                                ).SingleOrDefault();
+
+            return obj;
+        }
+
+        public LoginDb addLogin(LoginDb obj)
         {
             _efContext.Logins.Add(obj);
             _efContext.SaveChanges();
@@ -62,7 +76,7 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public void UpdateLogin(LoginDb obj)
+        public void updateLogin(LoginDb obj)
         {
             _efContext.Logins.Update(obj);
             _efContext.SaveChanges();
