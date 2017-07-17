@@ -35,8 +35,15 @@ namespace peruncore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult BeginForgot(ForgotModel model)
         {
+            if (!ModelState.IsValid) return View("Forgot", model);
             var userReset = _userPasswordService.generateResetToken(model.email, _authSettings.ResetTokenLength, _authSettings.ExpiryDays);
-          
+
+            if (userReset == null)
+            {
+                // TODO: i18n
+                ModelState.AddModelError("email","Reset password token has expired. Please request new one.");
+                return View("Forgot", model);
+            }
             string url = CustomUrlHelperExtensions.AbsoluteAction(
                 new UrlHelper(this.ControllerContext),
                 "reset",
@@ -56,8 +63,31 @@ namespace peruncore.Controllers
             var userReset = _userPasswordService.verifyToken(id,token);
             if(userReset == null)
             {
-                // TODO: redirect to error, create log entry
+                // TODO: create log entry
+                return RedirectToAction("ResetTokenExpired","Error");
             }
+            return View(new ResetModel {
+                userid = userReset.UserId,
+                token = userReset.PasswordToken
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult FinishForgot(ResetModel model)
+        {
+            if (!ModelState.IsValid) return View("Reset", new { id = model.userid, token = model.token});
+            var userReset = _userPasswordService.changePassword(model.userid, model.token, model.password);
+
+            if (userReset == null)
+            {
+                // TODO: i18n
+                // TODO: log entry
+                ModelState.AddModelError("password", "Something went terribly wrong.");
+                return View("Reset", new { id = model.userid, token = model.token });
+            }
+
             return View();
         }
     }

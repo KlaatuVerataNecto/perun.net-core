@@ -11,6 +11,8 @@ namespace infrastructure.user.services
 
     public class UserPasswordService: IUserPasswordService
     {
+        // TODO: global settings
+        private const int _saltLength = 16;
         private readonly IUserRepository _userRepository;
         public UserPasswordService(IUserRepository userRepository)
         {
@@ -51,7 +53,8 @@ namespace infrastructure.user.services
             {
                 date_created = now,
                 token = CryptographicService.GenerateRandomString(tokenLength),
-                token_expiry_date = now.AddDays(expiryDays)
+                token_expiry_date = now.AddDays(expiryDays),
+                date_modified = now
             };
             
             // update database
@@ -86,6 +89,36 @@ namespace infrastructure.user.services
             }
 
             return null;
+        }
+
+        public UserReset changePassword(int userid, string token, string password)
+        {
+            // TODO: duplicated code
+            var login = _userRepository.getByIdWithResetInfo(userid);
+            var passwordReset = login.UserPasswordResets.Where(x =>
+                                                 x.token == token &&
+                                                 x.token_expiry_date >= DateTime.Now
+                                                 ).SingleOrDefault();
+            if (passwordReset == null)
+            {
+                return null;
+            }
+
+            var now = DateTime.Now;
+            // TODO: duplicated code
+            login.salt = CryptographicService.GenerateRandomString(_saltLength);
+            login.passwd = CryptographicService.GenerateSaltedHash(password, login.salt);
+            // TODO: unnecessary db call 
+            login.UserPasswordResets.Where(x => x.id == passwordReset.id).Single().token_expiry_date = now;
+            login.UserPasswordResets.Where(x => x.id == passwordReset.id).Single().date_modified = now;
+            _userRepository.updateLogin(login);
+
+            return new UserReset(
+                login.User.id,
+                login.email,
+                passwordReset.token,
+                passwordReset.token_expiry_date
+            );
         }
     }
 }

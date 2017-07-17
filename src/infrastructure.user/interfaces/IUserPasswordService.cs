@@ -6,5 +6,6 @@ namespace infrastructure.user.interfaces
     {
         UserReset generateResetToken(string email, int tokenLength, int expiryDays);
         UserReset verifyToken(int userId, string token);
+        UserReset changePassword(int userid, string token, string password);
     }
 }

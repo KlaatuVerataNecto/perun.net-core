@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace peruncore.Models.User
 {
@@ -6,6 +7,7 @@ namespace peruncore.Models.User
     {
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [Remote(action: "VerifyEmailExistance", controller: "Validation")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string email { get; set; }

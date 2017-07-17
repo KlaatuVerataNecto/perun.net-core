@@ -13,6 +13,17 @@ namespace peruncore.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
+        public IActionResult VerifyEmailExistance(string email)
+        {
+            if (!_userRepository.isEmailAvailable(email))
+            {
+                return Json(data: true);
+            }
+            // TODO: i18n
+            return Json(data: $"Email {email} is not registered.");
+        }
+
+        [AcceptVerbs("Get", "Post")]
         public IActionResult VerifyEmail(string email)
         {
             if (_userRepository.isEmailAvailable(email))
