@@ -129,29 +129,11 @@
   <data name="email_change_fail_desc" xml:space="preserve">
     <value>Go to your account and request it again</value>
   </data>
-  <data name="email_change_ok" xml:space="preserve">
-    <value>That's done!</value>
-  </data>
   <data name="email_change_ok_desc" xml:space="preserve">
     <value>Your new email has been activated</value>
   </data>
   <data name="email_does_not_exists" xml:space="preserve">
     <value>No account exists with this email address</value>
-  </data>
-  <data name="email_login_to_apply_change" xml:space="preserve">
-    <value>We can't change your email as you are not logged in</value>
-  </data>
-  <data name="email_login_to_apply_change_desc1" xml:space="preserve">
-    <value>1. Login to the system by clicking on the "Login" button</value>
-  </data>
-  <data name="email_login_to_apply_change_desc2" xml:space="preserve">
-    <value>2. Open your email inbox and got to the message we sent you.</value>
-  </data>
-  <data name="email_login_to_apply_change_desc3" xml:space="preserve">
-    <value>3. Click on the link provided within the email</value>
-  </data>
-  <data name="email_login_to_apply_change_idiot_html" xml:space="preserve">
-    <value>*If you are still unable to omplete your request please contact &lt;a href="mailto:putoamo.es@gmail.com" title="Sent us an email"&gt;putoamo.es@gmail.com&lt;/a&gt;</value>
   </data>
   <data name="email_password_incorrect" xml:space="preserve">
     <value>Invalid Email or Password.</value>
@@ -159,14 +141,11 @@
   <data name="email_request_cancelled" xml:space="preserve">
     <value>Your email change request has been canceled successfully.</value>
   </data>
-  <data name="email_saved" xml:space="preserve">
-    <value>Email saved successfully.</value>
-  </data>
   <data name="password_changed" xml:space="preserve">
     <value>The password has been changed  successfully.</value>
   </data>
   <data name="password_change_expired" xml:space="preserve">
-    <value>La solicitud del cambio de la contraseña ha caducado. Intentalo de nuevo!</value>
+    <value>Reset password token has expired. Please request new one.</value>
   </data>
   <data name="password_incorrect" xml:space="preserve">
     <value>Password is incorrect.</value>
@@ -216,9 +195,6 @@
   <data name="aboutme_not_in_range" xml:space="preserve">
     <value>About me should not be greater than 300 characters.</value>
   </data>
-  <data name="age_not_in_range" xml:space="preserve">
-    <value>Age not in the correct format</value>
-  </data>
   <data name="country_not_in_range" xml:space="preserve">
     <value>Country should be between 2 y 50 characters</value>
   </data>
@@ -235,13 +211,13 @@
     <value>New passowrd is empty</value>
   </data>
   <data name="new_password_not_in_range" xml:space="preserve">
-    <value>Nueva Contraseña tiene que tener entre 6 y 30 caracteres</value>
+    <value>New password should be between 6 and 30 characters.</value>
   </data>
   <data name="new_password_too_weak" xml:space="preserve">
-    <value>La Nueva Contraseña es muy debil</value>
+    <value>New password too weak.</value>
   </data>
   <data name="password_renter" xml:space="preserve">
-    <value>Introduce la Contraseña para guardar los cambios.</value>
+    <value>Repeat the password to save changes.</value>
   </data>
   <data name="repeat_new_password_doesnt_match" xml:space="preserve">
     <value>Repeated password doesn't match.</value>
@@ -256,19 +232,13 @@
     <value>Username is too short.</value>
   </data>
   <data name="firstname_not_in_range" xml:space="preserve">
-    <value>First name should be between 2 y 80 characters</value>
+    <value>First name should be between 2 y 80 characters.</value>
   </data>
   <data name="email_requested_same_as_current" xml:space="preserve">
     <value>New email is the same as the current one.</value>
   </data>
   <data name="lastname_not_in_range" xml:space="preserve">
-    <value>Last name should be between 2 y 80 characters</value>
-  </data>
-  <data name="no_changes_made" xml:space="preserve">
-    <value>No changes made</value>
-  </data>
-  <data name="profile_saved" xml:space="preserve">
-    <value>Profile saved successfully.</value>
+    <value>Last name should be between 2 y 80 characters.</value>
   </data>
   <data name="roles_not_in_range" xml:space="preserve">
     <value>Roles is too long. Value should be between 3 and 100 characters</value>
@@ -288,30 +258,6 @@
   <data name="invalid_key" xml:space="preserve">
     <value>Invalid key</value>
   </data>
-  <data name="oauth_login_with_other_user" xml:space="preserve">
-    <value>El login que intentas añadir ya esta asociado con otra cuenta</value>
-  </data>
-  <data name="oauth_alternative_message" xml:space="preserve">
-    <value>Si no deseas aceptar los permisos puedes darte de alta con nuestro sistema usando este formulario</value>
-  </data>
-  <data name="oauth_email" xml:space="preserve">
-    <value>Correo electrónico</value>
-  </data>
-  <data name="oauth_facebook_email" xml:space="preserve">
-    <value>Lo necesitamos para identificarte y informarte.</value>
-  </data>
-  <data name="oauth_facebook_wall" xml:space="preserve">
-    <value>Sirve para compartir tu votos en forma automatica, nunca publicaremos en tu muro sin tu previo permiso.</value>
-  </data>
-  <data name="oauth_permission_title" xml:space="preserve">
-    <value>No fuimos capaces de darte de alta</value>
-  </data>
-  <data name="oauth_try_again_button" xml:space="preserve">
-    <value>Intenta otra vez</value>
-  </data>
-  <data name="oauth_wall_post" xml:space="preserve">
-    <value>Publicar en tu muro</value>
-  </data>
   <data name="crop_area_invalid" xml:space="preserve">
     <value>Invalid crop area</value>
   </data>
@@ -322,7 +268,7 @@
     <value>Upload image is greater than 10 MB, please upload smaller size. </value>
   </data>
   <data name="error_wierd_shit_going_on" xml:space="preserve">
-    <value>We felt a great disturbance in the force, as if millions of lines of code suddenly cried out in terror and were suddenly silenced. We fear something terrible has happened. Looking into it.</value>
+    <value>We felt a great disturbance in the force, as if millions of lines of code suddenly cried out in terror and were suddenly silenced. We fear something terrible has happened. We are looking into it.</value>
   </data>
   <data name="username_empty_or_spaces" xml:space="preserve">
     <value>Username can't be empty or contain spaces.</value>

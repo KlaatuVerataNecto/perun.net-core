@@ -5,6 +5,7 @@ using infrastucture.libs.cryptography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace infrastructure.user.services
 {
@@ -14,9 +15,12 @@ namespace infrastructure.user.services
         // TODO: global settings
         private const int _saltLength = 16;
         private readonly IUserRepository _userRepository;
-        public UserPasswordService(IUserRepository userRepository)
+        private readonly ILogger _logger;
+
+        public UserPasswordService(IUserRepository userRepository, ILogger<UserPasswordService> logger)
         {
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public UserReset generateResetToken(string email, int tokenLength, int expiryDays)
@@ -25,7 +29,7 @@ namespace infrastructure.user.services
 
             if (login == null)
             {
-                // TODO: Throw an exception
+                _logger.LogError("User intents to generate Password Reset Token with invalid email." , new object[] { email });
                 return null;
             }
             var now = DateTime.Now;
@@ -108,6 +112,7 @@ namespace infrastructure.user.services
             // TODO: duplicated code
             login.salt = CryptographicService.GenerateRandomString(_saltLength);
             login.passwd = CryptographicService.GenerateSaltedHash(password, login.salt);
+            
             // TODO: unnecessary db call 
             login.UserPasswordResets.Where(x => x.id == passwordReset.id).Single().token_expiry_date = now;
             login.UserPasswordResets.Where(x => x.id == passwordReset.id).Single().date_modified = now;

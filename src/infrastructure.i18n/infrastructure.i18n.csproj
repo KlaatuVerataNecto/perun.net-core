@@ -5,17 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="user\UserResponseMessagesResource.Designer.cs">
+    <Compile Update="user\UserValidationMsg.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>UserResponseMessagesResource.resx</DependentUpon>
+      <DependentUpon>UserValidationMsg.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="user\UserResponseMessagesResource.resx">
+    <EmbeddedResource Update="user\UserValidationMsg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>UserResponseMessagesResource.Designer.cs</LastGenOutput>
+      <LastGenOutput>UserValidationMsg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

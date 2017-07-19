@@ -1,9 +1,10 @@
 using infrastructure.email.interfaces;
+using infrastructure.i18n.user;
 using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using peruncore.Config;
 using peruncore.Infrastructure.Extensions;
@@ -16,11 +17,14 @@ namespace peruncore.Controllers
         private IUserPasswordService _userPasswordService;
         private IEmailService _emailService;
         private readonly AuthSettings _authSettings;
-        public PasswordController(IUserPasswordService userPasswordService, IEmailService emailService, IOptions<AuthSettings> authSettings)
+        private readonly ILogger _logger;
+
+        public PasswordController(IUserPasswordService userPasswordService, IEmailService emailService, IOptions<AuthSettings> authSettings, ILogger<PasswordController> logger)
         {
             _authSettings = authSettings.Value;
             _userPasswordService = userPasswordService;
             _emailService = emailService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -40,8 +44,7 @@ namespace peruncore.Controllers
 
             if (userReset == null)
             {
-                // TODO: i18n
-                ModelState.AddModelError("email","Reset password token has expired. Please request new one.");
+                ModelState.AddModelError("email",UserResponseMessagesResource.password_change_expired);
                 return View("Forgot", model);
             }
             string url = CustomUrlHelperExtensions.AbsoluteAction(
@@ -63,7 +66,7 @@ namespace peruncore.Controllers
             var userReset = _userPasswordService.verifyToken(id,token);
             if(userReset == null)
             {
-                // TODO: create log entry
+                _logger.LogInformation("Password Reset Token has expired.", new object[] { id, token});
                 return RedirectToAction("ResetTokenExpired","Error");
             }
             return View(new ResetModel {
@@ -82,9 +85,8 @@ namespace peruncore.Controllers
 
             if (userReset == null)
             {
-                // TODO: i18n
-                // TODO: log entry
-                ModelState.AddModelError("password", "Something went terribly wrong.");
+                _logger.LogInformation("Unable to reset user's password. User ID or Token doesn't match.", new object[] { model.userid, model.token });
+                ModelState.AddModelError("password", UserResponseMessagesResource.error_wierd_shit_going_on);
                 return View("Reset", new { id = model.userid, token = model.token });
             }
 
