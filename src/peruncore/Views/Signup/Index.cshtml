@@ -7,6 +7,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@section Css {
+    @{await Html.RenderPartialAsync("_ValidationCssPartial"); }
+}
 <div class="col-md-6 col-md-offset-3">
     <form asp-action="Index">
         <div class="form-horizontal">

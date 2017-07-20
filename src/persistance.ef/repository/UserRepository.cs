@@ -9,7 +9,6 @@ namespace persistance.ef.repository
     public class UserRepository : IUserRepository
     {
         private IEFContext _efContext;
-        private const string PROVIDER_LOCAL = "Local";
 
         public UserRepository(IEFContext context)
         {
@@ -26,12 +25,12 @@ namespace persistance.ef.repository
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
         }
 
-        public LoginDb getByEmail(string email)
+        public LoginDb getByEmail(string email, string provider)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
                                 .Where(x => x.email == email
-                                                && x.provider == PROVIDER_LOCAL
+                                                && x.provider == provider
                                                 && x.User.is_locked == false
                                                 ).SingleOrDefault();
             if (obj == null) return null;
@@ -39,14 +38,14 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public LoginDb getByEmailWithResetInfo(string email)
+        public LoginDb getByEmailWithResetInfo(string email, string provider)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
                                 .Include(l => l.UserPasswordResets)
                                 .Include(l => l.UserEmailChanges)
                                 .Where(x => x.email == email
-                                                && x.provider == PROVIDER_LOCAL
+                                                && x.provider == provider
                                                 && x.User.is_locked == false
                                                 ).SingleOrDefault();
             if (obj == null) return null;
@@ -54,14 +53,14 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public LoginDb getByIdWithResetInfo(int id)
+        public LoginDb getByIdWithResetInfo(int id, string provider)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
                                 .Include(l => l.UserPasswordResets)
                                 .Include(l => l.UserEmailChanges)
                                 .Where(x => x.user_id == id
-                                                && x.provider == PROVIDER_LOCAL
+                                                && x.provider == provider
                                                 && x.User.is_locked == false
                                                 ).SingleOrDefault();
 

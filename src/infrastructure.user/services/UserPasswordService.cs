@@ -16,16 +16,17 @@ namespace infrastructure.user.services
         private const int _saltLength = 16;
         private readonly IUserRepository _userRepository;
         private readonly ILogger _logger;
-
-        public UserPasswordService(IUserRepository userRepository, ILogger<UserPasswordService> logger)
+        private readonly IAuthSchemeSettingsService _authSchemeSettingsService;
+        public UserPasswordService(IUserRepository userRepository, ILogger<UserPasswordService> logger, IAuthSchemeSettingsService authSchemeSettingsService)
         {
             _userRepository = userRepository;
             _logger = logger;
+            _authSchemeSettingsService = authSchemeSettingsService;
         }
 
         public UserReset generateResetToken(string email, int tokenLength, int expiryDays)
         {
-            var login = _userRepository.getByEmailWithResetInfo(email);
+            var login = _userRepository.getByEmailWithResetInfo(email, _authSchemeSettingsService.GetDefaultProvider());
 
             if (login == null)
             {
@@ -76,7 +77,7 @@ namespace infrastructure.user.services
 
         public UserReset verifyToken(int userId, string token)
         {
-            var login = _userRepository.getByIdWithResetInfo(userId);
+            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeSettingsService.GetDefaultProvider());
             var passwordReset = login.UserPasswordResets.Where(x => 
                                         x.token == token && 
                                         x.token_expiry_date >= DateTime.Now
@@ -98,7 +99,7 @@ namespace infrastructure.user.services
         public UserReset changePassword(int userid, string token, string password)
         {
             // TODO: duplicated code
-            var login = _userRepository.getByIdWithResetInfo(userid);
+            var login = _userRepository.getByIdWithResetInfo(userid, _authSchemeSettingsService.GetDefaultProvider());
             var passwordReset = login.UserPasswordResets.Where(x =>
                                                  x.token == token &&
                                                  x.token_expiry_date >= DateTime.Now

@@ -23,6 +23,7 @@ using persistance.ef.repository;
 using infrastructure.email.interfaces;
 using infrastructure.email.services;
 using peruncore.Infrastructure.Middleware;
+using infrastructure.user.interfaces;
 
 namespace peruncore
 {
@@ -113,6 +114,7 @@ namespace peruncore
 
             // Register Email Settings 
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
+            services.AddSingleton<IAuthSchemeSettingsService, AuthSchemeSettingsService>();
 
             builder.Populate(services);
             var container = builder.Build();

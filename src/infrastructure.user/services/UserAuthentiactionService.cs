@@ -7,15 +7,17 @@ namespace infrastructure.user.services
     public class UserAuthentiactionService : IUserAuthentiactionService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAuthSchemeSettingsService _authSchemeSettingsService;
 
-        public UserAuthentiactionService(IUserRepository userRepository) 
+        public UserAuthentiactionService(IUserRepository userRepository, IAuthSchemeSettingsService authSchemeSettingsService) 
         {
             _userRepository = userRepository;
+            _authSchemeSettingsService = authSchemeSettingsService;
         }
 
         public UserIdentity login(string email, string password)
         {
-            var login = _userRepository.getByEmail(email);
+            var login = _userRepository.getByEmail(email, _authSchemeSettingsService.GetDefaultProvider());
 
             if (login == null) return null;
             string hashed_password = CryptographicService.GenerateSaltedHash(password, login.salt);

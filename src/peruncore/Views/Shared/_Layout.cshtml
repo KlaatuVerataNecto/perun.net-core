@@ -9,13 +9,14 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/bootstrap.flatly.min.css" />
-        <link rel="stylesheet" href="~/lib/jquery.validate.password/jquery.validate.password.css" />
+        @RenderSection("Css", required: false)
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        @RenderSection("Css", required: false)
         <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
@@ -58,7 +59,7 @@
         <footer class="footer">
             <div class="container">
                 <div class="col-lg-12 footer-content">                                            
-                    <p>2017 - perun.net.core (dev)</p>
+                    <p>2017 - perun.net.core 0.2 (dev)</p>
                     <p>Created by <a href="http://klaatuveratanecto.com/" target="_blank">Klaatu Verata Necto</a></p>
                 </div>
             </div>
@@ -84,7 +85,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         @RenderSection("Scripts", required: false)
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/all.min.js" asp-append-version="true"></script>
     </environment>
     <mini-profiler position="@RenderPosition.Right" max-traces="5" />
 </body>

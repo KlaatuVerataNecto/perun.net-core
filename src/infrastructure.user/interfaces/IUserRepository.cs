@@ -4,9 +4,9 @@ namespace infrastructure.user.interfaces
 {
     public interface IUserRepository
     {
-        LoginDb getByEmail(string email);
-        LoginDb getByEmailWithResetInfo(string email);
-        LoginDb getByIdWithResetInfo(int id);
+        LoginDb getByEmail(string email, string provider);
+        LoginDb getByEmailWithResetInfo(string email, string provider);
+        LoginDb getByIdWithResetInfo(int id, string provider);
         bool isUsernameAvailable(string username);
         bool isEmailAvailable(string email);
         LoginDb addLogin(LoginDb obj);

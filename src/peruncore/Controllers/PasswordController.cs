@@ -44,7 +44,7 @@ namespace peruncore.Controllers
 
             if (userReset == null)
             {
-                ModelState.AddModelError("email",UserResponseMessagesResource.password_change_expired);
+                ModelState.AddModelError("email", UserValidationMsg.password_change_expired);
                 return View("Forgot", model);
             }
             string url = CustomUrlHelperExtensions.AbsoluteAction(
@@ -86,7 +86,7 @@ namespace peruncore.Controllers
             if (userReset == null)
             {
                 _logger.LogInformation("Unable to reset user's password. User ID or Token doesn't match.", new object[] { model.userid, model.token });
-                ModelState.AddModelError("password", UserResponseMessagesResource.error_wierd_shit_going_on);
+                ModelState.AddModelError("password", UserValidationMsg.error_wierd_shit_going_on);
                 return View("Reset", new { id = model.userid, token = model.token });
             }
 
