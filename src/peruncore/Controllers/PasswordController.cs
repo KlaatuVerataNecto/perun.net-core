@@ -55,7 +55,6 @@ namespace peruncore.Controllers
             );
             
             _emailService.sendPasswordReminder(userReset.EmailTo, url, userReset.PasswordTokenExpiryDate);
-            ViewBag.Token = url;
             return View();
         }
 
