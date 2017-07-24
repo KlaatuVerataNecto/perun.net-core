@@ -2,12 +2,9 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
+      "wwwroot/js/custom.validation.js",
       "wwwroot/js/site.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    }
+    ]
   },
   {
     "outputFileName": "wwwroot/css/all.min.css",

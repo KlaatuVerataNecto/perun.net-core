@@ -22,6 +22,8 @@ using persistance.ef.common;
 using persistance.ef.repository;
 using infrastructure.email.interfaces;
 using infrastructure.email.services;
+using peruncore.Infrastructure.Middleware;
+using infrastructure.user.interfaces;
 
 namespace peruncore
 {
@@ -38,6 +40,8 @@ namespace peruncore
 
             Log.Logger = new LoggerConfiguration()
                               .ReadFrom.Configuration(builder)
+                              .Enrich.WithEnvironmentUserName()
+                              .Enrich.FromLogContext()
                               .CreateLogger();
 
             Configuration = builder;
@@ -110,6 +114,7 @@ namespace peruncore
 
             // Register Email Settings 
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
+            services.AddSingleton<IAuthSchemeSettingsService, AuthSchemeSettingsService>();
 
             builder.Populate(services);
             var container = builder.Build();
@@ -122,6 +127,7 @@ namespace peruncore
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMemoryCache cache, IApplicationLifetime appLifetime)
         {
             // Logging
+            app.UseMiddleware<RemoteIpAddressLoggingMiddleware>();
             loggerFactory.AddSerilog();
             // Ensure any buffered events are sent at shutdown
             appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);

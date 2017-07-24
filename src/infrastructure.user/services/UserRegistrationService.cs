@@ -19,8 +19,8 @@ namespace infrastructure.user.services
 
         public UserIdentity Signup(string username, string email, string password, string provider, int saltLength)
         {
-            if (!_userRepository.IsUsernameAvailable(username)) return null;
-            if (!_userRepository.IsEmailAvailable(email)) return null;
+            if (!_userRepository.isUsernameAvailable(username)) return null;
+            if (!_userRepository.isEmailAvailable(email)) return null;
 
             string salt = CryptographicService.GenerateRandomString(_saltLength);
             string hashed_password = CryptographicService.GenerateSaltedHash(password, salt);
@@ -43,7 +43,7 @@ namespace infrastructure.user.services
                 }
             };
 
-            var login = _userRepository.AddLogin(obj);
+            var login = _userRepository.addLogin(obj);
             return new UserIdentity(login.id, login.User.username, login.email, login.provider, login.User.roles, login.User.avatar);
         }
     }

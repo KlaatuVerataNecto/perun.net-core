@@ -23,14 +23,14 @@ namespace infrastructure.i18n.user {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class UserResponseMessagesResource {
+    public class UserValidationMsg {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal UserResponseMessagesResource() {
+        internal UserValidationMsg() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace infrastructure.i18n.user {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("infrastructure.i18n.user.UserResponseMessagesResource", typeof(UserResponseMessagesResource).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("infrastructure.i18n.user.UserValidationMsg", typeof(UserValidationMsg).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,15 +67,6 @@ namespace infrastructure.i18n.user {
         public static string aboutme_not_in_range {
             get {
                 return ResourceManager.GetString("aboutme_not_in_range", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Age not in the correct format.
-        /// </summary>
-        public static string age_not_in_range {
-            get {
-                return ResourceManager.GetString("age_not_in_range", resourceCulture);
             }
         }
         
@@ -161,15 +152,6 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That&apos;s done!.
-        /// </summary>
-        public static string email_change_ok {
-            get {
-                return ResourceManager.GetString("email_change_ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Your new email has been activated.
         /// </summary>
         public static string email_change_ok_desc {
@@ -224,51 +206,6 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We can&apos;t change your email as you are not logged in.
-        /// </summary>
-        public static string email_login_to_apply_change {
-            get {
-                return ResourceManager.GetString("email_login_to_apply_change", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1. Login to the system by clicking on the &quot;Login&quot; button.
-        /// </summary>
-        public static string email_login_to_apply_change_desc1 {
-            get {
-                return ResourceManager.GetString("email_login_to_apply_change_desc1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 2. Open your email inbox and got to the message we sent you..
-        /// </summary>
-        public static string email_login_to_apply_change_desc2 {
-            get {
-                return ResourceManager.GetString("email_login_to_apply_change_desc2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3. Click on the link provided within the email.
-        /// </summary>
-        public static string email_login_to_apply_change_desc3 {
-            get {
-                return ResourceManager.GetString("email_login_to_apply_change_desc3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to *If you are still unable to omplete your request please contact &lt;a href=&quot;mailto:putoamo.es@gmail.com&quot; title=&quot;Sent us an email&quot;&gt;putoamo.es@gmail.com&lt;/a&gt;.
-        /// </summary>
-        public static string email_login_to_apply_change_idiot_html {
-            get {
-                return ResourceManager.GetString("email_login_to_apply_change_idiot_html", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Email must be netween 6 y 250 characters..
         /// </summary>
         public static string email_not_in_range {
@@ -314,16 +251,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email saved successfully..
-        /// </summary>
-        public static string email_saved {
-            get {
-                return ResourceManager.GetString("email_saved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to We felt a great disturbance in the force, as if millions of lines of code suddenly cried out in terror and were suddenly silenced. We fear something terrible has happened. Looking into it..
+        ///   Looks up a localized string similar to We felt a great disturbance in the force, as if millions of lines of code suddenly cried out in terror and were suddenly silenced. We fear something terrible has happened. We are looking into it..
         /// </summary>
         public static string error_wierd_shit_going_on {
             get {
@@ -332,7 +260,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First name should be between 2 y 80 characters.
+        ///   Looks up a localized string similar to First name should be between 2 y 80 characters..
         /// </summary>
         public static string firstname_not_in_range {
             get {
@@ -350,7 +278,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last name should be between 2 y 80 characters.
+        ///   Looks up a localized string similar to Last name should be between 2 y 80 characters..
         /// </summary>
         public static string lastname_not_in_range {
             get {
@@ -368,7 +296,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nueva Contraseña tiene que tener entre 6 y 30 caracteres.
+        ///   Looks up a localized string similar to New password should be between 6 and 30 characters..
         /// </summary>
         public static string new_password_not_in_range {
             get {
@@ -377,7 +305,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La Nueva Contraseña es muy debil.
+        ///   Looks up a localized string similar to New password too weak..
         /// </summary>
         public static string new_password_too_weak {
             get {
@@ -386,88 +314,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No changes made.
-        /// </summary>
-        public static string no_changes_made {
-            get {
-                return ResourceManager.GetString("no_changes_made", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Si no deseas aceptar los permisos puedes darte de alta con nuestro sistema usando este formulario.
-        /// </summary>
-        public static string oauth_alternative_message {
-            get {
-                return ResourceManager.GetString("oauth_alternative_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Correo electrónico.
-        /// </summary>
-        public static string oauth_email {
-            get {
-                return ResourceManager.GetString("oauth_email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Lo necesitamos para identificarte y informarte..
-        /// </summary>
-        public static string oauth_facebook_email {
-            get {
-                return ResourceManager.GetString("oauth_facebook_email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sirve para compartir tu votos en forma automatica, nunca publicaremos en tu muro sin tu previo permiso..
-        /// </summary>
-        public static string oauth_facebook_wall {
-            get {
-                return ResourceManager.GetString("oauth_facebook_wall", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to El login que intentas añadir ya esta asociado con otra cuenta.
-        /// </summary>
-        public static string oauth_login_with_other_user {
-            get {
-                return ResourceManager.GetString("oauth_login_with_other_user", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No fuimos capaces de darte de alta.
-        /// </summary>
-        public static string oauth_permission_title {
-            get {
-                return ResourceManager.GetString("oauth_permission_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Intenta otra vez.
-        /// </summary>
-        public static string oauth_try_again_button {
-            get {
-                return ResourceManager.GetString("oauth_try_again_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Publicar en tu muro.
-        /// </summary>
-        public static string oauth_wall_post {
-            get {
-                return ResourceManager.GetString("oauth_wall_post", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to La solicitud del cambio de la contraseña ha caducado. Intentalo de nuevo!.
+        ///   Looks up a localized string similar to Reset password token has expired. Please request new one..
         /// </summary>
         public static string password_change_expired {
             get {
@@ -539,7 +386,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Introduce la Contraseña para guardar los cambios..
+        ///   Looks up a localized string similar to Repeat the password to save changes..
         /// </summary>
         public static string password_renter {
             get {
@@ -553,15 +400,6 @@ namespace infrastructure.i18n.user {
         public static string password_weak {
             get {
                 return ResourceManager.GetString("password_weak", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile saved successfully..
-        /// </summary>
-        public static string profile_saved {
-            get {
-                return ResourceManager.GetString("profile_saved", resourceCulture);
             }
         }
         

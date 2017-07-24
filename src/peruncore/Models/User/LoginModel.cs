@@ -1,17 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using infrastructure.i18n.user;
+using System.ComponentModel.DataAnnotations;
 
 namespace peruncore.Models.User
 {
     public class LoginModel
     {
-        // TODO: Move error messages to Resource file
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [Required(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_empty")]
+        [EmailAddress(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_invalid")]
+        [StringLength(250, MinimumLength = 0, ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_not_in_range")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string email { get; set; }
 
-        [Required(ErrorMessage = "Password is required.")]
+        [Required(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "password_empty")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string password { get; set; }
