@@ -25,7 +25,7 @@ namespace infrastructure.user.services
             string salt = CryptographicService.GenerateRandomString(_saltLength);
             string hashed_password = CryptographicService.GenerateSaltedHash(password, salt);
 
-            // TODO: Automapper
+            // TODO: Automapper, duplicated code 
             var rightNow = DateTime.Now;
             var obj = new LoginDb
             {

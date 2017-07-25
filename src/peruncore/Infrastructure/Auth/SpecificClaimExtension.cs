@@ -19,6 +19,25 @@ namespace peruncore.Infrastructure.Auth
             return (claim != null) ? claim.Value : string.Empty;
         }
 
+        public static string GetEmail(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+            return (claim != null) ? claim.Value : string.Empty;
+        }
+
+        public static string GetFirstName(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName);
+
+            return (claim != null) ? claim.Value : string.Empty;
+        }
+        public static string GetLastName(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname);
+
+            return (claim != null) ? claim.Value : string.Empty;
+        }
     }
 
     //public static string GetSpecificClaim(this ClaimsIdentity claimsIdentity, string claimType)

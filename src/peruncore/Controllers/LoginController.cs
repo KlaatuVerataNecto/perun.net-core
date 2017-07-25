@@ -6,6 +6,7 @@ using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
 using infrastructure.user.interfaces;
+using Microsoft.AspNetCore.Http.Authentication;
 
 namespace peruncore.Controllers
 {
@@ -13,7 +14,11 @@ namespace peruncore.Controllers
     {
         private IUserAuthentiactionService _userAuthentiactionService;
         private readonly AuthSchemeSettings _authSchemeSettings;
-        public LoginController(IUserAuthentiactionService userAuthentiactionService, IOptions<AuthSchemeSettings> authSchemeSettings)
+
+        public LoginController(
+            IUserAuthentiactionService userAuthentiactionService, 
+            IOptions<AuthSchemeSettings> authSchemeSettings
+            )
         {
             _userAuthentiactionService = userAuthentiactionService;
             _authSchemeSettings = authSchemeSettings.Value;
@@ -41,13 +46,19 @@ namespace peruncore.Controllers
                 return View("Index", model);
             }
 
-            HttpContext.Authentication.SignInAsync(_authSchemeSettings.Default, 
+            // TODO: Duplicated code
+            HttpContext.Authentication.SignInAsync(
+                _authSchemeSettings.Application, 
                 ClaimsPrincipalFactory.Build(
                     userIdentity.UserId, 
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar)
+                    userIdentity.Avatar),
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true
+                    }
                 );
             return RedirectToAction("Index", "Home");
         }
