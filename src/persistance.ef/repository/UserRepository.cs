@@ -67,12 +67,13 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public UserDb getByIdWithUserNameToken(int id)
+        public LoginDb getByIdWithUserNameToken(int id)
         {
-            var obj = _efContext.Users
-                                .Include(l => l.UsernameToken)
-                                .Where(x => x.id == id
-                                            && x.is_locked == false
+            var obj = _efContext.Logins
+                                .Include(u=>u.User)
+                                .Include(l =>l.User.UsernameToken)
+                                .Where(x => x.User.id == id
+                                            && x.User.is_locked == false
                                            ).SingleOrDefault();
 
             return obj;

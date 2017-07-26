@@ -98,5 +98,17 @@ namespace peruncore.Controllers
             var tokenObj = _socialLoginService.getTokenByUserId(int.Parse(userIdentity.GetUserId()));
             return View(new UsernameModel {  userid = tokenObj.UserId , token = tokenObj.Token });
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Username(UsernameModel model)
+        {
+            if (!ModelState.IsValid) return View("Index", model);
+            // TODO: Hmm don't like the parsing part of userid
+            var userIdentity = (ClaimsIdentity)User.Identity;
+            var tokenObj = _socialLoginService.getTokenByUserId(int.Parse(userIdentity.GetUserId()));
+            return View(new UsernameModel { userid = tokenObj.UserId, token = tokenObj.Token });
+        }
+
     }
- }
+}

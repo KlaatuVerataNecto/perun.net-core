@@ -85,14 +85,16 @@ namespace infrastructure.user.services
         }
         public UsernameToken getTokenByUserId(int userid)
         {
-            var user = _userRepository.getByIdWithUserNameToken(userid);
-            if(user == null || user.UsernameToken == null)
-            {
+            var login = _userRepository.getByIdWithUserNameToken(userid);
+
+            if (login == null ||
+               login.User == null ||
+               login.User.UsernameToken == null)
+            { 
                 _logger.LogError("Some setting username without valid string.", new object[] { userid });
                 return null;
             }
-
-            return new UsernameToken(user.id, user.UsernameToken.token);
+            return new UsernameToken(login.User.id, login.User.UsernameToken.token);
         }
     }    
 }

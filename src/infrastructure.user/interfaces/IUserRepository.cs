@@ -4,7 +4,7 @@ namespace infrastructure.user.interfaces
 {
     public interface IUserRepository
     {
-        UserDb getByIdWithUserNameToken(int id);
+        LoginDb getByIdWithUserNameToken(int id);
         LoginDb getByEmailAndProvider(string email, string provider);
         LoginDb getByEmailWithResetInfo(string email, string provider);
         LoginDb getByIdWithResetInfo(int id, string provider);
