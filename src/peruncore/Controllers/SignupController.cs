@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using peruncore.Infrastructure.Auth;
 using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Http;
+using infrastructure.i18n.user;
 
 namespace peruncore.Controllers
 {
@@ -48,8 +49,7 @@ namespace peruncore.Controllers
 
             if (userIdentity == null)
             {
-                // TODO: Get error message for resource file 
-                ModelState.AddModelError("email", "Incorrect email or password.");
+                ModelState.AddModelError("email", UserValidationMsg.email_password_incorrect);
                 return View("Index", model);
             }
 

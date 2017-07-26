@@ -11,12 +11,18 @@ namespace peruncore.Infrastructure.Auth
 
             return (claim != null) ? claim.Value : string.Empty;
         }
-
-        public static string GetUserId(this ClaimsIdentity claimsIdentity)
+        public static string GetSocialLoginUserId(this ClaimsIdentity claimsIdentity)
         {
             var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
             return (claim != null) ? claim.Value : string.Empty;
+        }
+
+        public static int GetUserId(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            return (claim != null) ? int.Parse(claim.Value) : 0;
         }
 
         public static string GetEmail(this ClaimsIdentity claimsIdentity)

@@ -8,23 +8,27 @@ using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 using peruncore.Models.User;
+using infrastructure.i18n.user;
 
 namespace peruncore.Controllers
 {
     public class OauthController : Controller
     {
         private readonly ISocialLoginService _socialLoginService;
+        private readonly IUserAccountService _userAccountService;
         private readonly AuthSchemeSettings _authSchemeSettings;
         private readonly IAuthProviderValidationService _authProviderValidationService;
 
         public OauthController(
               ISocialLoginService socialLoginService,
+              IUserAccountService userAccountService,
               IOptions<AuthSchemeSettings> authSchemeSettings,
               IAuthProviderValidationService authProviderValidationService
             )
         {
             _authSchemeSettings = authSchemeSettings.Value;
             _socialLoginService = socialLoginService;
+            _userAccountService = userAccountService;
             _authProviderValidationService = authProviderValidationService;
         }
         public ActionResult facebook()
@@ -58,7 +62,7 @@ namespace peruncore.Controllers
             var identity = (ClaimsIdentity)authInfo.Principal.Identity;
 
             var userIdentity = _socialLoginService.loginOrSignup(
-                identity.GetUserId(),
+                identity.GetSocialLoginUserId(),
                 identity.GetEmail(),
                 identity.GetFirstName(),
                 identity.GetLastName(),
@@ -93,9 +97,8 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Username()
         {
-            // TODO: Hmm don't like the parsing part of userid
-            var userIdentity = (ClaimsIdentity)User.Identity;
-            var tokenObj = _socialLoginService.getTokenByUserId(int.Parse(userIdentity.GetUserId()));
+            var identity = (ClaimsIdentity)User.Identity;
+            var tokenObj = _socialLoginService.getTokenByUserId(identity.GetUserId());
             return View(new UsernameModel {  userid = tokenObj.UserId , token = tokenObj.Token });
         }
 
@@ -103,11 +106,40 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Username(UsernameModel model)
         {
-            if (!ModelState.IsValid) return View("Index", model);
-            // TODO: Hmm don't like the parsing part of userid
-            var userIdentity = (ClaimsIdentity)User.Identity;
-            var tokenObj = _socialLoginService.getTokenByUserId(int.Parse(userIdentity.GetUserId()));
-            return View(new UsernameModel { userid = tokenObj.UserId, token = tokenObj.Token });
+            if (!ModelState.IsValid) return View("Username", model);
+
+            var identity = (ClaimsIdentity)User.Identity;
+
+            if (identity.GetUserId() != model.userid)
+            {
+                // TODO: redirect to error session expired
+            }
+
+            var userIdentity = _userAccountService.ChangeUsername(model.userid, model.username, model.token);
+
+            if (userIdentity == null)
+            {
+                ModelState.AddModelError("username", UserValidationMsg.username_not_available);
+                return View("Username", model);
+            }
+
+            // TODO: Duplicated code
+            HttpContext.Authentication.SignInAsync(
+                _authSchemeSettings.Application,
+                 ClaimsPrincipalFactory.Build(
+                    userIdentity.UserId,
+                    userIdentity.Username,
+                    userIdentity.Email,
+                    userIdentity.Roles,
+                    userIdentity.Avatar),
+                new AuthenticationProperties
+                {
+                    IsPersistent = true
+
+                }
+            );
+
+            return RedirectToAction("Index","Home");
         }
 
     }
