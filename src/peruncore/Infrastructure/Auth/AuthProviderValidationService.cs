@@ -26,6 +26,9 @@ namespace peruncore.Infrastructure.Auth
             if (providerParameter == _authSchemeSettings.Facebook)
                 return _authSchemeSettings.Facebook;
 
+            if (providerParameter == _authSchemeSettings.Twitter)
+                return _authSchemeSettings.Twitter;
+
             throw new System.ArgumentException("Unknown provider.");
         }
     }

@@ -180,8 +180,27 @@ namespace peruncore
             googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
             app.UseGoogleAuthentication(googleOptions);
 
-            // status code page
+            // Facebook Login
+            var facebookOptions = new FacebookOptions
+            {
+                ClientId = Configuration.GetSection("SocialLoginSettings:FacebookClientId").Value,
+                ClientSecret = Configuration.GetSection("SocialLoginSettings:FacebookClientSecret").Value,
+                AutomaticChallenge = true,
 
+            };
+            app.UseFacebookAuthentication(facebookOptions);
+
+            // Twitter Login
+            var twitterOptions = new TwitterOptions
+            {
+                ConsumerKey = Configuration.GetSection("SocialLoginSettings:TwitterConsumerKey").Value,
+                ConsumerSecret = Configuration.GetSection("SocialLoginSettings:TwitterConsumerSecret").Value,
+                AutomaticChallenge = true,
+
+            };
+            app.UseTwitterAuthentication(twitterOptions);
+
+            // status code page
             app.UseStatusCodePages(async context =>
             {
                 context.HttpContext.Response.ContentType = "text/plain";

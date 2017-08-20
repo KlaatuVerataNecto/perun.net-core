@@ -5,6 +5,7 @@
         public string Application { get; set; }
         public string Google { get; set; }
         public string Facebook { get; set; }
+        public string Twitter { get; set; }
         public int ExpiryDays { get; set; }
     }
 }

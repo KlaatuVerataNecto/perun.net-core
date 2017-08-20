@@ -37,6 +37,7 @@ namespace infrastructure.user.services
             login.User.UsernameToken.token = null;
             _userRepository.updateLogin(login);
 
+            // TODO: Use Automapper
             return new UserIdentity(
                 login.id,
                 login.User.username,

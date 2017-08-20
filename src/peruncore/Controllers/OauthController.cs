@@ -34,7 +34,7 @@ namespace peruncore.Controllers
         public ActionResult facebook()
         {
             return new ChallengeResult(
-                _authSchemeSettings.Google,
+                _authSchemeSettings.Facebook,
                 new AuthenticationProperties
                 {
                     RedirectUri = "/oauth/callback/facebook"
@@ -48,6 +48,17 @@ namespace peruncore.Controllers
                 _authSchemeSettings.Google, 
                 new AuthenticationProperties {
                     RedirectUri = "/oauth/callback/google"
+                }
+            );
+        }
+
+        public ActionResult twitter()
+        {
+            return new ChallengeResult(
+                _authSchemeSettings.Twitter,
+                new AuthenticationProperties
+                {
+                    RedirectUri = "/oauth/callback/twitter"
                 }
             );
         }
