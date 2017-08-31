@@ -26,11 +26,13 @@ namespace infrastructure.user.services
             var loggedUser = _userRepository.getByEmailAndProvider(email, provider);
             var rightNow = DateTime.Now;
 
-            // login 
+            // authenticate user
             if (loggedUser != null)
             {
                 loggedUser.User.last_seen = rightNow;
                 _userRepository.updateLogin(loggedUser);
+
+                // TODO: Duplicated code 
                 return new UserIdentity(
                     loggedUser.id,
                     loggedUser.User.username,
@@ -40,10 +42,32 @@ namespace infrastructure.user.services
                     loggedUser.User.avatar);
             }
 
-            // sorry email taken
-            if (!_userRepository.isEmailAvailable(email)) return null;
+            // check if user has Local account, if so add it., 
+            loggedUser = _userRepository.getByEmailAndProvider(email, _authSchemeSettingsService.GetDefaultProvider());
 
-            // register 
+            if (loggedUser != null)
+            {               
+                var login = new LoginDb()
+                {
+                    email = loggedUser.email,
+                    provider = provider,
+                    date_created = rightNow                     
+                };
+
+                loggedUser.User.Logins.Add(login);
+                _userRepository.updateLogin(loggedUser);
+
+                // TODO: Duplicated code 
+                return new UserIdentity(
+                    login.id,
+                    login.User.username,
+                    login.email,
+                    login.provider,
+                    login.User.roles,
+                    login.User.avatar);
+            }
+            
+            // user doesn't exist, register 
             var obj = new LoginDb
             {
                 email = email,

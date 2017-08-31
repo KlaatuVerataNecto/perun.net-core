@@ -18,7 +18,7 @@ CREATE TABLE users_login(
 	passwd VARCHAR(250) NULL,
 	salt VARCHAR(16) NULL,
 	external_id INT NULL,
-	provider VARCHAR(10) NOT NULL,
+	provider VARCHAR(15) NOT NULL,
 	access_token TEXT NULL,
 	date_created DATETIME NULL,	
 	PRIMARY KEY (id)
