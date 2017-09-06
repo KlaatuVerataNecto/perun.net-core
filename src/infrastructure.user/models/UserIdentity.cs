@@ -9,9 +9,10 @@ namespace infrastructure.user.models
         private readonly string _email;
         private readonly string _roles;
         private readonly string _avatar;
-        private readonly string _loginprovider;
+        private readonly string _loginProvider;
+        private readonly bool _isRequiresNewUsername;
 
-        public UserIdentity(int userid, string username, string email, string loginProvider, string roles, string avatar)
+        public UserIdentity(int userid, string username, string email, string loginProvider, string roles, string avatar, bool isRequiresNewUsername = false)
         {
             CustomValidators.StringNotNullorEmpty(username, "username is required.");
             CustomValidators.IntNotNegative(userid, "userid is invalid.");
@@ -22,38 +23,18 @@ namespace infrastructure.user.models
             _userid = userid;
             _email = email;
             _roles = roles;
-            _loginprovider = loginProvider;
+            _loginProvider = loginProvider;
             _avatar = avatar;
+            _isRequiresNewUsername = isRequiresNewUsername;
         }
 
-        public string Avatar
-        {
-            get { return _avatar; }
-        }
+        public string Avatar => _avatar;
+        public string LoginProvider => _loginProvider;   
+        public string Email => _email;
+        public string Username => _username;
+        public int UserId => _userid;
+        public string Roles => _roles;
+        public bool IsRequiresNewUsername => _isRequiresNewUsername;
 
-        public string LoginProvider
-        {
-            get { return _loginprovider; }
-        }
-
-        public string Email
-        {
-            get { return _email; }
-        }
-
-        public string Username
-        {
-            get { return _username; }
-        }
-
-        public int UserId
-        {
-            get { return _userid; }
-        }
-
-        public string Roles
-        {
-            get { return _roles; }
-        }
     }
 }

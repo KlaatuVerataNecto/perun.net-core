@@ -24,6 +24,8 @@ using infrastructure.email.interfaces;
 using infrastructure.email.services;
 using peruncore.Infrastructure.Middleware;
 using infrastructure.user.interfaces;
+using Microsoft.AspNetCore.Mvc;
+using peruncore.Infrastructure.Auth;
 
 namespace peruncore
 {
@@ -54,28 +56,32 @@ namespace peruncore
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add mini profiler.
-            services.AddMiniProfiler()
-                    .AddEntityFramework();
-
+            services.AddMiniProfiler().AddEntityFramework();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddMemoryCache();
             services.AddSession();
-            services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // Add framework services.
-            services.AddMvc();
-            //services.AddMvc(options =>
-            //{
-            //    options.SslPort = 44361;
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
 
             // Add Configuration 
             services.AddOptions();
+            //services.Configure<CookieSettings>(Configuration.GetSection("CookieSettings"));
             services.Configure<AuthSchemeSettings>(Configuration.GetSection("AuthSchemeSettings"));
             services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
+            //services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+            // cookie
+            services.AddAuthentication(options => 
+                options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value
+            );
+
+            // Add framework services.
+            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.SslPort = 44361;
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
 
             // Data protection 
             services.AddDataProtection();
@@ -115,6 +121,9 @@ namespace peruncore
             // Register Email Settings 
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
             services.AddSingleton<IAuthSchemeSettingsService, AuthSchemeSettingsService>();
+            
+            // Register Validators
+            services.AddSingleton<IAuthProviderValidationService, AuthProviderValidationService>();
 
             builder.Populate(services);
             var container = builder.Build();
@@ -142,23 +151,22 @@ namespace peruncore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            // read config 
-            var authSchemeSettings = Configuration.GetSection("AuthSchemeSettings:Default");
-
+         
             // DI
             appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
 
-            // Own implementation
+            // Local cookie
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Default").Value,
+                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value,
                 LoginPath = new PathString("/Account/Unauthorized/"),
                 AccessDeniedPath = new PathString("/Account/Forbidden/"),
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = true
+                AutomaticChallenge = true,
+                ExpireTimeSpan = TimeSpan.FromDays(
+                    int.Parse(Configuration.GetSection("AuthSchemeSettings:ExpiryDays").Value)
+                    )
             });
-
 
             // Google Login
             var googleOptions = new GoogleOptions
@@ -166,13 +174,33 @@ namespace peruncore
                 ClientId = Configuration.GetSection("SocialLoginSettings:GoogleClientId").Value ,
                 ClientSecret = Configuration.GetSection("SocialLoginSettings:GoogleClientSecret").Value,
                 AutomaticChallenge = true,
+                
             };
             googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
             googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
             app.UseGoogleAuthentication(googleOptions);
 
-            // status code page
+            // Facebook Login
+            var facebookOptions = new FacebookOptions
+            {
+                ClientId = Configuration.GetSection("SocialLoginSettings:FacebookClientId").Value,
+                ClientSecret = Configuration.GetSection("SocialLoginSettings:FacebookClientSecret").Value,
+                AutomaticChallenge = true,
 
+            };
+            app.UseFacebookAuthentication(facebookOptions);
+
+            // Twitter Login
+            var twitterOptions = new TwitterOptions
+            {
+                ConsumerKey = Configuration.GetSection("SocialLoginSettings:TwitterConsumerKey").Value,
+                ConsumerSecret = Configuration.GetSection("SocialLoginSettings:TwitterConsumerSecret").Value,
+                AutomaticChallenge = true,
+
+            };
+            app.UseTwitterAuthentication(twitterOptions);
+
+            // status code page
             app.UseStatusCodePages(async context =>
             {
                 context.HttpContext.Response.ContentType = "text/plain";

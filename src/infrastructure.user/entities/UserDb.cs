@@ -13,5 +13,7 @@ namespace infrastructure.user.entities
         public string avatar { get; set; }
         public bool is_locked { get; set; }
         public ICollection<LoginDb> Logins { get; set; }
+        public UserUsernameDb UsernameToken { get; set; }
+        
     }
 }

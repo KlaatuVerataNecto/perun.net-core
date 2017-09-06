@@ -13,7 +13,7 @@ namespace peruncore.Config
         }
         public string GetDefaultProvider()
         {
-            return _settings.Default;
+            return _settings.Application;
         }
 
     }

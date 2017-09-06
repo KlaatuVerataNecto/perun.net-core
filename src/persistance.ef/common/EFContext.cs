@@ -49,6 +49,12 @@ namespace persistance.ef.common
                 .WithMany(d => d.UserPasswordResets)
                 .HasForeignKey(e => e.user_login_id);
 
+            modelBuilder.Entity<UserUsernameDb>()
+                .ToTable("users_username")
+                .HasOne(d => d.User)
+                .WithOne(d => d.UsernameToken)
+                .HasForeignKey<UserUsernameDb>(b => b.user_id);
+
             modelBuilder.Entity<UserEmailDb>()
                 .ToTable("users_email")
                 .HasOne(d => d.Login)

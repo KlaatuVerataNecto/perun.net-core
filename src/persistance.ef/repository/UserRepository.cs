@@ -25,7 +25,7 @@ namespace persistance.ef.repository
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
         }
 
-        public LoginDb getByEmail(string email, string provider)
+        public LoginDb getByEmailAndProvider(string email, string provider)
         {
             var obj = _efContext.Logins
                                 .Include(l => l.User)
@@ -66,6 +66,19 @@ namespace persistance.ef.repository
 
             return obj;
         }
+
+        public LoginDb getByIdWithUserNameToken(int id)
+        {
+            var obj = _efContext.Logins
+                                .Include(u=>u.User)
+                                .Include(l =>l.User.UsernameToken)
+                                .Where(x => x.User.id == id
+                                            && x.User.is_locked == false
+                                           ).SingleOrDefault();
+
+            return obj;
+        }
+
 
         public LoginDb addLogin(LoginDb obj)
         {

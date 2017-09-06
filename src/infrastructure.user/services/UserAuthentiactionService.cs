@@ -17,7 +17,7 @@ namespace infrastructure.user.services
 
         public UserIdentity login(string email, string password)
         {
-            var login = _userRepository.getByEmail(email, _authSchemeSettingsService.GetDefaultProvider());
+            var login = _userRepository.getByEmailAndProvider(email, _authSchemeSettingsService.GetDefaultProvider());
 
             if (login == null) return null;
             string hashed_password = CryptographicService.GenerateSaltedHash(password, login.salt);
