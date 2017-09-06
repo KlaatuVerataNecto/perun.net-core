@@ -44,7 +44,13 @@ namespace infrastructure.user.services
             };
 
             var login = _userRepository.addLogin(obj);
-            return new UserIdentity(login.id, login.User.username, login.email, login.provider, login.User.roles, login.User.avatar);
+            return new UserIdentity(
+                login.User.id,
+                login.User.username, 
+                login.email, 
+                login.provider, 
+                login.User.roles, 
+                login.User.avatar);
         }
     }
 }

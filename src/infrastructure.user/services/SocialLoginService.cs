@@ -34,7 +34,7 @@ namespace infrastructure.user.services
 
                 // TODO: Duplicated code 
                 return new UserIdentity(
-                    loggedUser.id,
+                    loggedUser.User.id,
                     loggedUser.User.username,
                     loggedUser.email,
                     loggedUser.provider,
@@ -59,7 +59,7 @@ namespace infrastructure.user.services
 
                 // TODO: Duplicated code 
                 return new UserIdentity(
-                    login.id,
+                    login.User.id,
                     login.User.username,
                     login.email,
                     login.provider,
@@ -98,7 +98,7 @@ namespace infrastructure.user.services
             _userRepository.updateLogin(obj);
 
             return new UserIdentity(
-                obj.id,
+                obj.User.id,
                 obj.User.username,
                 obj.email,
                 obj.provider,

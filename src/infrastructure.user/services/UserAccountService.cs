@@ -39,7 +39,7 @@ namespace infrastructure.user.services
 
             // TODO: Use Automapper
             return new UserIdentity(
-                login.id,
+                login.User.id,
                 login.User.username,
                 login.email,
                 login.provider,
