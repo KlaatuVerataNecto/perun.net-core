@@ -3,6 +3,8 @@ using persistance.ef.common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using infrastructure.user.entities;
+using System;
+using System.Collections.Generic;
 
 namespace persistance.ef.repository
 {
@@ -79,6 +81,14 @@ namespace persistance.ef.repository
             return obj;
         }
 
+        public List<LoginDb> getLoginsByUserId(int id)
+        {
+            return _efContext.Logins
+                               .Include(u => u.User)
+                               .Where(x => x.User.id == id
+                                           && x.User.is_locked == false
+                                          ).ToList();
+        }
 
         public LoginDb addLogin(LoginDb obj)
         {
@@ -93,5 +103,7 @@ namespace persistance.ef.repository
             _efContext.Logins.Update(obj);
             _efContext.SaveChanges();
         }
+
+
     }
 }

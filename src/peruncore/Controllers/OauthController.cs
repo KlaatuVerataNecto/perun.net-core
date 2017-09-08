@@ -67,17 +67,18 @@ namespace peruncore.Controllers
         public ActionResult callback(string provider)
         {
             var authProvider = _authProviderValidationService.GetProviderName(provider);
-
             var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
 
-            var identity = (ClaimsIdentity)authInfo.Principal.Identity;
+            var currentIdentity = (ClaimsIdentity)User.Identity;
+            var authIdentity = (ClaimsIdentity)authInfo.Principal.Identity;
 
             var userIdentity = _socialLoginService.loginOrSignup(
-                identity.GetSocialLoginUserId(),
-                identity.GetEmail(),
-                identity.GetFirstName(),
-                identity.GetLastName(),
-                authProvider
+                authIdentity.GetSocialLoginUserId(),
+                authIdentity.GetEmail(),
+                authIdentity.GetFirstName(),
+                authIdentity.GetLastName(),
+                authProvider,
+                (currentIdentity!= null)?currentIdentity.GetUserId():null
                 );
 
             // TODO: Duplicated code
@@ -126,7 +127,7 @@ namespace peruncore.Controllers
                 // TODO: redirect to error session expired
             }
 
-            var userIdentity = _userAccountService.ChangeUsername(model.userid, model.username, model.token);
+            var userIdentity = _userAccountService.changeUsername(model.userid, model.username, model.token);
 
             if (userIdentity == null)
             {

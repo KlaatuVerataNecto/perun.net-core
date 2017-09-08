@@ -1,0 +1,46 @@
+@model IEnumerable<infrastructure.user.models.UserLogin>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Settings</h2>
+<div class="row">
+    <div class="col-xs-2">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs tabs-left">
+            <li><a asp-area="" asp-controller="Settings" asp-action="Index">Profile</a></li>
+            <li class="active"><a asp-area="" asp-controller="Settings" asp-action="Logins">My Logins</a></li>
+        </ul>
+    </div>
+    <div class="col-xs-10">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="logins">
+                <h4>My Logins</h4>
+                <hr />
+                @foreach (var login in Model)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">@login.Email</div>
+                        <div class="panel-body">
+                        @if (login.IsDefault)
+                        {
+                         <a asp-area="" asp-controller="Settings" asp-action="ChangeEmail">Change email</a> 
+                         <span>|</span>
+                         <a asp-area="" asp-controller="Settings" asp-action="ChangePassword">Change password</a>
+                        }
+                        else
+                        {
+                            <p>@login.Provider</p>
+                        }
+                        </div>
+                   </div>
+                }
+                <h4>Add other login</h4>
+                <hr />
+                @Html.Partial("_SocialLoginPartial")
+            </div>
+        </div>
+    </div>
+</div>

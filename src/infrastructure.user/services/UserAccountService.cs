@@ -5,21 +5,24 @@ using infrastructure.user.models;
 using infrastucture.libs.cryptography;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace infrastructure.user.services
 {
     public class UserAccountService : IUserAccountService
     {       
         private readonly IUserRepository _userRepository;
+        private readonly IAuthSchemeSettingsService _authSchemeSettingsService;
         private readonly ILogger _logger;
 
-        public UserAccountService(IUserRepository userRepository, ILogger<UserAccountService> logger)
+        public UserAccountService(IUserRepository userRepository, IAuthSchemeSettingsService authSchemeSettingsService, ILogger<UserAccountService> logger)
         {
             _userRepository = userRepository;
+            _authSchemeSettingsService = authSchemeSettingsService;
             _logger = logger;
         }
 
-        public UserIdentity ChangeUsername(int userid , string username, string token)
+        public UserIdentity changeUsername(int userid , string username, string token)
         {
             if (!_userRepository.isUsernameAvailable(username)) return null;
             var login = _userRepository.getByIdWithUserNameToken(userid);
@@ -45,6 +48,19 @@ namespace infrastructure.user.services
                 login.provider,
                 login.User.roles,
                 login.User.avatar);
+        }
+
+        public List<UserLogin> getLoginsByUserId(int userid)
+        {
+            var list = _userRepository.getLoginsByUserId(userid);
+            var myLogins = new List<UserLogin>();
+
+            foreach (var l in list)
+            {
+                myLogins.Add(new UserLogin(l.User.id, l.email, l.provider, _authSchemeSettingsService.GetDefaultProvider()));
+            }
+
+            return myLogins;
         }
     }
 }
