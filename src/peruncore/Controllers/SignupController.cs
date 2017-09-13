@@ -58,10 +58,12 @@ namespace peruncore.Controllers
                 _authSchemeSettings.Application,
                 ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
+                    userIdentity.LoginId,
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar)
+                    userIdentity.Avatar,
+                    userIdentity.LoginProvider)
                 );
 
             return RedirectToAction("Index", "Home");

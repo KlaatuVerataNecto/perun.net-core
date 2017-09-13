@@ -17,8 +17,7 @@ namespace peruncore.Controllers
         public IActionResult Logout()
         {
             HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Application);
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Google);
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Application);
+            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
             return Redirect("/");
         }
 

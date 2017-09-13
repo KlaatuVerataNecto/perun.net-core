@@ -17,19 +17,19 @@ namespace peruncore.Controllers
         private readonly ISocialLoginService _socialLoginService;
         private readonly IUserAccountService _userAccountService;
         private readonly AuthSchemeSettings _authSchemeSettings;
-        private readonly IAuthProviderValidationService _authProviderValidationService;
+        private readonly IAuthSchemeNameService _authSchemeNameService;
 
         public OauthController(
               ISocialLoginService socialLoginService,
               IUserAccountService userAccountService,
               IOptions<AuthSchemeSettings> authSchemeSettings,
-              IAuthProviderValidationService authProviderValidationService
+              IAuthSchemeNameService authSchemeNameService
             )
         {
             _authSchemeSettings = authSchemeSettings.Value;
             _socialLoginService = socialLoginService;
             _userAccountService = userAccountService;
-            _authProviderValidationService = authProviderValidationService;
+            _authSchemeNameService = authSchemeNameService;
         }
         public ActionResult facebook()
         {
@@ -66,35 +66,46 @@ namespace peruncore.Controllers
         [Route("oauth/callback/{provider}")]
         public ActionResult callback(string provider)
         {
-            var authProvider = _authProviderValidationService.GetProviderName(provider);
-            var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
-
+            // get current identity
             var currentIdentity = (ClaimsIdentity)User.Identity;
+            int currentLoginId = (currentIdentity != null) ? currentIdentity.GetLoginId() : 0;
+
+            
+            // get newly logged identity
+            var authProvider = _authSchemeNameService.getProviderName(provider);
+
+            var claimsPrincipal = HttpContext.Authentication.AuthenticateAsync(_authSchemeSettings.External);
+
+            //HttpContext.Authentication.SignInAsync("MainCookie", claimsPrincipal);
+            //await HttpContext.Authentication.SignOutAsync("ExternalCookie");
+
+            var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
             var authIdentity = (ClaimsIdentity)authInfo.Principal.Identity;
 
+           
             var userIdentity = _socialLoginService.loginOrSignup(
                 authIdentity.GetSocialLoginUserId(),
                 authIdentity.GetEmail(),
                 authIdentity.GetFirstName(),
                 authIdentity.GetLastName(),
                 authProvider,
-                (currentIdentity!= null)?currentIdentity.GetUserId():null
+                currentLoginId
                 );
+
+            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
 
             // TODO: Duplicated code
             HttpContext.Authentication.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
+                    userIdentity.LoginId,
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar),
-                new AuthenticationProperties
-                {
-                    IsPersistent = true
-
-                }
+                    userIdentity.Avatar,
+                    userIdentity.LoginProvider),
+                new AuthenticationProperties { IsPersistent = true }
             );
 
             if (userIdentity.IsRequiresNewUsername)
@@ -140,10 +151,13 @@ namespace peruncore.Controllers
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
+                    userIdentity.LoginId,
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar),
+                    userIdentity.Avatar,
+                    userIdentity.LoginProvider
+                    ),
                 new AuthenticationProperties
                 {
                     IsPersistent = true

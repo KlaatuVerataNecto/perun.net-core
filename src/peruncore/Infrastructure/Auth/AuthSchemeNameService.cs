@@ -1,22 +1,20 @@
-﻿using infrastucture.libs.strings;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+
+using infrastructure.user.interfaces;
+using infrastucture.libs.strings;
 using peruncore.Config;
 
 namespace peruncore.Infrastructure.Auth
 {
-    public interface IAuthProviderValidationService
-    {
-        string GetProviderName(string providerParameter);
-    }
-    public class AuthProviderValidationService : IAuthProviderValidationService
+    public class AuthSchemeNameService : IAuthSchemeNameService
     {
         private readonly AuthSchemeSettings _authSchemeSettings;
-        public AuthProviderValidationService(IOptions<AuthSchemeSettings> authSchemeSettings)
+        public AuthSchemeNameService(IOptions<AuthSchemeSettings> authSchemeSettings)
         {
             _authSchemeSettings = authSchemeSettings.Value;
         }
 
-        public string GetProviderName(string providerParameter)
+        public string getProviderName(string providerParameter)
         {
             providerParameter = providerParameter.FirstLetterToUpperCase();
 
@@ -30,6 +28,10 @@ namespace peruncore.Infrastructure.Auth
                 return _authSchemeSettings.Twitter;
 
             throw new System.ArgumentException("Unknown provider.");
+        }
+        public string getDefaultProvider()
+        {
+            return _authSchemeSettings.Application;
         }
     }
 }

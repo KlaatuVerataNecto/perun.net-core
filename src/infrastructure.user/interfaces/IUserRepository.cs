@@ -10,6 +10,7 @@ namespace infrastructure.user.interfaces
         LoginDb getByEmailWithResetInfo(string email, string provider);
         LoginDb getByIdWithResetInfo(int id, string provider);
         List<LoginDb> getLoginsByUserId(int id);
+        LoginDb getById(int id);
         bool isUsernameAvailable(string username);
         bool isEmailAvailable(string email);
         LoginDb addLogin(LoginDb obj);

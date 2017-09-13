@@ -46,6 +46,7 @@ namespace infrastructure.user.services
             var login = _userRepository.addLogin(obj);
             return new UserIdentity(
                 login.User.id,
+                login.id,
                 login.User.username, 
                 login.email, 
                 login.provider, 

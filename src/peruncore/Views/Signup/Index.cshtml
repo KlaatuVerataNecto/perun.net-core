@@ -65,8 +65,7 @@
             </div>
             <hr />
             <p>or use on the social logins:</p>
-            <p><a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a></p>
-            <p><a asp-area="" asp-controller="Oauth" asp-action="Facebook">Facebook</a></p>
+            @Html.Partial("_SocialLoginPartial")
         </div>
     </form>
 </div>

@@ -19,11 +19,13 @@ namespace persistance.ef.repository
 
         public bool isUsernameAvailable(string username)
         {
+            if (string.IsNullOrEmpty(username)) return false;
             return !_efContext.Users.Any(x => x.username.ToLower() == username.ToLower());
         }
 
         public bool isEmailAvailable(string email)
-        {
+      {
+            if (string.IsNullOrEmpty(email)) return false;
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
         }
 
@@ -104,6 +106,13 @@ namespace persistance.ef.repository
             _efContext.SaveChanges();
         }
 
-
+        public LoginDb getById(int id)
+        {
+            return _efContext.Logins
+                               .Include(u => u.User)
+                               .Where(x => x.id == id
+                                           && x.User.is_locked == false
+                                          ).SingleOrDefault();
+        }
     }
 }

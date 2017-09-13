@@ -36,9 +36,7 @@
         <a asp-action="Forgot" asp-controller="Password">I forgot my password</a>
         <hr />
         <p>or use on the social logins:</p>
-        <p><a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a></p>
-        <p><a asp-area="" asp-controller="Oauth" asp-action="Facebook">Facebook</a></p>
-        <p><a asp-area="" asp-controller="Oauth" asp-action="Twitter">Twitter</a></p>
+        @Html.Partial("_SocialLoginPartial")
     </form>
 </div>
 

@@ -20,7 +20,14 @@ namespace peruncore.Infrastructure.Auth
 
         public static int GetUserId(this ClaimsIdentity claimsIdentity)
         {
-            var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            var claim = claimsIdentity.FindFirst("userid");
+
+            return (claim != null) ? int.Parse(claim.Value) : 0;
+        }
+
+        public static int GetLoginId(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.FindFirst("loginid");
 
             return (claim != null) ? int.Parse(claim.Value) : 0;
         }
@@ -43,6 +50,12 @@ namespace peruncore.Infrastructure.Auth
             var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname);
 
             return (claim != null) ? claim.Value : string.Empty;
+        }
+
+        public static string GetProvider(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.FindFirst("provider");
+            return (claim != null) ? claim.Value : null;
         }
     }
 
