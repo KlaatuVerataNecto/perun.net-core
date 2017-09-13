@@ -276,4 +276,7 @@
   <data name="password_nospaces" xml:space="preserve">
     <value>Your password can't contain spaces.</value>
   </data>
+  <data name="email_not_modified" xml:space="preserve">
+    <value>Email wasn't modified.</value>
+  </data>
 </root>

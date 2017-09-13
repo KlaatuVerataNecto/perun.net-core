@@ -215,6 +215,15 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email wasn&apos;t modified..
+        /// </summary>
+        public static string email_not_modified {
+            get {
+                return ResourceManager.GetString("email_not_modified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email is not valid..
         /// </summary>
         public static string email_not_valid {
