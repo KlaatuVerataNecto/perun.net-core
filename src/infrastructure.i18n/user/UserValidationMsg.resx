@@ -279,4 +279,10 @@
   <data name="email_not_modified" xml:space="preserve">
     <value>Email wasn't modified.</value>
   </data>
+  <data name="email_change_ok" xml:space="preserve">
+    <value>Your email has been changed successfully</value>
+  </data>
+  <data name="password_change_ok" xml:space="preserve">
+    <value>Your password has been changed correctly.</value>
+  </data>
 </root>

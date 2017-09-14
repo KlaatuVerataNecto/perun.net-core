@@ -20,7 +20,7 @@ namespace peruncore.Infrastructure.Auth
 
             if (!String.IsNullOrEmpty(avatar))
             {
-                claims.Add(new Claim("Avatar", avatar));
+                claims.Add(new Claim("avatar", avatar));
             }
 
             if (!String.IsNullOrEmpty(rolenames))

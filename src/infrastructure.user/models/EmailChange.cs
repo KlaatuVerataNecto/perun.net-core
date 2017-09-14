@@ -27,7 +27,7 @@ namespace infrastructure.user.models
         }
 
         public int UserId => _userId;
-        public string EmailTo => _currentEmail;
+        public string EmailTo => _newEmail;
         public DateTime EmailTokenExpiryDate => _emailTokenExpiryDate;
         public string EmailToken => _emailToken;
     }

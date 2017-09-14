@@ -6,7 +6,7 @@ namespace peruncore.Models.User
 {
     public class EditEmailModel
     {
-        private string _newemail;
+        private string _email;
 
         [Required(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_empty")]
         [EmailAddress(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_invalid")]
@@ -17,14 +17,14 @@ namespace peruncore.Models.User
         {
             get
             {
-                if (!string.IsNullOrEmpty(_newemail))
-                    return _newemail.ToLower();
+                if (!string.IsNullOrEmpty(_email))
+                    return _email.ToLower();
                 else
-                    return _newemail;
+                    return _email;
             }
             set
             {
-                _newemail = value;
+                _email = value;
             }
         }
 
@@ -33,5 +33,7 @@ namespace peruncore.Models.User
         [DataType(DataType.Password)]
         [Display(Name = "Your Password")]
         public string confirm_password { get; set; }
+
+        public string newemail { get; set; }
     }
 }

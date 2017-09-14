@@ -152,6 +152,15 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your email has been changed successfully.
+        /// </summary>
+        public static string email_change_ok {
+            get {
+                return ResourceManager.GetString("email_change_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your new email has been activated.
         /// </summary>
         public static string email_change_ok_desc {
@@ -328,6 +337,15 @@ namespace infrastructure.i18n.user {
         public static string password_change_expired {
             get {
                 return ResourceManager.GetString("password_change_expired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password has been changed correctly..
+        /// </summary>
+        public static string password_change_ok {
+            get {
+                return ResourceManager.GetString("password_change_ok", resourceCulture);
             }
         }
         

@@ -10,6 +10,7 @@ using infrastructure.i18n.user;
 using peruncore.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc.Routing;
 using infrastructure.email.interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace peruncore.Controllers
 {
@@ -19,18 +20,21 @@ namespace peruncore.Controllers
         private IEmailService _emailService;
         private readonly AuthSchemeSettings _authSchemeSettings;
         private readonly AuthSettings _authSettings;
+        private readonly ILogger _logger;
 
         public SettingsController(
             IUserAccountService userAccountService,
             IEmailService emailService,
             IOptions<AuthSchemeSettings> authSchemeSettings, 
-            IOptions<AuthSettings> authSettings
+            IOptions<AuthSettings> authSettings,
+            ILogger<AvatarController> logger
             )
         {
             _authSettings = authSettings.Value;
             _userAccountService = userAccountService;
             _authSchemeSettings = authSchemeSettings.Value;
             _emailService = emailService;
+            _logger = logger;
         }
 
         [Authorize]
@@ -52,12 +56,11 @@ namespace peruncore.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             if (identity.GetProvider() != _authSchemeSettings.Application)
             {
-                // TODO: log it
-                // User not logged with Application account and tries to change email .... weird.
+                _logger.LogInformation("User not logged with Application account and tries to change email .", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
                 return RedirectToAction("index", "error");
             }
-
-            return View(new EditEmailModel { email = identity.GetEmail()});        
+            var newEmail = _userAccountService.getPendingNewEmailActivation(identity.GetUserId());
+            return View(new EditEmailModel { email = identity.GetEmail(), newemail = newEmail});        
         }
 
         [Authorize]
@@ -95,22 +98,47 @@ namespace peruncore.Controllers
                 new { id = emailChange.UserId, token = emailChange.EmailToken }
             );
 
-            // TODO: use email templates 
-            _emailService.sendPasswordReminder(emailChange.EmailTo, url, emailChange.EmailTokenExpiryDate);
-            return View();
+            _emailService.sendEmailChangeActivation(emailChange.EmailTo, url, emailChange.EmailTokenExpiryDate);
+
+            return RedirectToAction("email","settings");
         }
 
         [Authorize]
         public IActionResult Password()
         {
-            return View();
+            var identity = (ClaimsIdentity)User.Identity;
+            if (identity.GetProvider() != _authSchemeSettings.Application)
+            {
+                _logger.LogInformation("User not logged with Application account and tries to change password .", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
+                return RedirectToAction("index", "error");
+            }
+
+            return View(new EditPasswordModel());
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult ChangePassword()
+        public IActionResult ChangePassword(EditPasswordModel model)
         {
-            return View();
+            var identity = (ClaimsIdentity)User.Identity;
+            if (!ModelState.IsValid) return View("Password", model);
+
+            var passwordChange = _userAccountService.changePassword(
+               identity.GetUserId(),
+               model.current_password,
+               model.password,
+               _authSettings.SaltLength
+            );
+
+            if (!passwordChange)
+            {
+                ModelState.AddModelError("current_password", UserValidationMsg.password_incorrect);
+                return View("Password", model);
+            }
+
+            TempData["password_change_ok"] = UserValidationMsg.password_change_ok;
+            return RedirectToAction("password", "settings");
+
         }
 
 

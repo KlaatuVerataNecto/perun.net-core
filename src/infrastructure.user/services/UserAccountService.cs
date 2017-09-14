@@ -121,6 +121,29 @@ namespace infrastructure.user.services
             );
         }
 
+        public string verifyEmailChangeToken(int userId, string token)
+        {
+            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeNameService.getDefaultProvider());
+
+            if (login == null)
+            {
+                return null;
+            }
+
+            var emailChange = login.UserEmailChanges.Where(x =>
+                                        x.token == token &&
+                                        x.token_expiry_date >= DateTime.Now
+                                        ).SingleOrDefault();
+            if (emailChange != null)
+            {
+                login.email = emailChange.newemail;
+                _userRepository.updateLogin(login);
+                cancelEmailActivation(userId);
+                return login.email;
+            }
+
+            return null;
+        }
 
         public List<UserLogin> getLoginsByUserId(int userid)
         {
@@ -133,6 +156,39 @@ namespace infrastructure.user.services
             }
 
             return myLogins;
+        }
+
+        public string getPendingNewEmailActivation(int userId)
+        {
+            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeNameService.getDefaultProvider());
+            return login.UserEmailChanges.Where(x =>x.token_expiry_date >= DateTime.Now).Select(x=>x.newemail).SingleOrDefault();
+        }
+
+        public void cancelEmailActivation(int userId)
+        {
+            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeNameService.getDefaultProvider());
+            login.UserEmailChanges.ToList().ForEach(c => { c.token_expiry_date = DateTime.Now.AddDays(-1); c.date_modified = DateTime.Now; });
+            _userRepository.updateLogin(login);
+        }
+
+        // TODO: move salt to options 
+        public bool changePassword(int userid, string currentPassowrd, string newPassowrd, int saltLength)
+        {
+            var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());
+
+            if (login == null)
+                return false;
+
+            string hashed_password = CryptographicService.GenerateSaltedHash(currentPassowrd, login.salt);
+
+            if (login.passwd != hashed_password)
+                return false;
+
+            login.salt = CryptographicService.GenerateRandomString(saltLength);
+            login.passwd = CryptographicService.GenerateSaltedHash(newPassowrd, login.salt);
+            _userRepository.updateLogin(login);
+
+            return true;
         }
     }
 }

@@ -48,7 +48,6 @@ namespace peruncore.Infrastructure.Auth
         public static string GetLastName(this ClaimsIdentity claimsIdentity)
         {
             var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname);
-
             return (claim != null) ? claim.Value : string.Empty;
         }
 
@@ -57,12 +56,17 @@ namespace peruncore.Infrastructure.Auth
             var claim = claimsIdentity.FindFirst("provider");
             return (claim != null) ? claim.Value : null;
         }
+
+        public static string GetRoles(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            return (claim != null) ? claim.Value : string.Empty;
+        }
+
+        public static string GetAvatar(this ClaimsIdentity claimsIdentity)
+        {
+            var claim = claimsIdentity.FindFirst("avatar");
+            return (claim != null) ? claim.Value : null;
+        }
     }
-
-    //public static string GetSpecificClaim(this ClaimsIdentity claimsIdentity, string claimType)
-    //{
-    //    var claim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == claimType);
-
-    //    return (claim != null) ? claim.Value : string.Empty;
-    //}
 }

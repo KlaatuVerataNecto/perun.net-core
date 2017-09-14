@@ -27,13 +27,20 @@ namespace infrastructure.email.services
             CustomValidators.NotNull(expiryDate, "expiryDate is null");
 
            // get Email Template and set it up 
-            var emailToSend = _emailTemplateService.GetPasswordReminderTemplate(
-                 emailTo, link, expiryDate
-            );
+            var emailToSend = _emailTemplateService.GetPasswordReminderTemplate( emailTo, link, expiryDate);
             _emailSenderService.SendEmailAsync(emailToSend.Receiver, emailToSend.Sender, emailToSend.SenderName, emailToSend.Subject, emailToSend.Body);
         }
 
+        public void sendEmailChangeActivation(string emailTo, string link, DateTime expiryDate)
+        {
+            CustomValidators.StringNotNullorEmpty(emailTo, "emailTo is null or empty");
+            CustomValidators.StringNotNullorEmpty(link, "link is null or empty");
+            CustomValidators.NotNull(expiryDate, "expiryDate is null");
 
+            // get Email Template and set it up 
+            var emailToSend = _emailTemplateService.GetEmailChangeActivationTemplate(emailTo, link, expiryDate);
+            _emailSenderService.SendEmailAsync(emailToSend.Receiver, emailToSend.Sender, emailToSend.SenderName, emailToSend.Subject, emailToSend.Body);
+        }
 
 
 

@@ -114,5 +114,18 @@ namespace persistance.ef.repository
                                            && x.User.is_locked == false
                                           ).SingleOrDefault();
         }
+
+        public LoginDb getIdAndProvider(int id, string provider)
+        {
+            var obj = _efContext.Logins
+                                .Include(l => l.User)
+                                .Where(x => x.User.id == id
+                                                && x.provider == provider
+                                                && x.User.is_locked == false
+                                                ).SingleOrDefault();
+            if (obj == null) return null;
+
+            return obj;
+        }
     }
 }

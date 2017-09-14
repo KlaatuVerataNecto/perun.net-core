@@ -70,15 +70,12 @@ namespace peruncore.Controllers
             var currentIdentity = (ClaimsIdentity)User.Identity;
             int currentLoginId = (currentIdentity != null) ? currentIdentity.GetLoginId() : 0;
 
-            
-            // get newly logged identity
-            var authProvider = _authSchemeNameService.getProviderName(provider);
 
+            // get newly logged identity
             var claimsPrincipal = HttpContext.Authentication.AuthenticateAsync(_authSchemeSettings.External);
 
-            //HttpContext.Authentication.SignInAsync("MainCookie", claimsPrincipal);
-            //await HttpContext.Authentication.SignOutAsync("ExternalCookie");
-
+            // set up the main cookie 
+            var authProvider = _authSchemeNameService.getProviderName(provider);
             var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
             var authIdentity = (ClaimsIdentity)authInfo.Principal.Identity;
 
