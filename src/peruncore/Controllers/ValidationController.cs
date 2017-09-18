@@ -22,17 +22,20 @@ namespace peruncore.Controllers
         public IActionResult VerifyEmailExistance(string email)
         {
             if (!_userRepository.isEmailAvailable(email))
-                return Json(data: $"Email {email} is not registered.");
-            else
                 return Json(data: true);
-        }
+            else
+                return Json(data: $"Email {email} is not registered.");
+       }
 
         [AcceptVerbs("Get", "Post")]
-        public IActionResult VerifyEmail(string email)
+        public IActionResult VerifyEmailAvailability(string email)
        {
             var identity = (ClaimsIdentity)User.Identity;
 
-            if (identity != null && identity.GetProvider() == _authSchemeSettings.Application && email == identity.GetEmail())
+            if (identity != null && 
+                identity.GetProvider() == _authSchemeSettings.Application && 
+                email.ToLower() == identity.GetEmail()
+                )
             {
                 return Json(data: true);
             }
@@ -47,7 +50,7 @@ namespace peruncore.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
-        public IActionResult VerifyUsername(string username)
+        public IActionResult VerifyUsernameAvailability(string username)
         {
             var identity = (ClaimsIdentity)User.Identity;
 

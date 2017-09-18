@@ -18,7 +18,7 @@ namespace peruncore.Models.User
         [Required(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_empty")]
         [EmailAddress(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_invalid")]
         [StringLength(250, MinimumLength = 0, ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "email_not_in_range")]
-        [Remote(action: "VerifyEmail", controller: "Validation")]
+        [Remote(action: "VerifyEmailAvailability", controller: "Validation")]
         [Display(Name = "Email")]
         public string email
         {

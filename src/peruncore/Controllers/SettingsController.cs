@@ -73,7 +73,7 @@ namespace peruncore.Controllers
 
             if (identity.GetEmail() == model.email)
             {
-                ModelState.AddModelError("confirm_password", UserValidationMsg.email_not_modified);
+                ModelState.AddModelError("email", UserValidationMsg.email_not_modified);
                 return View("Email", model);
             }
 
@@ -87,7 +87,7 @@ namespace peruncore.Controllers
 
             if (emailChange == null)
             {
-                ModelState.AddModelError("new_email", UserValidationMsg.password_incorrect);
+                ModelState.AddModelError("confirm_password", UserValidationMsg.password_incorrect);
                 return View("Email", model);
             }
 
