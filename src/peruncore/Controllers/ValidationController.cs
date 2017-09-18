@@ -19,6 +19,15 @@ namespace peruncore.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
+        public IActionResult VerifyEmailExistance(string email)
+        {
+            if (!_userRepository.isEmailAvailable(email))
+                return Json(data: $"Email {email} is not registered.");
+            else
+                return Json(data: true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
         public IActionResult VerifyEmail(string email)
        {
             var identity = (ClaimsIdentity)User.Identity;
