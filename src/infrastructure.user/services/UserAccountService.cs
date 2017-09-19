@@ -58,6 +58,23 @@ namespace infrastructure.user.services
                 login.User.roles,
                 login.User.avatar);
         }
+        public UserLogin getApplicationLoginById(int userid)
+        { 
+            var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());
+
+            if (login == null)
+            {
+                _logger.LogError("Application login not found for user: .", new object[] { userid });
+                return null;
+            }
+
+            return new UserLogin(
+                login.User.id,
+                login.email,
+                login.provider,
+                _authSchemeNameService.getDefaultProvider()
+            );
+        }
 
         // TODO: validate password too
         public EmailChange createEmailChangeRequest(int userid, string password, string newemail, int tokenLength, int expiryDays)
@@ -121,7 +138,7 @@ namespace infrastructure.user.services
             );
         }
 
-        public string verifyEmailChangeToken(int userId, string token)
+        public EmailChanged applyEmailByToken(int userId, string token)
         {
             var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeNameService.getDefaultProvider());
 
@@ -134,12 +151,16 @@ namespace infrastructure.user.services
                                         x.token == token &&
                                         x.token_expiry_date >= DateTime.Now
                                         ).SingleOrDefault();
+
+
             if (emailChange != null)
             {
+                var emailChanged = new EmailChanged(login.User.id, emailChange.newemail, login.email);
+
                 login.email = emailChange.newemail;
                 _userRepository.updateLogin(login);
                 cancelEmailActivation(userId);
-                return login.email;
+                return emailChanged;
             }
 
             return null;

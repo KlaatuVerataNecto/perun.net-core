@@ -54,13 +54,14 @@ namespace peruncore.Controllers
         public IActionResult Email()
         {
             var identity = (ClaimsIdentity)User.Identity;
-            if (identity.GetProvider() != _authSchemeSettings.Application)
+            var appLogin = _userAccountService.getApplicationLoginById(identity.GetUserId());
+            if (appLogin == null)
             {
-                _logger.LogInformation("User not logged with Application account and tries to change email .", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
+                _logger.LogInformation("User doesn't have any App Login.", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
                 return RedirectToAction("index", "error");
             }
             var newEmail = _userAccountService.getPendingNewEmailActivation(identity.GetUserId());
-            return View(new EditEmailModel { email = identity.GetEmail(), newemail = newEmail});        
+            return View(new EditEmailModel { email = appLogin.Email, newemail = newEmail});        
         }
 
         [Authorize]
@@ -71,7 +72,9 @@ namespace peruncore.Controllers
 
             var identity = (ClaimsIdentity)User.Identity;
 
-            if (identity.GetEmail() == model.email)
+            var appLogin =_userAccountService.getApplicationLoginById(identity.GetUserId());
+
+            if (appLogin.Email == model.email)
             {
                 ModelState.AddModelError("email", UserValidationMsg.email_not_modified);
                 return View("Email", model);
@@ -107,9 +110,9 @@ namespace peruncore.Controllers
         public IActionResult Password()
         {
             var identity = (ClaimsIdentity)User.Identity;
-            if (identity.GetProvider() != _authSchemeSettings.Application)
+            if (_userAccountService.getApplicationLoginById(identity.GetUserId()) == null)
             {
-                _logger.LogInformation("User not logged with Application account and tries to change password .", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
+                _logger.LogInformation("User doesn't have any App Login.", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
                 return RedirectToAction("index", "error");
             }
 
@@ -122,6 +125,12 @@ namespace peruncore.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
             if (!ModelState.IsValid) return View("Password", model);
+
+            if (_userAccountService.getApplicationLoginById(identity.GetUserId()) == null)
+            {
+                _logger.LogInformation("User doesn't have any App Login.", new object[] { identity.GetLoginId(), identity.GetEmail(), identity.GetProvider() });
+                return RedirectToAction("index", "error");
+            }
 
             var passwordChange = _userAccountService.changePassword(
                identity.GetUserId(),

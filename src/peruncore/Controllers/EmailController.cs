@@ -32,30 +32,32 @@ namespace peruncore.Controllers
         [HttpGet]
         public IActionResult Change(int id, string token)
         {
-            var newEmail = _userAccountService.verifyEmailChangeToken(id, token);
-            if (newEmail == null)
+            var emailChanged = _userAccountService.applyEmailByToken(id, token);
+            if (emailChanged == null)
             {
                 _logger.LogInformation("Email change token has expired.", new object[] { id, token });
                 return RedirectToAction("EmailChangeTokenExpired", "Error");
             }
 
             // TODO: Move to signin manager service 
-
             var identity = (ClaimsIdentity)User.Identity;
 
-            HttpContext.Authentication.SignInAsync(
-            _authSchemeSettings.Application,
-             ClaimsPrincipalFactory.Build(
-                identity.GetUserId(),
-                identity.GetLoginId(),
-                identity.GetUserName(),
-                newEmail,
-                identity.GetRoles(),
-                identity.GetAvatar(),
-                identity.GetProvider()),
-            new AuthenticationProperties { IsPersistent = true }
-        );
-
+            if (identity.GetEmail() == emailChanged.OldEmail)
+            {
+                // TODO: Move to signin manager service 
+                HttpContext.Authentication.SignInAsync(
+                _authSchemeSettings.Application,
+                 ClaimsPrincipalFactory.Build(
+                    identity.GetUserId(),
+                    identity.GetLoginId(),
+                    identity.GetUserName(),
+                    emailChanged.CurrentEmail,
+                    identity.GetRoles(),
+                    identity.GetAvatar(),
+                    identity.GetProvider()),
+                new AuthenticationProperties { IsPersistent = true }
+                );
+            }
             TempData["email_change_ok"] = UserValidationMsg.email_change_ok;
             return RedirectToAction("email","settings");
         }

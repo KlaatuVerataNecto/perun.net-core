@@ -43,6 +43,7 @@ namespace infrastructure.user.services
                     login.User.avatar);
             }
 
+            // TODO: allow multiple logins with different providers, but no the same one
             // IN SESSION - login doesn't exist but let's check if user is currently logged with different login
             login = _userRepository.getById(currentLoginId);
 
