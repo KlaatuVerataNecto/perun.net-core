@@ -40,7 +40,14 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return View();
+            return View(new ProfileModel());
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Profile(ProfileModel model)
+        {
+            return View("Index");
         }
 
         [Authorize]
