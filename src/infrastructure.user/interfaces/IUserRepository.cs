@@ -5,6 +5,7 @@ namespace infrastructure.user.interfaces
 {
     public interface IUserRepository
     {
+        UserDb getUserById(int id);
         LoginDb getByIdWithUserNameToken(int id);
         LoginDb getByEmailAndProvider(string email, string provider);        
         LoginDb getIdAndProvider(int id, string provider);
@@ -17,5 +18,6 @@ namespace infrastructure.user.interfaces
         bool isEmailAvailable(string email);
         LoginDb addLogin(LoginDb obj);
         void updateLogin(LoginDb obj);
+        void updateUser(UserDb obj);
     }
 }

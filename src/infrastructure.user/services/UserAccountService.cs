@@ -30,7 +30,7 @@ namespace infrastructure.user.services
             _logger = logger;
         }
 
-        public UserIdentity changeUsername(int userid , string username, string token)
+        public UserIdentity changeUsernameByToken(int userid , string username, string token)
         {
             if (!_userRepository.isUsernameAvailable(username)) return null;
             var login = _userRepository.getByIdWithUserNameToken(userid);
@@ -58,6 +58,24 @@ namespace infrastructure.user.services
                 login.User.roles,
                 login.User.avatar);
         }
+
+        public string changeUsername(int userid, string username)
+        {
+            if (!_userRepository.isUsernameAvailable(username)) return null;
+            var user = _userRepository.getUserById(userid);
+
+            if (user == null)
+            {
+                _logger.LogError("User tries to change username after social login without valid token.");
+                return null;
+            }
+
+            user.username = username;
+            _userRepository.updateUser(user);
+
+            return username;
+        }
+
         public UserLogin getApplicationLoginById(int userid)
         { 
             var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());
@@ -70,6 +88,7 @@ namespace infrastructure.user.services
 
             return new UserLogin(
                 login.User.id,
+                login.User.username,
                 login.email,
                 login.provider,
                 _authSchemeNameService.getDefaultProvider()
@@ -173,7 +192,7 @@ namespace infrastructure.user.services
 
             foreach (var l in list)
             {
-                myLogins.Add(new UserLogin(l.User.id, l.email, l.provider, _authSchemeNameService.getDefaultProvider()));
+                myLogins.Add(new UserLogin(l.User.id, l.User.username, l.email, l.provider, _authSchemeNameService.getDefaultProvider()));
             }
 
             return myLogins;

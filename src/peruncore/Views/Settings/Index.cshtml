@@ -14,8 +14,8 @@
     <div class="col-xs-2">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs tabs-left">
-            <li class="active"><a asp-area="" asp-controller="Settings" asp-action="Index">Profile</a></li>
-            <li><a asp-area="" asp-controller="Settings" asp-action="Logins">My Logins</a></li>
+            <li class="active"><a asp-controller="Settings" asp-action="Index">Profile</a></li>
+            <li><a asp-controller="Settings" asp-action="Logins">My Logins</a></li>
         </ul>
     </div>
     <div class="col-xs-10">
@@ -23,7 +23,12 @@
         <div class="tab-content">
             <div class="tab-pane active" id="home">
                 <h4>Profile</h4>
-                <form asp-action="Profile">
+                @if (TempData.ContainsKey("username_change_ok"))
+                {
+                    <div class="alert alert-success">@TempData["username_change_ok"].ToString()</div>
+                    TempData.Remove("username_change_ok");
+                }
+                <form asp-action="Profile" asp-controller="Settings">
                     <div class="form-horizontal">
                         <hr />
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>

@@ -135,7 +135,7 @@ namespace peruncore.Controllers
                 // TODO: redirect to error session expired
             }
 
-            var userIdentity = _userAccountService.changeUsername(model.userid, model.username, model.token);
+            var userIdentity = _userAccountService.changeUsernameByToken(model.userid, model.username, model.token);
 
             if (userIdentity == null)
             {

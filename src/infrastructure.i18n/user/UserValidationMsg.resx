@@ -121,10 +121,10 @@
     <value>Your changes have been saved successfully</value>
   </data>
   <data name="email_already_used" xml:space="preserve">
-    <value>Another user already registered this email address</value>
+    <value>Another user already registered this email address.</value>
   </data>
   <data name="email_change_fail" xml:space="preserve">
-    <value>Sorry, the link has expired </value>
+    <value>Sorry, the link has expired.</value>
   </data>
   <data name="email_change_fail_desc" xml:space="preserve">
     <value>Go to your account and request it again</value>
@@ -199,16 +199,16 @@
     <value>Country should be between 2 y 50 characters</value>
   </data>
   <data name="current_password_empty" xml:space="preserve">
-    <value>Current password is empty</value>
+    <value>Current password is empty.</value>
   </data>
   <data name="current_password_not_in_range" xml:space="preserve">
-    <value>Current password should be between 6 y 30 characters</value>
+    <value>Current password should be between 6 y 30 characters.</value>
   </data>
   <data name="email_not_valid" xml:space="preserve">
     <value>Email is not valid.</value>
   </data>
   <data name="new_password_empty" xml:space="preserve">
-    <value>New passowrd is empty</value>
+    <value>New passowrd is empty.</value>
   </data>
   <data name="new_password_not_in_range" xml:space="preserve">
     <value>New password should be between 6 and 30 characters.</value>
@@ -256,13 +256,13 @@
     <value>Username contains spaces.</value>
   </data>
   <data name="invalid_key" xml:space="preserve">
-    <value>Invalid key</value>
+    <value>Invalid key.</value>
   </data>
   <data name="crop_area_invalid" xml:space="preserve">
-    <value>Invalid crop area</value>
+    <value>Invalid crop area.</value>
   </data>
   <data name="user_id_invalid" xml:space="preserve">
-    <value>Invalid user</value>
+    <value>Invalid user.</value>
   </data>
   <data name="avatar_too_big" xml:space="preserve">
     <value>Upload image is greater than 10 MB, please upload smaller size. </value>
@@ -277,12 +277,18 @@
     <value>Your password can't contain spaces.</value>
   </data>
   <data name="email_not_modified" xml:space="preserve">
-    <value>Email wasn't modified.</value>
+    <value>Email unchanged.</value>
   </data>
   <data name="email_change_ok" xml:space="preserve">
     <value>Your email has been changed successfully</value>
   </data>
   <data name="password_change_ok" xml:space="preserve">
     <value>Your password has been changed correctly.</value>
+  </data>
+  <data name="username_not_modified" xml:space="preserve">
+    <value>Username unchanged.</value>
+  </data>
+  <data name="username_change_ok" xml:space="preserve">
+    <value>Your username has been changed successfully.</value>
   </data>
 </root>

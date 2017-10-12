@@ -5,7 +5,8 @@ namespace infrastructure.user.interfaces
 {
     public interface IUserAccountService
     {
-        UserIdentity changeUsername(int userid, string username, string token);
+        string changeUsername(int userid, string username);
+        UserIdentity changeUsernameByToken(int userid, string username, string token);
         UserLogin getApplicationLoginById(int userid);
         EmailChange createEmailChangeRequest(int userId, string password, string newEmail, int tokenLength, int expiryDays);
         EmailChanged applyEmailByToken(int userId, string token);

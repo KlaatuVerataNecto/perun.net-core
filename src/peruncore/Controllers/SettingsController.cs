@@ -11,6 +11,7 @@ using peruncore.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc.Routing;
 using infrastructure.email.interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http.Authentication;
 
 namespace peruncore.Controllers
 {
@@ -40,14 +41,49 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return View(new ProfileModel());
+            var identity = (ClaimsIdentity)User.Identity;
+            return View(new ProfileModel() {  username = identity.GetUserName()});
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult Profile(ProfileModel model)
         {
-            return View("Index");
+            if (!ModelState.IsValid) return View("Index", model);
+
+            var identity = (ClaimsIdentity)User.Identity;
+
+            var appLogin = _userAccountService.getApplicationLoginById(identity.GetUserId());
+
+            if (appLogin.Username == model.username)
+            {
+                ModelState.AddModelError("username", UserValidationMsg.username_not_modified);
+                return View("Index", model);
+            }
+
+            var usernameChange = _userAccountService.changeUsername(appLogin.UserId,model.username);
+
+            if (usernameChange == null)
+            {
+                ModelState.AddModelError("username", UserValidationMsg.password_incorrect);
+            }
+
+            // TODO: Move to signin manager service 
+            HttpContext.Authentication.SignInAsync(
+            _authSchemeSettings.Application,
+             ClaimsPrincipalFactory.Build(
+                identity.GetUserId(),
+                identity.GetLoginId(),
+                usernameChange,
+                identity.GetUserName(),
+                identity.GetRoles(),
+                identity.GetAvatar(),
+                identity.GetProvider()),
+            new AuthenticationProperties { IsPersistent = true }
+            );
+
+            TempData["username_change_ok"] = UserValidationMsg.username_change_ok;
+            return RedirectToAction("index", "settings");
         }
 
         [Authorize]

@@ -20,7 +20,7 @@ namespace infrastructure.i18n.user {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class UserValidationMsg {
@@ -98,7 +98,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid crop area.
+        ///   Looks up a localized string similar to Invalid crop area..
         /// </summary>
         public static string crop_area_invalid {
             get {
@@ -107,7 +107,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current password is empty.
+        ///   Looks up a localized string similar to Current password is empty..
         /// </summary>
         public static string current_password_empty {
             get {
@@ -116,7 +116,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current password should be between 6 y 30 characters.
+        ///   Looks up a localized string similar to Current password should be between 6 y 30 characters..
         /// </summary>
         public static string current_password_not_in_range {
             get {
@@ -125,7 +125,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Another user already registered this email address.
+        ///   Looks up a localized string similar to Another user already registered this email address..
         /// </summary>
         public static string email_already_used {
             get {
@@ -134,7 +134,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, the link has expired .
+        ///   Looks up a localized string similar to Sorry, the link has expired..
         /// </summary>
         public static string email_change_fail {
             get {
@@ -224,7 +224,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email wasn&apos;t modified..
+        ///   Looks up a localized string similar to Email unchanged..
         /// </summary>
         public static string email_not_modified {
             get {
@@ -287,7 +287,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid key.
+        ///   Looks up a localized string similar to Invalid key..
         /// </summary>
         public static string invalid_key {
             get {
@@ -305,7 +305,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New passowrd is empty.
+        ///   Looks up a localized string similar to New passowrd is empty..
         /// </summary>
         public static string new_password_empty {
             get {
@@ -485,7 +485,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid user.
+        ///   Looks up a localized string similar to Invalid user..
         /// </summary>
         public static string user_id_invalid {
             get {
@@ -499,6 +499,15 @@ namespace infrastructure.i18n.user {
         public static string user_saved {
             get {
                 return ResourceManager.GetString("user_saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your username has been changed successfully..
+        /// </summary>
+        public static string username_change_ok {
+            get {
+                return ResourceManager.GetString("username_change_ok", resourceCulture);
             }
         }
         
@@ -544,6 +553,15 @@ namespace infrastructure.i18n.user {
         public static string username_not_in_range {
             get {
                 return ResourceManager.GetString("username_not_in_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username unchanged..
+        /// </summary>
+        public static string username_not_modified {
+            get {
+                return ResourceManager.GetString("username_not_modified", resourceCulture);
             }
         }
         

@@ -24,9 +24,19 @@ namespace persistance.ef.repository
         }
 
         public bool isEmailAvailable(string email)
-      {
+        {
             if (string.IsNullOrEmpty(email)) return false;
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
+        }
+
+        public UserDb getUserById(int id)
+        {
+            var obj = _efContext.Users   
+                                .Where(x => x.id == id
+                                            && x.is_locked == false
+                                           ).SingleOrDefault();
+
+            return obj;
         }
 
         public LoginDb getByEmailAndProvider(string email, string provider)
@@ -100,12 +110,6 @@ namespace persistance.ef.repository
             return obj;
         }
 
-        public void updateLogin(LoginDb obj)
-        {
-            _efContext.Logins.Update(obj);
-            _efContext.SaveChanges();
-        }
-
         public LoginDb getById(int id)
         {
             return _efContext.Logins
@@ -126,6 +130,18 @@ namespace persistance.ef.repository
             if (obj == null) return null;
 
             return obj;
+        }
+
+        public void updateLogin(LoginDb obj)
+        {
+            _efContext.Logins.Update(obj);
+            _efContext.SaveChanges();
+        }
+
+        public void updateUser(UserDb obj)
+        {
+            _efContext.Users.Update(obj);
+            _efContext.SaveChanges();
         }
     }
 }
