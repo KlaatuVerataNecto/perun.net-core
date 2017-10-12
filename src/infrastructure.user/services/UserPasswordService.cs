@@ -16,17 +16,17 @@ namespace infrastructure.user.services
         private const int _saltLength = 16;
         private readonly IUserRepository _userRepository;
         private readonly ILogger _logger;
-        private readonly IAuthSchemeSettingsService _authSchemeSettingsService;
-        public UserPasswordService(IUserRepository userRepository, ILogger<UserPasswordService> logger, IAuthSchemeSettingsService authSchemeSettingsService)
+        private readonly IAuthSchemeNameService _authSchemeNameService;
+        public UserPasswordService(IUserRepository userRepository, ILogger<UserPasswordService> logger, IAuthSchemeNameService authSchemeNameService)
         {
             _userRepository = userRepository;
             _logger = logger;
-            _authSchemeSettingsService = authSchemeSettingsService;
+            _authSchemeNameService = authSchemeNameService;
         }
 
         public UserReset generateResetToken(string email, int tokenLength, int expiryDays)
         {
-            var login = _userRepository.getByEmailWithResetInfo(email, _authSchemeSettingsService.GetDefaultProvider());
+            var login = _userRepository.getByEmailWithResetInfo(email, _authSchemeNameService.getDefaultProvider());
 
             if (login == null)
             {
@@ -77,7 +77,7 @@ namespace infrastructure.user.services
 
         public UserReset verifyToken(int userId, string token)
         {
-            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeSettingsService.GetDefaultProvider());
+            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeNameService.getDefaultProvider());
             var passwordReset = login.UserPasswordResets.Where(x => 
                                         x.token == token && 
                                         x.token_expiry_date >= DateTime.Now
@@ -99,7 +99,7 @@ namespace infrastructure.user.services
         public UserReset changePassword(int userid, string token, string password)
         {
             // TODO: duplicated code
-            var login = _userRepository.getByIdWithResetInfo(userid, _authSchemeSettingsService.GetDefaultProvider());
+            var login = _userRepository.getByIdWithResetInfo(userid, _authSchemeNameService.getDefaultProvider());
             var passwordReset = login.UserPasswordResets.Where(x =>
                                                  x.token == token &&
                                                  x.token_expiry_date >= DateTime.Now

@@ -120,10 +120,9 @@ namespace peruncore
 
             // Register Email Settings 
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
-            services.AddSingleton<IAuthSchemeSettingsService, AuthSchemeSettingsService>();
             
             // Register Validators
-            services.AddSingleton<IAuthProviderValidationService, AuthProviderValidationService>();
+            services.AddSingleton<IAuthSchemeNameService, AuthSchemeNameService>();
 
             builder.Populate(services);
             var container = builder.Build();
@@ -162,17 +161,27 @@ namespace peruncore
                 LoginPath = new PathString("/Account/Unauthorized/"),
                 AccessDeniedPath = new PathString("/Account/Forbidden/"),
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
                 ExpireTimeSpan = TimeSpan.FromDays(
                     int.Parse(Configuration.GetSection("AuthSchemeSettings:ExpiryDays").Value)
                     )
             });
 
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:External").Value,
+                AutomaticAuthenticate = false,
+                AutomaticChallenge = false
+            });
+
+
             // Google Login
             var googleOptions = new GoogleOptions
             {
+                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Google").Value,
+                SignInScheme = Configuration.GetSection("AuthSchemeSettings:External").Value,
                 ClientId = Configuration.GetSection("SocialLoginSettings:GoogleClientId").Value ,
                 ClientSecret = Configuration.GetSection("SocialLoginSettings:GoogleClientSecret").Value,
+                AutomaticAuthenticate = false, // allows adding new login when logged
                 AutomaticChallenge = true,
                 
             };
@@ -183,8 +192,11 @@ namespace peruncore
             // Facebook Login
             var facebookOptions = new FacebookOptions
             {
+                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Facebook").Value,
+                SignInScheme =  Configuration.GetSection("AuthSchemeSettings:External").Value,
                 ClientId = Configuration.GetSection("SocialLoginSettings:FacebookClientId").Value,
                 ClientSecret = Configuration.GetSection("SocialLoginSettings:FacebookClientSecret").Value,
+                AutomaticAuthenticate = false, // allows adding new login when logged
                 AutomaticChallenge = true,
 
             };
@@ -193,8 +205,11 @@ namespace peruncore
             // Twitter Login
             var twitterOptions = new TwitterOptions
             {
+                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Twitter").Value,
+                SignInScheme = Configuration.GetSection("AuthSchemeSettings:External").Value,
                 ConsumerKey = Configuration.GetSection("SocialLoginSettings:TwitterConsumerKey").Value,
                 ConsumerSecret = Configuration.GetSection("SocialLoginSettings:TwitterConsumerSecret").Value,
+                AutomaticAuthenticate = false, // allows adding new login when logged
                 AutomaticChallenge = true,
 
             };

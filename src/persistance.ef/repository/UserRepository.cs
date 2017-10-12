@@ -3,6 +3,8 @@ using persistance.ef.common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using infrastructure.user.entities;
+using System;
+using System.Collections.Generic;
 
 namespace persistance.ef.repository
 {
@@ -17,12 +19,24 @@ namespace persistance.ef.repository
 
         public bool isUsernameAvailable(string username)
         {
+            if (string.IsNullOrEmpty(username)) return false;
             return !_efContext.Users.Any(x => x.username.ToLower() == username.ToLower());
         }
 
         public bool isEmailAvailable(string email)
         {
+            if (string.IsNullOrEmpty(email)) return false;
             return !_efContext.Logins.Any(x => x.email.ToLower() == email.ToLower());
+        }
+
+        public UserDb getUserById(int id)
+        {
+            var obj = _efContext.Users   
+                                .Where(x => x.id == id
+                                            && x.is_locked == false
+                                           ).SingleOrDefault();
+
+            return obj;
         }
 
         public LoginDb getByEmailAndProvider(string email, string provider)
@@ -79,6 +93,14 @@ namespace persistance.ef.repository
             return obj;
         }
 
+        public List<LoginDb> getLoginsByUserId(int id)
+        {
+            return _efContext.Logins
+                               .Include(u => u.User)
+                               .Where(x => x.User.id == id
+                                           && x.User.is_locked == false
+                                          ).ToList();
+        }
 
         public LoginDb addLogin(LoginDb obj)
         {
@@ -88,9 +110,37 @@ namespace persistance.ef.repository
             return obj;
         }
 
+        public LoginDb getById(int id)
+        {
+            return _efContext.Logins
+                               .Include(u => u.User)
+                               .Where(x => x.id == id
+                                           && x.User.is_locked == false
+                                          ).SingleOrDefault();
+        }
+
+        public LoginDb getIdAndProvider(int id, string provider)
+        {
+            var obj = _efContext.Logins
+                                .Include(l => l.User)
+                                .Where(x => x.User.id == id
+                                                && x.provider == provider
+                                                && x.User.is_locked == false
+                                                ).SingleOrDefault();
+            if (obj == null) return null;
+
+            return obj;
+        }
+
         public void updateLogin(LoginDb obj)
         {
             _efContext.Logins.Update(obj);
+            _efContext.SaveChanges();
+        }
+
+        public void updateUser(UserDb obj)
+        {
+            _efContext.Users.Update(obj);
             _efContext.SaveChanges();
         }
     }

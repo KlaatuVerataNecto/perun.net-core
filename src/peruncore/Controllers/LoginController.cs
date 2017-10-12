@@ -50,11 +50,14 @@ namespace peruncore.Controllers
             HttpContext.Authentication.SignInAsync(
                 _authSchemeSettings.Application, 
                 ClaimsPrincipalFactory.Build(
-                    userIdentity.UserId, 
+                    userIdentity.UserId,
+                    userIdentity.LoginId,
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar),
+                    userIdentity.Avatar,
+                    userIdentity.LoginProvider
+                    ),
                     new AuthenticationProperties
                     {
                         IsPersistent = true

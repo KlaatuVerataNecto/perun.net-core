@@ -19,7 +19,11 @@ namespace peruncore.Controllers
         private readonly AuthSettings _authSettings;
         private readonly ILogger _logger;
 
-        public PasswordController(IUserPasswordService userPasswordService, IEmailService emailService, IOptions<AuthSettings> authSettings, ILogger<PasswordController> logger)
+        public PasswordController(
+            IUserPasswordService userPasswordService, 
+            IEmailService emailService,
+            IOptions<AuthSettings> authSettings,
+            ILogger<PasswordController> logger)
         {
             _authSettings = authSettings.Value;
             _userPasswordService = userPasswordService;

@@ -17,19 +17,19 @@ namespace peruncore.Controllers
         private readonly ISocialLoginService _socialLoginService;
         private readonly IUserAccountService _userAccountService;
         private readonly AuthSchemeSettings _authSchemeSettings;
-        private readonly IAuthProviderValidationService _authProviderValidationService;
+        private readonly IAuthSchemeNameService _authSchemeNameService;
 
         public OauthController(
               ISocialLoginService socialLoginService,
               IUserAccountService userAccountService,
               IOptions<AuthSchemeSettings> authSchemeSettings,
-              IAuthProviderValidationService authProviderValidationService
+              IAuthSchemeNameService authSchemeNameService
             )
         {
             _authSchemeSettings = authSchemeSettings.Value;
             _socialLoginService = socialLoginService;
             _userAccountService = userAccountService;
-            _authProviderValidationService = authProviderValidationService;
+            _authSchemeNameService = authSchemeNameService;
         }
         public ActionResult facebook()
         {
@@ -66,34 +66,43 @@ namespace peruncore.Controllers
         [Route("oauth/callback/{provider}")]
         public ActionResult callback(string provider)
         {
-            var authProvider = _authProviderValidationService.GetProviderName(provider);
+            // get current identity
+            var currentIdentity = (ClaimsIdentity)User.Identity;
+            int currentLoginId = (currentIdentity != null) ? currentIdentity.GetLoginId() : 0;
 
+
+            // get newly logged identity
+            var claimsPrincipal = HttpContext.Authentication.AuthenticateAsync(_authSchemeSettings.External);
+
+            // set up the main cookie 
+            var authProvider = _authSchemeNameService.getProviderName(provider);
             var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
+            var authIdentity = (ClaimsIdentity)authInfo.Principal.Identity;
 
-            var identity = (ClaimsIdentity)authInfo.Principal.Identity;
-
+           
             var userIdentity = _socialLoginService.loginOrSignup(
-                identity.GetSocialLoginUserId(),
-                identity.GetEmail(),
-                identity.GetFirstName(),
-                identity.GetLastName(),
-                authProvider
+                authIdentity.GetSocialLoginUserId(),
+                authIdentity.GetEmail(),
+                authIdentity.GetFirstName(),
+                authIdentity.GetLastName(),
+                authProvider,
+                currentLoginId
                 );
+
+            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
 
             // TODO: Duplicated code
             HttpContext.Authentication.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
+                    userIdentity.LoginId,
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar),
-                new AuthenticationProperties
-                {
-                    IsPersistent = true
-
-                }
+                    userIdentity.Avatar,
+                    userIdentity.LoginProvider),
+                new AuthenticationProperties { IsPersistent = true }
             );
 
             if (userIdentity.IsRequiresNewUsername)
@@ -126,7 +135,7 @@ namespace peruncore.Controllers
                 // TODO: redirect to error session expired
             }
 
-            var userIdentity = _userAccountService.ChangeUsername(model.userid, model.username, model.token);
+            var userIdentity = _userAccountService.changeUsernameByToken(model.userid, model.username, model.token);
 
             if (userIdentity == null)
             {
@@ -139,10 +148,13 @@ namespace peruncore.Controllers
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
+                    userIdentity.LoginId,
                     userIdentity.Username,
                     userIdentity.Email,
                     userIdentity.Roles,
-                    userIdentity.Avatar),
+                    userIdentity.Avatar,
+                    userIdentity.LoginProvider
+                    ),
                 new AuthenticationProperties
                 {
                     IsPersistent = true

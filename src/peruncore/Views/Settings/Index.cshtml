@@ -1,0 +1,52 @@
+@model peruncore.Models.User.ProfileModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+@section Css {
+    @{await Html.RenderPartialAsync("_ValidationCssPartial"); }
+}
+<h2>Settings</h2>
+<div class="row">
+    <div class="col-xs-2">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs tabs-left">
+            <li class="active"><a asp-controller="Settings" asp-action="Index">Profile</a></li>
+            <li><a asp-controller="Settings" asp-action="Logins">My Logins</a></li>
+        </ul>
+    </div>
+    <div class="col-xs-10">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <h4>Profile</h4>
+                @if (TempData.ContainsKey("username_change_ok"))
+                {
+                    <div class="alert alert-success">@TempData["username_change_ok"].ToString()</div>
+                    TempData.Remove("username_change_ok");
+                }
+                <form asp-action="Profile" asp-controller="Settings">
+                    <div class="form-horizontal">
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="username" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="username" class="form-control" />
+                                <span asp-validation-for="username" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-default pull-right">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
