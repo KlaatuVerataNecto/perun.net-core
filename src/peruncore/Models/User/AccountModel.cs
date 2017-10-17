@@ -5,7 +5,7 @@ using peruncore.Infrastructure.ModelValidators;
 
 namespace peruncore.Models.User
 {
-    public class ProfileModel
+    public class AccountModel
     {
         [Required(ErrorMessageResourceType = typeof(UserValidationMsg),ErrorMessageResourceName = "username_empty")]
         [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "username_not_in_range")]
