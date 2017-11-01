@@ -9,6 +9,7 @@ namespace infrastructure.user.interfaces
         LoginDb getByIdWithUserNameToken(int id);
         LoginDb getByEmailAndProvider(string email, string provider);        
         LoginDb getIdAndProvider(int id, string provider);
+        LoginDb getByEmail(string email);
         LoginDb getByEmailWithResetInfo(string email, string provider);
         LoginDb getByIdWithResetInfo(int id, string provider);
         List<LoginDb> getLoginsByUserId(int id);

@@ -19,6 +19,11 @@
             <div class="tab-pane active" id="logins">
                 <h4>My Logins</h4>
                 <hr />
+                @if (TempData.ContainsKey("email_change_ok"))
+                {
+                    <div class="alert alert-success">@TempData["email_change_ok"].ToString()</div>
+                    @TempData.Remove("email_change_ok");
+                }
                 @foreach (var login in Model)
                 {
                     <div class="panel panel-default">

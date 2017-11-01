@@ -52,6 +52,18 @@ namespace persistance.ef.repository
             return obj;
         }
 
+        public LoginDb getByEmail(string email)
+        {
+            var obj = _efContext.Logins
+                                .Include(l => l.User)
+                                .Where(x => x.email == email
+                                                && x.User.is_locked == false
+                                                ).FirstOrDefault(); // multiple logins with the same email are acceptable, we need only first 
+            if (obj == null) return null;
+
+            return obj;
+        }
+
         public LoginDb getByEmailWithResetInfo(string email, string provider)
         {
             var obj = _efContext.Logins

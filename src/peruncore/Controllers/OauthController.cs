@@ -79,7 +79,7 @@ namespace peruncore.Controllers
             var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
             var authIdentity = (ClaimsIdentity)authInfo.Principal.Identity;
 
-           
+           // login or signup
             var userIdentity = _socialLoginService.loginOrSignup(
                 authIdentity.GetSocialLoginUserId(),
                 authIdentity.GetEmail(),
@@ -89,9 +89,26 @@ namespace peruncore.Controllers
                 currentLoginId
                 );
 
+            // check for errors, two possible results
+            if(userIdentity == null)
+            {
+                if (currentLoginId == 0)
+                {
+                    // User not in session adds social login with email that already exists.
+                    TempData["notification"] = UserValidationMsg.email_already_used;
+                    return RedirectToAction("Index", "Signup");
+                }
+                else
+                {
+                    // User in session adds social login with email that already exists.
+                    TempData["notification"] = UserValidationMsg.email_already_used;
+                    return RedirectToAction("Logins", "Settings");
+                }
+            }
+
             HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
 
-            // TODO: Duplicated code
+            // TODO: Duplicated code: use automapper profile
             HttpContext.Authentication.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(

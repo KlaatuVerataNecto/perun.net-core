@@ -24,10 +24,10 @@
             <div class="tab-pane active" id="home">  
                 <h4>Change Email</h4>
                 <hr />
-                @if (TempData.ContainsKey("email_change_ok"))
+                @if (TempData.ContainsKey("notification"))
                 {
-                    <div class="alert alert-success">@TempData["email_change_ok"].ToString()</div>
-                    @TempData.Remove("email_change_ok");
+                    <div class="alert alert-danger">@TempData["notification"].ToString()</div>
+                    @TempData.Remove("notification");
                 }
                 @if (!string.IsNullOrEmpty(Model.newemail))
                 {

@@ -15,6 +15,11 @@
         <div class="form-horizontal">
             <p>Sign up</p>
             <hr />
+            @if (TempData.ContainsKey("notification"))
+            {
+                <div class="alert alert-danger">@TempData["notification"].ToString()</div>
+                    @TempData.Remove("notification");
+            }
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="username" class="col-md-2 control-label"></label>

@@ -121,7 +121,7 @@
     <value>Your changes have been saved successfully</value>
   </data>
   <data name="email_already_used" xml:space="preserve">
-    <value>Another user already registered this email address.</value>
+    <value>Someone already registered this email address with us. If you believe this is incorrect go to Login &gt; "I forgot my password"</value>
   </data>
   <data name="email_change_fail" xml:space="preserve">
     <value>Sorry, the link has expired.</value>
