@@ -76,6 +76,24 @@ namespace infrastructure.user.services
             return username;
         }
 
+        // TODO: Redundand data retrieved
+        public UserUsername getUsernameByUserId(int userid)
+        {
+            var user = _userRepository.getUserById(userid);
+
+            if (user == null)
+            {
+                _logger.LogError("Application login not found for user: .", new object[] { userid });
+                return null;
+            }
+
+            return new UserUsername(
+                user.id,
+                user.username
+            );
+        }
+
+
         public UserLogin getApplicationLoginById(int userid)
         { 
             var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());

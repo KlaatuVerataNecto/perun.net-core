@@ -2,6 +2,7 @@
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
 using infrastucture.libs.cryptography;
+using infrastucture.libs.exceptions;
 using infrastucture.libs.strings;
 using Microsoft.Extensions.Logging;
 using System;
@@ -77,7 +78,8 @@ namespace infrastructure.user.services
             {
                 // user in session authenticated with application login or social login 
                 // and trying to add new one that is already used
-                // throw error 
+                // this is not suppoesd to happen ..... throw an error 
+
                 _logger.LogError("User in session adds social login with email that already exists."
                     , new
                     {
@@ -90,6 +92,7 @@ namespace infrastructure.user.services
                         inputEmail = email,                       
                         inputProvider = provider
                     });
+                throw new AddLoginAlreadyTakenException("User in session adds social login with email that already exists");
             }
 
             return null;           

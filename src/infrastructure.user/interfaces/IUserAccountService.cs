@@ -8,6 +8,7 @@ namespace infrastructure.user.interfaces
         string changeUsername(int userid, string username);
         UserIdentity changeUsernameByToken(int userid, string username, string token);
         UserLogin getApplicationLoginById(int userid);
+        UserUsername getUsernameByUserId(int userid);
         EmailChange createEmailChangeRequest(int userId, string password, string newEmail, int tokenLength, int expiryDays);
         EmailChanged applyEmailByToken(int userId, string token);
         void cancelEmailActivation(int userId);

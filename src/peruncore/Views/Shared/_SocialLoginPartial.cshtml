@@ -2,10 +2,10 @@
 
 <p>
 @if (Model.isViewGoogle) {
-<a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a> @Html.Raw("|")
+<a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a> @Html.Raw("| ")
 }
 @if (Model.isViewFacebook) {
-<a asp-area="" asp-controller="Oauth" asp-action="Facebook">Facebook</a> @Html.Raw("|")
+<a asp-area="" asp-controller="Oauth" asp-action="Facebook">Facebook</a> @Html.Raw("| ")
 }
 @if(Model.isViewFacebook) {
 <a asp-area="" asp-controller="Oauth" asp-action="Twitter">Twitter</a>

@@ -1,3 +1,4 @@
+@using peruncore.Models.User
 @model peruncore.Models.User.LoginModel
 @{
     ViewData["Title"] = "Index";
@@ -36,7 +37,7 @@
         <a asp-action="Forgot" asp-controller="Password">I forgot my password</a>
         <hr />
         <p>or use on the social logins:</p>
-        @Html.Partial("_SocialLoginPartial")
+        @Html.Partial("_SocialLoginPartial", new LoginsViewPermissionModel())
     </form>
 </div>
 

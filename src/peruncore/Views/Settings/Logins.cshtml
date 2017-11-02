@@ -1,4 +1,4 @@
-@model IEnumerable<infrastructure.user.models.UserLogin>
+@model peruncore.Models.User.UserLoginsModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,7 +24,7 @@
                     <div class="alert alert-success">@TempData["email_change_ok"].ToString()</div>
                     @TempData.Remove("email_change_ok");
                 }
-                @foreach (var login in Model)
+                @foreach (var login in Model.UserLogins)
                 {
                     <div class="panel panel-default">
                         <div class="panel-heading">@login.Email</div>
@@ -44,7 +44,7 @@
                 }
                 <h4>Add other login</h4>
                 <hr />
-                @Html.Partial("_SocialLoginPartial")
+                @Html.Partial("_SocialLoginPartial", Model.LoginViewPermission)
             </div>
         </div>
     </div>

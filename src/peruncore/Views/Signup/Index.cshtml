@@ -1,3 +1,4 @@
+@using peruncore.Models.User
 @model peruncore.Models.User.SignUpModel
 
 @{
@@ -70,7 +71,7 @@
             </div>
             <hr />
             <p>or use on the social logins:</p>
-            @Html.Partial("_SocialLoginPartial")
+            @Html.Partial("_SocialLoginPartial", new LoginsViewPermissionModel())
         </div>
     </form>
 </div>
