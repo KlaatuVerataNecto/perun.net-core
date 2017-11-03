@@ -77,22 +77,25 @@ namespace infrastructure.user.services
             if (loginInSession != null && userLogin != null)
             {
                 // user in session authenticated with application login or social login 
-                // and trying to add new one that is already used
-                // this is not suppoesd to happen ..... throw an error 
+                // and trying to add new one that is already used, login the user in with the new one:
 
-                _logger.LogError("User in session adds social login with email that already exists."
-                    , new
-                    {
-                        userLogin_id = userLogin.id,
-                        userLogin_email = userLogin.email,
-                        userLogin_provider = provider,
-                        sessionLogin_id = loginInSession.id,
-                        sessionLogin_email = loginInSession.email,
-                        sessionLogin_provider = loginInSession.provider,
-                        inputEmail = email,                       
-                        inputProvider = provider
-                    });
-                throw new AddLoginAlreadyTakenException("User in session adds social login with email that already exists");
+                return this.login(userLogin, rightNow);
+
+                //// this is not suppoesd to happen ..... throw an error 
+
+                //_logger.LogError("User in session adds social login with email that already exists."
+                //    , new
+                //    {
+                //        userLogin_id = userLogin.id,
+                //        userLogin_email = userLogin.email,
+                //        userLogin_provider = provider,
+                //        sessionLogin_id = loginInSession.id,
+                //        sessionLogin_email = loginInSession.email,
+                //        sessionLogin_provider = loginInSession.provider,
+                //        inputEmail = email,                       
+                //        inputProvider = provider
+                //    });
+                //throw new AddLoginAlreadyTakenException("User in session adds social login with email that already exists");
             }
 
             return null;           

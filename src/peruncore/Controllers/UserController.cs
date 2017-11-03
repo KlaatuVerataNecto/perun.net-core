@@ -18,9 +18,6 @@ namespace peruncore.Controllers
         {
             HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Application);
             HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Google);
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Facebook);
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Twitter);
             return Redirect("/");
         }
 
