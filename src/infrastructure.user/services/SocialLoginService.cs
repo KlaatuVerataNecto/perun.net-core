@@ -1,11 +1,11 @@
-﻿using infrastructure.user.entities;
+﻿using Microsoft.Extensions.Logging;
+using System;
+using AutoMapper;
+using infrastructure.user.entities;
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
 using infrastucture.libs.cryptography;
-using infrastucture.libs.exceptions;
 using infrastucture.libs.strings;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace infrastructure.user.services
 {
@@ -13,13 +13,15 @@ namespace infrastructure.user.services
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthSchemeNameService _authSchemeNameService;
+        private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public SocialLoginService(IUserRepository userRepository, IAuthSchemeNameService authSchemeNameService, ILogger<SocialLoginService> logger) 
+        public SocialLoginService(IUserRepository userRepository, IAuthSchemeNameService authSchemeNameService, IMapper mapper ,ILogger<SocialLoginService> logger) 
         {
             _userRepository = userRepository;
             _authSchemeNameService = authSchemeNameService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public UserIdentity loginOrSignup(string nameIdentifier, string email, string firstname, string lastname , string provider, int currentLoginId)
@@ -80,22 +82,6 @@ namespace infrastructure.user.services
                 // and trying to add new one that is already used, login the user in with the new one:
 
                 return this.login(userLogin, rightNow);
-
-                //// this is not suppoesd to happen ..... throw an error 
-
-                //_logger.LogError("User in session adds social login with email that already exists."
-                //    , new
-                //    {
-                //        userLogin_id = userLogin.id,
-                //        userLogin_email = userLogin.email,
-                //        userLogin_provider = provider,
-                //        sessionLogin_id = loginInSession.id,
-                //        sessionLogin_email = loginInSession.email,
-                //        sessionLogin_provider = loginInSession.provider,
-                //        inputEmail = email,                       
-                //        inputProvider = provider
-                //    });
-                //throw new AddLoginAlreadyTakenException("User in session adds social login with email that already exists");
             }
 
             return null;           
@@ -120,17 +106,8 @@ namespace infrastructure.user.services
             login.User.last_seen = rightNow;
             _userRepository.updateLogin(login);
 
-            // TODO: Automapper profile for LoginDB > UserIdentity
-            return new UserIdentity(
-                login.User.id,
-                login.id,
-                login.User.username,
-                login.email,
-                login.provider,
-                login.User.roles,
-                login.User.avatar);
+            return _mapper.Map<UserIdentity>(login);
         }
-
         private UserIdentity addNewLogin(LoginDb loginInSession, string nameIdentifier, string email, string firstname, string lastname, string provider, DateTime rightNow)
         {
             loginInSession.User.last_seen = rightNow;
@@ -145,15 +122,7 @@ namespace infrastructure.user.services
             loginInSession.User.Logins.Add(newLogin);
             _userRepository.updateLogin(loginInSession);
 
-            // TODO: Automapper profile for LoginDB > UserIdentity
-            return new UserIdentity(
-                    loginInSession.User.id,
-                    loginInSession.id,
-                    loginInSession.User.username,
-                    loginInSession.email,
-                    loginInSession.provider,
-                    loginInSession.User.roles,
-                    loginInSession.User.avatar);
+            return _mapper.Map<UserIdentity>(loginInSession);
         }
 
         private UserIdentity signup(string nameIdentifier, string email, string firstname, string lastname, string provider, DateTime rightNow)
@@ -164,7 +133,7 @@ namespace infrastructure.user.services
                 email = email,
                 provider = provider,
                 date_created = rightNow,
-                //external_id = nameIdentifier, // TODO: save external id
+                external_id = nameIdentifier,
                 User = new UserDb
                 {
                     is_locked = false,
