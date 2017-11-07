@@ -153,7 +153,6 @@ namespace infrastructure.user.services
             login.UserEmailChanges.Add(emailChange);
             _userRepository.updateLogin(login);
 
-            // TODO: Automapper
             return new EmailChange(
                 login.User.id,
                 login.email,
@@ -217,7 +216,6 @@ namespace infrastructure.user.services
             _userRepository.updateLogin(login);
         }
 
-        // TODO: move salt to options 
         public bool changePassword(int userid, string currentPassowrd, string newPassowrd, int saltLength)
         {
             var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());

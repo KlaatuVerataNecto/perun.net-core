@@ -40,7 +40,7 @@ namespace peruncore.Controllers
         {
             if (!ModelState.IsValid) return View("Index", model);
 
-            var userIdentity = _userRegistrationService.Signup(
+            var userIdentity = _userRegistrationService.signup(
                 model.username,
                 model.email, 
                 model.password, 

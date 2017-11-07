@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using infrastructure.user.entities;
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
@@ -11,13 +12,15 @@ namespace infrastructure.user.services
     {
         private const int _saltLength = 16;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserRegistrationService(IUserRepository userRepository)
+        public UserRegistrationService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public UserIdentity Signup(string username, string email, string password, string provider, int saltLength)
+        public UserIdentity signup(string username, string email, string password, string provider, int saltLength)
         {
             if (!_userRepository.isUsernameAvailable(username)) return null;
             if (!_userRepository.isEmailAvailable(email)) return null;
@@ -25,7 +28,6 @@ namespace infrastructure.user.services
             string salt = CryptographicService.GenerateRandomString(_saltLength);
             string hashed_password = CryptographicService.GenerateSaltedHash(password, salt);
 
-            // TODO: Automapper, duplicated code 
             var rightNow = DateTime.Now;
             var obj = new LoginDb
             {
@@ -44,14 +46,8 @@ namespace infrastructure.user.services
             };
 
             var login = _userRepository.addLogin(obj);
-            return new UserIdentity(
-                login.User.id,
-                login.id,
-                login.User.username, 
-                login.email, 
-                login.provider, 
-                login.User.roles, 
-                login.User.avatar);
+
+            return _mapper.Map<UserIdentity>(login);
         }
     }
 }
