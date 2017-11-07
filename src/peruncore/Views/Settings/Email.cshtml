@@ -14,7 +14,7 @@
     <div class="col-xs-2">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs tabs-left">
-            <li><a asp-area="" asp-controller="Settings" asp-action="Index">Profile</a></li>
+            <li><a asp-area="" asp-controller="Settings" asp-action="Account">Account</a></li>
             <li class="active"><a asp-area="" asp-controller="Settings" asp-action="Logins">My Logins</a></li>
         </ul>
     </div>
@@ -24,10 +24,10 @@
             <div class="tab-pane active" id="home">  
                 <h4>Change Email</h4>
                 <hr />
-                @if (TempData.ContainsKey("email_change_ok"))
+                @if (TempData.ContainsKey("notification"))
                 {
-                    <div class="alert alert-success">@TempData["email_change_ok"].ToString()</div>
-                    @TempData.Remove("email_change_ok");
+                    <div class="alert alert-danger">@TempData["notification"].ToString()</div>
+                    @TempData.Remove("notification");
                 }
                 @if (!string.IsNullOrEmpty(Model.newemail))
                 {
@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <button type="submit" class="btn btn-default pull-right">Save</button>
+                                <button type="submit" class="btn btn-info pull-right">Save</button>
                             </div>
                         </div>
                     </div>

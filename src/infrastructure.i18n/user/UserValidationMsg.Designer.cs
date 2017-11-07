@@ -125,7 +125,7 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Another user already registered this email address..
+        ///   Looks up a localized string similar to Someone already registered this email address with us. If you believe this is incorrect go to Login &gt; &quot;I forgot my password&quot;.
         /// </summary>
         public static string email_already_used {
             get {

@@ -163,3 +163,5 @@ h2, h4 {
         -o-transform: rotate(-90deg);
         transform: rotate(-90deg);
     }
+
+.mr-5 { margin-right:5px;}

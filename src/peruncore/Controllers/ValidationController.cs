@@ -54,7 +54,7 @@ namespace peruncore.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
 
-            if (identity != null && identity.GetProvider() == _authSchemeSettings.Application && username == identity.GetUserName())
+            if (identity != null  && username == identity.GetUserName())
             {
                 return Json(data: true);
             }

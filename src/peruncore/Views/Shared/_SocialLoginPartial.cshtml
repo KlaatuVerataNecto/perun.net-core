@@ -1,3 +1,13 @@
-<p><a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a> |
-<a asp-area="" asp-controller="Oauth" asp-action="Facebook">Facebook</a> |
-<a asp-area="" asp-controller="Oauth" asp-action="Twitter">Twitter</a></p>
+@model peruncore.Models.User.LoginsViewPermissionModel
+
+<p>
+@if (Model.isViewGoogle) {
+<a asp-area="" asp-controller="Oauth" asp-action="Google">Google</a> @Html.Raw("| ")
+}
+@if (Model.isViewFacebook) {
+<a asp-area="" asp-controller="Oauth" asp-action="Facebook">Facebook</a> @Html.Raw("| ")
+}
+@if(Model.isViewFacebook) {
+<a asp-area="" asp-controller="Oauth" asp-action="Twitter">Twitter</a>
+}
+</p>

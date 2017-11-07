@@ -9,8 +9,8 @@
   {
     "outputFileName": "wwwroot/css/all.min.css",
     "inputFiles": [
-      "wwwroot/css/bootstrap.flatly.min.css",
-      "wwwroot/css/site.css"
+      "wwwroot/css/site.css",
+      "wwwroot/css/bootstrap.flatly.min.css"
     ]
   }
 ]

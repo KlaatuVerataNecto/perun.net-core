@@ -1,3 +1,4 @@
+@using peruncore.Models.User
 @model peruncore.Models.User.SignUpModel
 
 @{
@@ -15,6 +16,11 @@
         <div class="form-horizontal">
             <p>Sign up</p>
             <hr />
+            @if (TempData.ContainsKey("notification"))
+            {
+                <div class="alert alert-danger">@TempData["notification"].ToString()</div>
+                    @TempData.Remove("notification");
+            }
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="username" class="col-md-2 control-label"></label>
@@ -60,12 +66,12 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-default pull-right">Sign up</button>
+                    <button type="submit" class="btn btn-info pull-right">Sign up</button>
                 </div>
             </div>
             <hr />
             <p>or use on the social logins:</p>
-            @Html.Partial("_SocialLoginPartial")
+            @Html.Partial("_SocialLoginPartial", new LoginsViewPermissionModel())
         </div>
     </form>
 </div>

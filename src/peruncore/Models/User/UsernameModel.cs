@@ -10,7 +10,7 @@ namespace peruncore.Models.User
         [Required(ErrorMessageResourceType = typeof(UserValidationMsg),ErrorMessageResourceName = "username_empty")]
         [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "username_not_in_range")]
         [StringNoSpacesValidator(ErrorMessageResourceType = typeof(UserValidationMsg), ErrorMessageResourceName = "username_not_in_range")]
-        [Remote(action: "VerifyUsername", controller: "Validation")]
+        [Remote(action: "VerifyUsernameAvailability", controller: "Validation")]
         [Display(Name = "Username")]
         public string username { get; set; }
         public string token { get; set; }

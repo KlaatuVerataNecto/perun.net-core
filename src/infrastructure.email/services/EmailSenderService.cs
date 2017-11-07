@@ -16,7 +16,7 @@ namespace infrastructure.email.services
             _emailSettingsService = emailSettingsService;
         }
 
-        public Task SendEmailAsync(string emailTo, string emailFrom, string emailFromName,  string subject, string body)
+        public Task sendEmailAsync(string emailTo, string emailFrom, string emailFromName,  string subject, string body)
         {
             Execute(emailTo, emailFrom,emailFromName, subject, body).Wait();
             return Task.FromResult(0);

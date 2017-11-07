@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace infrastructure.libs.validators
 {
+    // TODO: make it singleton and measure :-)
     public static class CustomValidators
     {
         public static void NotNull(object theObj, string msg)

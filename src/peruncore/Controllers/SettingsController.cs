@@ -39,29 +39,29 @@ namespace peruncore.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Account()
         {
             var identity = (ClaimsIdentity)User.Identity;
-            return View(new ProfileModel() {  username = identity.GetUserName()});
+            return View(new AccountModel() {  username = identity.GetUserName()});
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Profile(ProfileModel model)
+        public IActionResult Account(AccountModel model)
         {
             if (!ModelState.IsValid) return View("Index", model);
 
             var identity = (ClaimsIdentity)User.Identity;
 
-            var appLogin = _userAccountService.getApplicationLoginById(identity.GetUserId());
+            var userUsername = _userAccountService.getUsernameByUserId(identity.GetUserId());
 
-            if (appLogin.Username == model.username)
+            if (userUsername.Username == model.username)
             {
                 ModelState.AddModelError("username", UserValidationMsg.username_not_modified);
-                return View("Index", model);
+                return View("Account", model);
             }
 
-            var usernameChange = _userAccountService.changeUsername(appLogin.UserId,model.username);
+            var usernameChange = _userAccountService.changeUsername(userUsername.UserId,model.username);
 
             if (usernameChange == null)
             {
@@ -83,7 +83,7 @@ namespace peruncore.Controllers
             );
 
             TempData["username_change_ok"] = UserValidationMsg.username_change_ok;
-            return RedirectToAction("index", "settings");
+            return RedirectToAction("Account", "settings");
         }
 
         [Authorize]
@@ -91,7 +91,7 @@ namespace peruncore.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
             var list = _userAccountService.getLoginsByUserId(identity.GetUserId());
-            return View(list);
+            return View(new UserLoginsModel(list, _authSchemeSettings));
         }
         [Authorize]
         public IActionResult Email()

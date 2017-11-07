@@ -9,7 +9,7 @@ namespace infrastructure.user.entities
         public string email { get; set; }
         public string passwd { get; set; }
         public string salt { get; set; }
-	    public int? external_id { get; set; }
+	    public string external_id { get; set; }
 	    public string provider { get; set; }
         public string access_token { get; set; }
         public DateTime date_created { get; set; }

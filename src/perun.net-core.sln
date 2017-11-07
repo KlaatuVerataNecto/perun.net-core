@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.ef", "persistan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "peruncore", "peruncore\peruncore.csproj", "{B4B38248-E5BC-4F07-AF3C-AC3E10514B62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.email", "infrastructure.email\infrastructure.email.csproj", "{B4710377-B88D-452C-AFD8-F8F4E97574BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.email", "infrastructure.email\infrastructure.email.csproj", "{B4710377-B88D-452C-AFD8-F8F4E97574BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,5 +54,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FEB9F57D-912F-4555-A4EC-733CEBF5D956}
 	EndGlobalSection
 EndGlobal

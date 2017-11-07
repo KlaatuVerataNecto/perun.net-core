@@ -45,7 +45,7 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">@(((ClaimsIdentity)User.Identity).GetUserName()) <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a asp-area="" asp-controller="User" asp-action="Index" asp-route-id="@(((ClaimsIdentity)User.Identity).GetUserId())" asp-route-username="@(((ClaimsIdentity)User.Identity).GetUserName())">Profile</a></li>
-                                <li><a asp-area="" asp-controller="Settings" asp-action="Index">Settings</a></li>
+                                <li><a asp-area="" asp-controller="Settings" asp-action="Account">Settings</a></li>
                                 <li><a asp-area="" asp-controller="User" asp-action="Logout">Logout</a></li>
                             </ul>
                         </li>

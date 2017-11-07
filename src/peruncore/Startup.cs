@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Linq;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,9 +8,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Mvc;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Storage;
-using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -24,8 +24,10 @@ using infrastructure.email.interfaces;
 using infrastructure.email.services;
 using peruncore.Infrastructure.Middleware;
 using infrastructure.user.interfaces;
-using Microsoft.AspNetCore.Mvc;
 using peruncore.Infrastructure.Auth;
+using infrastructure.user.mappings;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace peruncore
 {
@@ -117,6 +119,19 @@ namespace peruncore
             builder.RegisterAssemblyTypes(emailInfrastructureAssembly)
                    .Where(t => t.Name.EndsWith("Service"))
                    .AsImplementedInterfaces();
+
+            // Add Automapper
+            builder.RegisterAssemblyTypes(userInfrastructureAssembly).AssignableTo(typeof(Profile)).As<Profile>();
+
+            builder.Register(c => new MapperConfiguration(cfg =>
+            {
+                foreach (var profile in c.Resolve<IEnumerable<Profile>>())
+                    cfg.AddProfile(profile);
+
+            })).AsSelf().SingleInstance();
+
+            builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
+
 
             // Register Email Settings 
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
