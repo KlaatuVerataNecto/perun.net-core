@@ -1,12 +1,12 @@
-﻿
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using infrastructure.user.entities;
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
 using infrastucture.libs.cryptography;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace infrastructure.user.services
 {
@@ -14,19 +14,21 @@ namespace infrastructure.user.services
     {       
         private readonly IUserRepository _userRepository;
         private readonly IAuthSchemeNameService _authSchemeNameService;
-        private readonly ILogger _logger;
         private readonly IUserAuthentiactionService _userAuthentiactionService;
+        private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
         public UserAccountService(
             IUserRepository userRepository,
             IUserAuthentiactionService userAuthentiactionService,
             IAuthSchemeNameService authSchemeNameService,
-            ILogger<UserAccountService> logger
-            )
+            IMapper mapper,
+            ILogger<UserAccountService> logger)
         {
             _userRepository = userRepository;
             _userAuthentiactionService = userAuthentiactionService;
             _authSchemeNameService = authSchemeNameService;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -48,15 +50,7 @@ namespace infrastructure.user.services
             login.User.UsernameToken.token = null;
             _userRepository.updateLogin(login);
 
-            // TODO: Use Automapper
-            return new UserIdentity(
-                login.User.id,
-                login.id,
-                login.User.username,
-                login.email,
-                login.provider,
-                login.User.roles,
-                login.User.avatar);
+            return _mapper.Map<UserIdentity>(login);
         }
 
         public string changeUsername(int userid, string username)
@@ -104,13 +98,7 @@ namespace infrastructure.user.services
                 return null;
             }
 
-            return new UserLogin(
-                login.User.id,
-                login.User.username,
-                login.email,
-                login.provider,
-                _authSchemeNameService.getDefaultProvider()
-            );
+            return _mapper.Map<UserLogin>(login);        
         }
 
         // TODO: validate password too
@@ -210,7 +198,7 @@ namespace infrastructure.user.services
 
             foreach (var l in list)
             {
-                myLogins.Add(new UserLogin(l.User.id, l.User.username, l.email, l.provider, _authSchemeNameService.getDefaultProvider()));
+                myLogins.Add(_mapper.Map<UserLogin>(l));
             }
 
             return myLogins;

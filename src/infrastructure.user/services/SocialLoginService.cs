@@ -16,7 +16,11 @@ namespace infrastructure.user.services
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public SocialLoginService(IUserRepository userRepository, IAuthSchemeNameService authSchemeNameService, IMapper mapper ,ILogger<SocialLoginService> logger) 
+        public SocialLoginService(
+            IUserRepository userRepository, 
+            IAuthSchemeNameService authSchemeNameService, 
+            IMapper mapper,
+            ILogger<SocialLoginService> logger) 
         {
             _userRepository = userRepository;
             _authSchemeNameService = authSchemeNameService;
@@ -156,18 +160,7 @@ namespace infrastructure.user.services
             // persist
             _userRepository.updateLogin(obj);
 
-            // TODO: Automapper profile for LoginDB > UserIdentity
-            return new UserIdentity(
-                obj.User.id,
-                obj.id,
-                obj.User.username,
-                obj.email,
-                obj.provider,
-                obj.User.roles,
-                obj.User.avatar,
-                true // set flag in order to ask user to pick username
-                );
-
+            return _mapper.Map<UserIdentity>(obj);
         }
     }    
 }

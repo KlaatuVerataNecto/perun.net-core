@@ -13,12 +13,13 @@ namespace infrastructure.user.models
         private readonly string _provider;
         private readonly bool _isdefault;
 
-        public UserLogin(int userid, string username, string email, string provider, string defaultProvider )
+        public UserLogin(int userid, string username, string email, string provider, string defaultProvider)
         {
             CustomValidators.IntNotNegative(userid, "userid is invalid.");
             CustomValidators.StringNotNullorEmpty(username, "username is invalid.");
             CustomValidators.StringNotNullorEmpty(email, "email is invalid.");
             CustomValidators.StringNotNullorEmpty(provider, "provider is invalid.");
+            CustomValidators.StringNotNullorEmpty(defaultProvider, "defaultProvider is invalid.");
 
             _userid = userid;
             _username = username;
