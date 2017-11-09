@@ -28,6 +28,8 @@ using peruncore.Infrastructure.Auth;
 using infrastructure.user.mappings;
 using AutoMapper;
 using System.Collections.Generic;
+using infrastructure.cqs;
+using command.handlers.post;
 
 namespace peruncore
 {
@@ -132,6 +134,12 @@ namespace peruncore
 
             builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
 
+            // Register Commmand Dispatcher 
+            builder.RegisterType<CommandDispatcher>().As<ICommandDispatcher>();
+            
+            // Command Handlers 
+            var commandHandlers = typeof(PostCommandHandlers).GetTypeInfo().Assembly;
+            builder.RegisterAssemblyTypes(commandHandlers).AsImplementedInterfaces();
 
             // Register Email Settings 
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
