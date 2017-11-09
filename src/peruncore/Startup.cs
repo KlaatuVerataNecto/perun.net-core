@@ -28,6 +28,7 @@ using peruncore.Infrastructure.Auth;
 using infrastructure.user.mappings;
 using AutoMapper;
 using System.Collections.Generic;
+using infrastucture.libs.image;
 
 namespace peruncore
 {
@@ -70,6 +71,9 @@ namespace peruncore
             services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            
+            //==
+            services.AddSingleton<IImageService, DefaultImageService>();
 
             //services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
             // cookie
