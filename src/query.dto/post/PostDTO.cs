@@ -1,9 +1,9 @@
 ﻿using query.dto.common;
-using System;
 
 namespace query.dto
 {
     public class PostDTO : DTO
     {
+        public string title { get; set; }
     }
 }

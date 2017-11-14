@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,26 +11,25 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Profiling;
-using StackExchange.Profiling.Storage;
 using Serilog;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 
-using peruncore.Config;
-using infrastructure.user.services;
 using persistance.ef.common;
 using persistance.ef.repository;
+using persistance.dapper.common;
+using infrastructure.user.services;
 using infrastructure.email.interfaces;
 using infrastructure.email.services;
-using peruncore.Infrastructure.Middleware;
 using infrastructure.user.interfaces;
-using peruncore.Infrastructure.Auth;
-using infrastructure.user.mappings;
-using AutoMapper;
-using System.Collections.Generic;
 using infrastructure.cqs;
+using infrastucture.libs.providers;
 using command.handlers.post;
+using query.handlers.post;
+using peruncore.Config;
+using peruncore.Infrastructure.Middleware;
+using peruncore.Infrastructure.Auth;
 
 namespace peruncore
 {
@@ -60,7 +60,8 @@ namespace peruncore
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add mini profiler.
-            services.AddMiniProfiler().AddEntityFramework();
+            services.AddMiniProfiler().AddEntityFramework(); // TODO: activate when moving to .NET Core 2.0 */
+
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddMemoryCache();
             services.AddSession();
@@ -73,7 +74,7 @@ namespace peruncore
             services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
-            //services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+            // services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
             // cookie
             services.AddAuthentication(options => 
                 options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value
@@ -92,17 +93,26 @@ namespace peruncore
 
             // DI
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");
-           
+
             // Create the container builder.
             var builder = new ContainerBuilder();
 
-            // Register EF
+            // Register Connection string
             builder.RegisterInstance(new ConnectionStringProvider { ConnectionString = connectionString })
                 .As<IConnectionStringProvider>()
                 .AsSelf();
 
+            // Register Dapper
+            builder.RegisterType<DapperConnectionFactory>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<DapperConnection>().AsSelf();
+
+            // Register EF 
             builder.RegisterType<EFContext>().AsImplementedInterfaces().InstancePerLifetimeScope();
             builder.RegisterType<EFContext>().AsSelf();
+
+            // Register Generic Repository
+            builder.RegisterGeneric(typeof(Repository<>))
+                    .As(typeof(IRepository<>));
 
             // Register Repositories
             var repositoryAssembly = typeof(UserRepository).GetTypeInfo().Assembly;
@@ -133,6 +143,11 @@ namespace peruncore
             })).AsSelf().SingleInstance();
 
             builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
+
+
+            // Query Handlers 
+            var queryHandlers = typeof(GetAllPublishedPostsQueryHandler).GetTypeInfo().Assembly;
+            builder.RegisterAssemblyTypes(queryHandlers).AsImplementedInterfaces();
 
             // Register Commmand Dispatcher 
             builder.RegisterType<CommandDispatcher>().As<ICommandDispatcher>();
@@ -252,18 +267,7 @@ namespace peruncore
             app.UseSession();
 
             // miniprofiler 
-            app.UseMiniProfiler(new MiniProfilerOptions
-            {
-                // Path to use for profiler URLs
-                RouteBasePath = "~/profiler",
-
-                // Control which SQL formatter to use
-                SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter(),
-
-                // Control storage
-                Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60)),              
-
-            });
+            app.UseMiniProfiler();  
 
             app.UseMvc(routes =>
             {

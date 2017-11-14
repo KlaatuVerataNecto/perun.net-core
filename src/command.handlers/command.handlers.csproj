@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\command.messages\command.messages.csproj" />
+    <ProjectReference Include="..\domain.model\domain.model.csproj" />
     <ProjectReference Include="..\infrastructure.cqs\infrastructure.cqs.csproj" />
+    <ProjectReference Include="..\infrastucture.libs\infrastucture.libs.csproj" />
+    <ProjectReference Include="..\persistance.ef\persistance.ef.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using infrastructure.user.entities;
 using infrastructure.email.entities;
+using infrastucture.libs.providers;
+using domain.model;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace persistance.ef.common
 {
-    public interface IEFContext {
+    public interface IEFContext
+    {
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
+        EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
+        DbSet<Post> Posts { get; set; }
+
+        // TODO: Remap those
         DbSet<UserDb> Users { get; set; }
         DbSet<LoginDb> Logins { get; set; }
         DbSet<UserPasswordDb> UserChanges { get; set; }
@@ -14,18 +23,26 @@ namespace persistance.ef.common
         void SaveChanges();
     }
 
-    public class EFContext : DbContext, IEFContext
+    public class EFContext : DbContext , IEFContext
     {
         private IConnectionStringProvider _connectionStringProvider;
         public EFContext(IConnectionStringProvider connectionStringProvider)
         {
             _connectionStringProvider = connectionStringProvider;
         }
+        public DbSet<Post> Posts { get; set; }
+
+        // TODO: Remap those
         public DbSet<UserDb> Users { get; set; }
         public DbSet<LoginDb> Logins { get; set; }
         public DbSet<UserPasswordDb> UserChanges { get; set; }        
         public DbSet<EmailTemplateDb> EmailTemplates { get; set; }
         public DbSet<EmailQueueDb> EmailQueueItems { get; set; }
+
+        void IEFContext.SaveChanges()
+        {
+            base.SaveChanges();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,15 +83,14 @@ namespace persistance.ef.common
 
             modelBuilder.Entity<EmailQueueDb>()
                 .ToTable("email_queue");
+
+            modelBuilder.Entity<Post>().ToTable("posts").Property<string>("title").HasField("_title");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<int>("id").HasField("_id");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
-                .UseMySql(_connectionStringProvider.ConnectionString);
+                .UseMySQL(_connectionStringProvider.ConnectionString);
 
-        void IEFContext.SaveChanges()
-        {
-            base.SaveChanges();
-        }
     }
 }
