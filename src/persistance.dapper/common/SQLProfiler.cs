@@ -9,9 +9,9 @@ namespace persistance.dapper.common
         public static DbConnection GetOpenConnection(string connectionString)
         {
             return new MySqlConnection(connectionString); // that works OK         
-            //return new StackExchange.Profiling.Data.ProfiledDbConnection( 
-            //    new MySqlConnection(connectionString), MiniProfiler.Current
-            //);
+            return new StackExchange.Profiling.Data.ProfiledDbConnection(
+                new MySqlConnection(connectionString), MiniProfiler.Current
+            );
         }
     }
 }

@@ -7,8 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0" />
-    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.0-alpha6-79" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.2" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.0-alpha8-165" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\domain.model\domain.model.csproj" />
     <ProjectReference Include="..\infrastructure.email\infrastructure.email.csproj" />
     <ProjectReference Include="..\infrastructure.user\infrastructure.user.csproj" />
   </ItemGroup>

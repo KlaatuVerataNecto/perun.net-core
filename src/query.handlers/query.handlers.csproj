@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\infrastructure.cqs\infrastructure.cqs.csproj" />
+    <ProjectReference Include="..\persistance.dapper\persistance.dapper.csproj" />
+    <ProjectReference Include="..\query.dto\query.dto.csproj" />
+    <ProjectReference Include="..\query.messages\query.messages.csproj" />
+  </ItemGroup>
+
+</Project>

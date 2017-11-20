@@ -1,10 +1,10 @@
-﻿using infrastructure.user.interfaces;
-using persistance.ef.common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using infrastructure.user.entities;
-using System;
 using System.Collections.Generic;
+
+using infrastructure.user.interfaces;
+using persistance.ef.common;
+using infrastructure.user.entities;
 
 namespace persistance.ef.repository
 {
