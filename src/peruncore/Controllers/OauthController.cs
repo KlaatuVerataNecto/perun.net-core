@@ -1,14 +1,15 @@
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
 using infrastructure.user.interfaces;
+using infrastructure.i18n.user;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
-using Microsoft.AspNetCore.Authorization;
 using peruncore.Models.User;
-using infrastructure.i18n.user;
+
 
 namespace peruncore.Controllers
 {
@@ -72,7 +73,7 @@ namespace peruncore.Controllers
 
 
             // get newly logged identity
-            var claimsPrincipal = HttpContext.Authentication.AuthenticateAsync(_authSchemeSettings.External);
+            var claimsPrincipal = HttpContext.AuthenticateAsync(_authSchemeSettings.External);
 
             // set up the main cookie 
             var authProvider = _authSchemeNameService.getProviderName(provider);
@@ -106,10 +107,10 @@ namespace peruncore.Controllers
                 }
             }
 
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
+            HttpContext.SignOutAsync(_authSchemeSettings.External);
 
             // TODO: Duplicated code: use automapper profile
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
@@ -161,7 +162,7 @@ namespace peruncore.Controllers
             }
 
             // TODO: Duplicated code
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,

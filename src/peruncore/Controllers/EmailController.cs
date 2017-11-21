@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using infrastructure.user.interfaces;
 using Microsoft.Extensions.Logging;
-using infrastructure.i18n.user;
-using System.Security.Claims;
-using peruncore.Infrastructure.Auth;
-using Microsoft.AspNetCore.Http.Authentication;
-using peruncore.Config;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+
+using infrastructure.i18n.user;
+using infrastructure.user.interfaces;
+using peruncore.Infrastructure.Auth;
+using peruncore.Config;
+
 
 namespace peruncore.Controllers
 {
@@ -45,7 +47,7 @@ namespace peruncore.Controllers
             if (identity.GetEmail() == emailChanged.OldEmail)
             {
                 // TODO: Move to signin manager service 
-                HttpContext.Authentication.SignInAsync(
+                HttpContext.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     identity.GetUserId(),

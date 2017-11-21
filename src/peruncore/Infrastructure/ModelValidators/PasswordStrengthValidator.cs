@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.CodeAnalysis.Differencing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace peruncore.Infrastructure.ModelValidators

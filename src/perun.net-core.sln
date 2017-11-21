@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.i18n", "infrastructure.i18n\infrastructure.i18n.csproj", "{69762B4F-D8DC-4F36-877C-B3ADF93B39CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.ef", "persistance.ef\persistance.ef.csproj", "{614BAAE5-F861-45FF-AD82-26A58D0B4180}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "peruncore", "peruncore\peruncore.csproj", "{B4B38248-E5BC-4F07-AF3C-AC3E10514B62}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.email", "infrastructure.email\infrastructure.email.csproj", "{B4710377-B88D-452C-AFD8-F8F4E97574BA}"
 EndProject
@@ -29,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.handlers", "query.han
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.messages", "query.messages\query.messages.csproj", "{6B5FBC1B-B8B9-4CD9-9FEF-13A620AF8278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "domain.model", "domain.model\domain.model.csproj", "{DF2BCC9D-C684-4823-8529-DF1A38B97D89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domain.model", "domain.model\domain.model.csproj", "{DF2BCC9D-C684-4823-8529-DF1A38B97D89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "peruncore", "peruncore\peruncore.csproj", "{E5C937E2-A113-42F5-9E17-139CECB8D36C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +57,6 @@ Global
 		{614BAAE5-F861-45FF-AD82-26A58D0B4180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{614BAAE5-F861-45FF-AD82-26A58D0B4180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{614BAAE5-F861-45FF-AD82-26A58D0B4180}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4B38248-E5BC-4F07-AF3C-AC3E10514B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4B38248-E5BC-4F07-AF3C-AC3E10514B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4B38248-E5BC-4F07-AF3C-AC3E10514B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4B38248-E5BC-4F07-AF3C-AC3E10514B62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4710377-B88D-452C-AFD8-F8F4E97574BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4710377-B88D-452C-AFD8-F8F4E97574BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4710377-B88D-452C-AFD8-F8F4E97574BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,6 +89,10 @@ Global
 		{DF2BCC9D-C684-4823-8529-DF1A38B97D89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF2BCC9D-C684-4823-8529-DF1A38B97D89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF2BCC9D-C684-4823-8529-DF1A38B97D89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5C937E2-A113-42F5-9E17-139CECB8D36C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5C937E2-A113-42F5-9E17-139CECB8D36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5C937E2-A113-42F5-9E17-139CECB8D36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5C937E2-A113-42F5-9E17-139CECB8D36C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

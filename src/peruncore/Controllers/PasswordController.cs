@@ -1,11 +1,12 @@
-using infrastructure.email.interfaces;
-using infrastructure.i18n.user;
-using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
+using infrastructure.email.interfaces;
+using infrastructure.i18n.user;
+using infrastructure.user.interfaces;
 using peruncore.Config;
 using peruncore.Infrastructure.Extensions;
 using peruncore.Models.User;

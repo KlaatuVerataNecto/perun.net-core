@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:33533/",
-      "sslPort": 44361
+      "applicationUrl": "http://localhost:56725/",
+      "sslPort": 0
     }
   },
   "profiles": {
@@ -15,13 +15,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ui.web": {
+    "peruncore": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:33534"
+      "applicationUrl": "http://localhost:56726/"
     }
   }
 }

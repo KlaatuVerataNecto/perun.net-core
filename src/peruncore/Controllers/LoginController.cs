@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
 
+using infrastructure.user.interfaces;
+using infrastructure.i18n.user;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
-using infrastructure.user.interfaces;
-using Microsoft.AspNetCore.Http.Authentication;
-using infrastructure.i18n.user;
+
+
 
 namespace peruncore.Controllers
 {
@@ -47,7 +49,7 @@ namespace peruncore.Controllers
             }
 
             // TODO: Duplicated code
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
                 _authSchemeSettings.Application, 
                 ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
