@@ -51,7 +51,7 @@ namespace peruncore.Controllers
         [HttpPost]
         public IActionResult Account(AccountModel model)
         {
-            if (!ModelState.IsValid) return View("Index", model);
+            if (!ModelState.IsValid) return View("Account", model);
 
             var identity = (ClaimsIdentity)User.Identity;
 

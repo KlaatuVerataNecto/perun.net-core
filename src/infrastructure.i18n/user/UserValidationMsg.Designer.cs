@@ -10,7 +10,6 @@
 
 namespace infrastructure.i18n.user {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace infrastructure.i18n.user {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("infrastructure.i18n.user.UserValidationMsg", typeof(UserValidationMsg).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("infrastructure.i18n.user.UserValidationMsg", typeof(UserValidationMsg).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -530,7 +529,16 @@ namespace infrastructure.i18n.user {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username contains spaces..
+        ///   Looks up a localized string similar to Username has invalid characters. Only letters, numbres &amp; underscores allowed..
+        /// </summary>
+        public static string username_has_invalid_characters {
+            get {
+                return ResourceManager.GetString("username_has_invalid_characters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username has invalid characters. Spaces are not allowed..
         /// </summary>
         public static string username_has_spaces {
             get {

@@ -8,7 +8,7 @@ using infrastructure.i18n.user;
 using peruncore.Models.User;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
-
+using Microsoft.AspNetCore.Http;
 
 namespace peruncore.Controllers
 {
@@ -67,6 +67,8 @@ namespace peruncore.Controllers
                     userIdentity.Avatar,
                     userIdentity.LoginProvider)
                 );
+
+            HttpContext.Session.SetInt32("LoginId", userIdentity.LoginId);
 
             return RedirectToAction("Index", "Home");
         }

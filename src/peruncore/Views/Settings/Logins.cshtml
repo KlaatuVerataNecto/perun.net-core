@@ -42,9 +42,12 @@
                         </div>
                    </div>
                 }
+                @if (!Model.IsDeactivateAddAnotherLogin)
+                {
                 <h4>Add other login</h4>
                 <hr />
                 @Html.Partial("_SocialLoginPartial", Model.LoginViewPermission)
+                }
             </div>
         </div>
     </div>
