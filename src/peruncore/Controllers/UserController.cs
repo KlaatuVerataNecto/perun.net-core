@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -16,11 +17,10 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Logout()
         {
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.Application);
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
+            HttpContext.SignOutAsync(_authSchemeSettings.Application);
+            HttpContext.Session.Remove("LoginId");
             return Redirect("/");
-        }
-
+        }    
 
         [Route("user/{id:int}/{username}")]
         [Authorize]

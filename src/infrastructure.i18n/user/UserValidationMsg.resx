@@ -253,7 +253,7 @@
     <value>This email is taken by another user. Switching back to:</value>
   </data>
   <data name="username_has_spaces" xml:space="preserve">
-    <value>Username contains spaces.</value>
+    <value>Username has invalid characters. Spaces are not allowed.</value>
   </data>
   <data name="invalid_key" xml:space="preserve">
     <value>Invalid key.</value>
@@ -290,5 +290,8 @@
   </data>
   <data name="username_change_ok" xml:space="preserve">
     <value>Your username has been changed successfully.</value>
+  </data>
+  <data name="username_has_invalid_characters" xml:space="preserve">
+    <value>Username has invalid characters. Only letters, numbres &amp; underscores allowed.</value>
   </data>
 </root>

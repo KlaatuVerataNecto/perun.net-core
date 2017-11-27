@@ -1,17 +1,19 @@
-using infrastructure.user.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Authentication;
+
+using infrastructure.user.interfaces;
+using infrastructure.i18n.user;
+using infrastructure.email.interfaces;
+using peruncore.Infrastructure.Extensions;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
 using peruncore.Config;
-using Microsoft.Extensions.Options;
-using infrastructure.i18n.user;
-using peruncore.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Mvc.Routing;
-using infrastructure.email.interfaces;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http.Authentication;
+
 
 namespace peruncore.Controllers
 {
@@ -49,7 +51,7 @@ namespace peruncore.Controllers
         [HttpPost]
         public IActionResult Account(AccountModel model)
         {
-            if (!ModelState.IsValid) return View("Index", model);
+            if (!ModelState.IsValid) return View("Account", model);
 
             var identity = (ClaimsIdentity)User.Identity;
 
@@ -69,7 +71,7 @@ namespace peruncore.Controllers
             }
 
             // TODO: Move to signin manager service 
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
             _authSchemeSettings.Application,
              ClaimsPrincipalFactory.Build(
                 identity.GetUserId(),

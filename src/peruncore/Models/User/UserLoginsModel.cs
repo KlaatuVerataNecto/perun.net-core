@@ -21,5 +21,10 @@ namespace peruncore.Models.User
         }
         public List<UserLogin> UserLogins { get; }
         public LoginsViewPermissionModel LoginViewPermission { get; }
+
+        public bool IsDeactivateAddAnotherLogin
+        {
+            get { return !LoginViewPermission.isViewFacebook && !LoginViewPermission.isViewGoogle; }
+        }
     }
 }

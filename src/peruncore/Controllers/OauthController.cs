@@ -1,14 +1,15 @@
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
 using infrastructure.user.interfaces;
+using infrastructure.i18n.user;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
-using Microsoft.AspNetCore.Authorization;
 using peruncore.Models.User;
-using infrastructure.i18n.user;
+using Microsoft.AspNetCore.Http;
 
 namespace peruncore.Controllers
 {
@@ -67,17 +68,12 @@ namespace peruncore.Controllers
         public ActionResult callback(string provider)
         {
             // get current identity
-            var currentIdentity = (ClaimsIdentity)User.Identity;
-            int currentLoginId = (currentIdentity != null) ? currentIdentity.GetLoginId() : 0;
+            int currentLoginId = (HttpContext.Session.GetInt32("LoginId") != null) ? (int)HttpContext.Session.GetInt32("LoginId") : 0;
 
-
-            // get newly logged identity
-            var claimsPrincipal = HttpContext.Authentication.AuthenticateAsync(_authSchemeSettings.External);
-
-            // set up the main cookie 
-            var authProvider = _authSchemeNameService.getProviderName(provider);
-            var authInfo = HttpContext.Authentication.GetAuthenticateInfoAsync(authProvider).Result;
-            var authIdentity = (ClaimsIdentity)authInfo.Principal.Identity;
+            // get identity
+            var authResult = HttpContext.AuthenticateAsync(_authSchemeSettings.Application);
+            var identity = authResult.Result.Principal.Identity;
+            var authIdentity = (ClaimsIdentity)identity;
 
            // login or signup
             var userIdentity = _socialLoginService.loginOrSignup(
@@ -85,7 +81,7 @@ namespace peruncore.Controllers
                 authIdentity.GetEmail(),
                 authIdentity.GetFirstName(),
                 authIdentity.GetLastName(),
-                authProvider,
+                _authSchemeNameService.getProviderName(provider),
                 currentLoginId
                 );
 
@@ -106,10 +102,8 @@ namespace peruncore.Controllers
                 }
             }
 
-            HttpContext.Authentication.SignOutAsync(_authSchemeSettings.External);
-
             // TODO: Duplicated code: use automapper profile
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,
@@ -121,6 +115,8 @@ namespace peruncore.Controllers
                     userIdentity.LoginProvider),
                 new AuthenticationProperties { IsPersistent = true }
             );
+
+            HttpContext.Session.SetInt32("LoginId", userIdentity.LoginId);
 
             if (userIdentity.IsRequiresNewUsername)
             {
@@ -161,7 +157,7 @@ namespace peruncore.Controllers
             }
 
             // TODO: Duplicated code
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
                 _authSchemeSettings.Application,
                  ClaimsPrincipalFactory.Build(
                     userIdentity.UserId,

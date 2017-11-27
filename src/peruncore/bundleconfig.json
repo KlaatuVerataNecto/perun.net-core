@@ -1,16 +1,25 @@
 [
   {
-    "outputFileName": "wwwroot/js/site.min.js",
+    "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      "wwwroot/js/custom.validation.js",
-      "wwwroot/js/site.js"
+      "wwwroot/css/site.css"
     ]
   },
   {
-    "outputFileName": "wwwroot/css/all.min.css",
+    "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/css/site.css",
-      "wwwroot/css/bootstrap.flatly.min.css"
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/all.min.js",
+    "inputFiles": [
+      "wwwroot/js/custom.validation.js",
+      "wwwroot/js/site.js"
     ]
   }
 ]

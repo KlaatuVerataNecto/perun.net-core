@@ -1,184 +1,120 @@
 ﻿using System;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
 
-using persistance.ef.common;
-using persistance.ef.repository;
-using persistance.dapper.common;
-using infrastructure.user.services;
 using infrastructure.email.interfaces;
-using infrastructure.email.services;
 using infrastructure.user.interfaces;
-using infrastructure.cqs;
-using infrastucture.libs.providers;
-using command.handlers.post;
-using query.handlers.post;
 using peruncore.Config;
-using peruncore.Infrastructure.Middleware;
 using peruncore.Infrastructure.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace peruncore
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            Log.Logger = new LoggerConfiguration()
-                              .ReadFrom.Configuration(builder)
-                              .Enrich.WithEnvironmentUserName()
-                              .Enrich.FromLogContext()
-                              .CreateLogger();
-
-            Configuration = builder;
+            Configuration = configuration;
         }
 
-        public IContainer ApplicationContainer { get; private set; }
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.  
+        // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // Add mini profiler.
-            services.AddMiniProfiler().AddEntityFramework(); // TODO: activate when moving to .NET Core 2.0 */
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
 
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            services.AddMemoryCache();
-            services.AddSession();
-
-            // Add Configuration 
-            services.AddOptions();
-            //services.Configure<CookieSettings>(Configuration.GetSection("CookieSettings"));
-            services.Configure<AuthSchemeSettings>(Configuration.GetSection("AuthSchemeSettings"));
-            services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
-            services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
-            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-
-            // services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-            // cookie
-            services.AddAuthentication(options => 
-                options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value
-            );
-
-            // Add framework services.
-            services.AddMvc();
             services.AddMvc(options =>
             {
                 options.SslPort = 44361;
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            // Data protection 
+            services.AddMemoryCache();
+            services.AddSession();
             services.AddDataProtection();
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-            // DI
-            string connectionString = Configuration.GetConnectionString("MySQLDatabase");
+            // Add Configuration.
+            services.AddOptions();
+            services.Configure<AuthSchemeSettings>(Configuration.GetSection("AuthSchemeSettings"));
+            services.Configure<ImageUploadSettings>(Configuration.GetSection("ImageUploadSettings"));
+            services.Configure<AuthSettings>(Configuration.GetSection("AuthSettings"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
-            // Create the container builder.
-            var builder = new ContainerBuilder();
-
-            // Register Connection string
-            builder.RegisterInstance(new ConnectionStringProvider { ConnectionString = connectionString })
-                .As<IConnectionStringProvider>()
-                .AsSelf();
-
-            // Register Dapper
-            builder.RegisterType<DapperConnectionFactory>().AsImplementedInterfaces().InstancePerLifetimeScope();
-            builder.RegisterType<DapperConnection>().AsSelf();
-
-            // Register EF 
-            builder.RegisterType<EFContext>().AsImplementedInterfaces().InstancePerLifetimeScope();
-            builder.RegisterType<EFContext>().AsSelf();
-
-            // Register Generic Repository
-            builder.RegisterGeneric(typeof(Repository<>))
-                    .As(typeof(IRepository<>));
-
-            // Register Repositories
-            var repositoryAssembly = typeof(UserRepository).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(repositoryAssembly)
-                   .Where(t => t.Name.EndsWith("Repository"))
-                   .AsImplementedInterfaces();
-
-            // Register User Services 
-            var userInfrastructureAssembly = typeof(UserAuthentiactionService).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(userInfrastructureAssembly)
-                   .Where(t => t.Name.EndsWith("Service"))
-                   .AsImplementedInterfaces();
-
-            // Register User Services 
-            var emailInfrastructureAssembly = typeof(EmailService).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(emailInfrastructureAssembly)
-                   .Where(t => t.Name.EndsWith("Service"))
-                   .AsImplementedInterfaces();
-
-            // Add Automapper
-            builder.RegisterAssemblyTypes(userInfrastructureAssembly).AssignableTo(typeof(Profile)).As<Profile>();
-
-            builder.Register(c => new MapperConfiguration(cfg =>
-            {
-                foreach (var profile in c.Resolve<IEnumerable<Profile>>())
-                    cfg.AddProfile(profile);
-
-            })).AsSelf().SingleInstance();
-
-            builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
-
-
-            // Query Handlers 
-            var queryHandlers = typeof(GetAllPublishedPostsQueryHandler).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(queryHandlers).AsImplementedInterfaces();
-
-            // Register Commmand Dispatcher 
-            builder.RegisterType<CommandDispatcher>().As<ICommandDispatcher>();
-            
-            // Command Handlers 
-            var commandHandlers = typeof(PostCommandHandlers).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(commandHandlers).AsImplementedInterfaces();
-
-            // Register Email Settings 
+            // Register Email and Auth Settings.
             services.AddSingleton<IEmailSettingsService, EmailSettingsService>();
-            
-            // Register Validators
             services.AddSingleton<IAuthSchemeNameService, AuthSchemeNameService>();
 
-            builder.Populate(services);
-            var container = builder.Build();
+            // Add mini profiler.
+            services.AddMiniProfiler().AddEntityFramework();
 
-            // Create the IServiceProvider based on the container.
+            //services.AddAuthorization(o =>
+            //{
+            //    o.AddPolicy("Users", p => p.RequireClaim("Users"));
+            //    o.AddPolicy("SuperUsers", p => p.RequireClaim("SuperUsers"));
+            //    o.AddPolicy("PlatformUsers", p => p.RequireClaim("PlatformUsers"));
+            //});
+
+            // Cookies.
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+                options.DefaultAuthenticateScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+                options.DefaultScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+            })
+            .AddCookie(Configuration.GetSection("AuthSchemeSettings:Application").Value)
+            .AddGoogle(options =>
+             { 
+                 options.ClientId = Configuration.GetSection("SocialLoginSettings:GoogleClientId").Value;
+                 options.ClientSecret = Configuration.GetSection("SocialLoginSettings:GoogleClientSecret").Value;
+                 options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+                 options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+                 options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+            })
+            .AddFacebook(options =>
+            {
+                options.ClientId = Configuration.GetSection("SocialLoginSettings:FacebookClientId").Value;
+                options.ClientSecret = Configuration.GetSection("SocialLoginSettings:FacebookClientSecret").Value;
+                options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+                options.Cookie.HttpOnly = true;
+                //options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/login";
+                options.LogoutPath = "/user/logout";
+                options.AccessDeniedPath = "/error/accessdenied";
+                options.SlidingExpiration = true;
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+            });
+
+            // DI Config.
+            string connectionString = Configuration.GetConnectionString("MySQLDatabase");
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule(new DependencyInjectionModule() { ConnectionString = connectionString});
+            containerBuilder.Populate(services);
+            var container = containerBuilder.Build();
             return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMemoryCache cache, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // Logging
-            app.UseMiddleware<RemoteIpAddressLoggingMiddleware>();
-            loggerFactory.AddSerilog();
-            // Ensure any buffered events are sent at shutdown
-            appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
+            //var options = new RewriteOptions().AddRedirectToHttps();
+            //app.UseRewriter(options);
 
-            // error handling 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -188,86 +124,12 @@ namespace peruncore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-         
-            // DI
-            appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
 
-            // Local cookie
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            {
-                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value,
-                LoginPath = new PathString("/Account/Unauthorized/"),
-                AccessDeniedPath = new PathString("/Account/Forbidden/"),
-                AutomaticAuthenticate = true,
-                ExpireTimeSpan = TimeSpan.FromDays(
-                    int.Parse(Configuration.GetSection("AuthSchemeSettings:ExpiryDays").Value)
-                    )
-            });
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:External").Value,
-                AutomaticAuthenticate = false,
-                AutomaticChallenge = false
-            });
-
-
-            // Google Login
-            var googleOptions = new GoogleOptions
-            {
-                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Google").Value,
-                SignInScheme = Configuration.GetSection("AuthSchemeSettings:External").Value,
-                ClientId = Configuration.GetSection("SocialLoginSettings:GoogleClientId").Value ,
-                ClientSecret = Configuration.GetSection("SocialLoginSettings:GoogleClientSecret").Value,
-                AutomaticAuthenticate = false, // allows adding new login when logged
-                AutomaticChallenge = true,
-                
-            };
-            googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
-            googleOptions.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
-            app.UseGoogleAuthentication(googleOptions);
-
-            // Facebook Login
-            var facebookOptions = new FacebookOptions
-            {
-                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Facebook").Value,
-                SignInScheme =  Configuration.GetSection("AuthSchemeSettings:External").Value,
-                ClientId = Configuration.GetSection("SocialLoginSettings:FacebookClientId").Value,
-                ClientSecret = Configuration.GetSection("SocialLoginSettings:FacebookClientSecret").Value,
-                AutomaticAuthenticate = false, // allows adding new login when logged
-                AutomaticChallenge = true,
-
-            };
-            app.UseFacebookAuthentication(facebookOptions);
-
-            // Twitter Login
-            var twitterOptions = new TwitterOptions
-            {
-                AuthenticationScheme = Configuration.GetSection("AuthSchemeSettings:Twitter").Value,
-                SignInScheme = Configuration.GetSection("AuthSchemeSettings:External").Value,
-                ConsumerKey = Configuration.GetSection("SocialLoginSettings:TwitterConsumerKey").Value,
-                ConsumerSecret = Configuration.GetSection("SocialLoginSettings:TwitterConsumerSecret").Value,
-                AutomaticAuthenticate = false, // allows adding new login when logged
-                AutomaticChallenge = true,
-
-            };
-            app.UseTwitterAuthentication(twitterOptions);
-
-            // status code page
-            app.UseStatusCodePages(async context =>
-            {
-                context.HttpContext.Response.ContentType = "text/plain";
-                await context.HttpContext.Response.WriteAsync(
-                    "Status code page, status code: " +
-                    context.HttpContext.Response.StatusCode);
-            });
-
-            // Setup
+            //app.UseMiddleware<RemoteIpAddressLoggingMiddleware>();
             app.UseStaticFiles();
             app.UseSession();
-
-            // miniprofiler 
-            app.UseMiniProfiler();  
+            app.UseAuthentication();
+            app.UseMiniProfiler();
 
             app.UseMvc(routes =>
             {
@@ -275,6 +137,8 @@ namespace peruncore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }

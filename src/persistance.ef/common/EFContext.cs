@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 using infrastructure.user.entities;
 using infrastructure.email.entities;
 using infrastucture.libs.providers;
 using domain.model;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 
 namespace persistance.ef.common
 {
@@ -89,8 +91,7 @@ namespace persistance.ef.common
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder
-                .UseMySQL(_connectionStringProvider.ConnectionString);
+            => optionsBuilder.UseMySql(_connectionStringProvider.ConnectionString);
 
     }
 }
