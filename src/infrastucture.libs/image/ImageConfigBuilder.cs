@@ -16,6 +16,8 @@ namespace infrastucture.libs.image
         private string _sourceFilePath;
         private string _saveFilePath;
         private int _quality;
+        private int? _x;
+        private int? _y;
         private int? _width;
         private int? _height;
 
@@ -63,6 +65,22 @@ namespace infrastucture.libs.image
             return this;
         }
 
+        public ImageConfigBuilder WithX(int value)
+        {
+            CustomValidators.IntNotNegative(value, null);
+
+            _x = value;
+            return this;
+        }
+
+        public ImageConfigBuilder WithY(int value)
+        {
+            CustomValidators.IntNotNegative(value, null);
+
+            _y = value;
+            return this;
+        }
+
         public ImageConfigBuilder WithWidth(int value)
         {
             CustomValidators.IntNotNegative(value, null);
@@ -80,7 +98,7 @@ namespace infrastucture.libs.image
         }
 
         public IImageConfig Build() => new ImageConfigImpl(_sourceFilePath,
-            _saveFilePath, _quality, _width, _height);
+            _saveFilePath, _quality, _x, _y, _width, _height);
 
         #endregion
 

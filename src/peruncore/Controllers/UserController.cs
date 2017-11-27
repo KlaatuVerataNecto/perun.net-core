@@ -1,7 +1,10 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using peruncore.Config;
+using peruncore.Infrastructure.Auth;
+using peruncore.Models.User;
 
 namespace peruncore.Controllers
 {
@@ -26,7 +29,10 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Index(int id, string username)
         {
-            return View();
+            return View(new ProfileViewModel
+            {
+                Avatar = ((ClaimsIdentity)User.Identity).GetAvatar()
+            });
         }
     }
 }

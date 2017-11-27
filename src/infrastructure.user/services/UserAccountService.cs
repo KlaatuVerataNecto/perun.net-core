@@ -70,6 +70,22 @@ namespace infrastructure.user.services
             return username;
         }
 
+        public string changeAvatar(int userid, string avatar)
+        {
+            var user = _userRepository.getUserById(userid);
+            if (user == null)
+            {
+                _logger.LogError("Invalid user tries to change avatar.");
+                return null;
+            }
+            
+
+            user.avatar = avatar;
+            _userRepository.updateUser(user);
+
+            return avatar;
+        }
+
         // TODO: Redundand data retrieved
         public UserUsername getUsernameByUserId(int userid)
         {

@@ -6,6 +6,8 @@ namespace peruncore.Models.User
 {
     public class UserAvatarModel
     {
+        
+        [Required]
         public IFormFile avatar_image { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessageResourceType = typeof(UserValidationMsg),

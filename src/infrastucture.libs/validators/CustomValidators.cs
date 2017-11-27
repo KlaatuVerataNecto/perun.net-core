@@ -93,7 +93,10 @@ namespace infrastructure.libs.validators
 
         public static void IsValidFilePath(string value, string paramName)
         {
-            if (value.Intersect(Path.GetInvalidFileNameChars()).Any())
+            var filePath = Path.GetDirectoryName(value);
+            var fileName = Path.GetFileName(value);
+            if (filePath.Intersect(Path.GetInvalidPathChars()).Any() ||
+                fileName.Intersect(Path.GetInvalidFileNameChars()).Any())
             {
                 throw new ArgumentException(
                     "The file name contains invalid characters.", paramName);

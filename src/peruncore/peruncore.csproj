@@ -1,16 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <RuntimeIdentifiers>win7-x64;win7-x86;win8-x64;ubuntu.16.04-x64;</RuntimeIdentifiers>
   </PropertyGroup>
-
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
     <AssemblyName>peruncore</AssemblyName>
     <RootNamespace>peruncore</RootNamespace>
   </PropertyGroup>
-<!-- 
+  <!-- 
   <ItemGroup>
     <Content Include="wwwroot\js\custom.validation.js" />
     <Content Include="wwwroot\js\custom.validation.min.js" />
@@ -58,7 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
+    <Folder Include="wwwroot\images\useravatar" />
+    <Folder Include="wwwroot\upload" />
     <Folder Include="wwwroot\upload\" />
   </ItemGroup>
-
 </Project>

@@ -85,8 +85,8 @@ namespace peruncore
             services.AddMvc();
             services.AddMvc(options =>
             {
-                options.SslPort = 44361;
-                options.Filters.Add(new RequireHttpsAttribute());
+//                options.SslPort = 44361;
+//                options.Filters.Add(new RequireHttpsAttribute());
             });
 
             // Data protection 

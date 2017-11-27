@@ -10,14 +10,18 @@
         /// <param name="sourceFilePath"></param>
         /// <param name="saveFilePath"></param>
         /// <param name="quality"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
         public ImageConfigImpl(string sourceFilePath, string saveFilePath,
-            int quality, int? width = null, int? height = null)
+            int quality, int? x = null, int? y = null, int? width = null, int? height = null)
         {
             SourceFilePath = sourceFilePath;
             SaveFilePath = saveFilePath;
             Quality = quality;
+            X = x;
+            Y = y;
             Width = width;
             Height = height;
         }
@@ -32,6 +36,12 @@
 
         /// <inheritdoc />
         public int Quality { get; }
+
+        /// <inheritdoc />        
+        public int? X { get; }
+        
+        /// <inheritdoc />
+        public int? Y { get; }
 
         /// <inheritdoc />
         public int? Width { get; }

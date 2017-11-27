@@ -7,9 +7,9 @@ namespace infrastucture.libs.image
     public interface IImageService
     {
 
-        void Resize(IImageConfig config);
+        void Crop(IImageConfig config);
 
-        Task ResizeAsync(IImageConfig config,
+        Task CropAsync(IImageConfig config,
             CancellationToken cancellationToken = new CancellationToken());
 
     }

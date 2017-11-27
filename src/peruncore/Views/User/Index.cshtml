@@ -1,15 +1,19 @@
-
+@model peruncore.Models.User.ProfileViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var avatar = string.IsNullOrWhiteSpace(Model?.Avatar)
+        ? "/demo/users/demo.jpg"
+        : Model.Avatar;
 }
 
 <div class="profile-cover">
     <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
     <div class="media">
         <div class="media-left">
-            <a href="#" class="profile-thumb">
-                <img src="/demo/users/demo.jpg" class="img-circle" alt="">
+            <a href="#" class="profile-thumb" data-toggle="modal" data-target="#avatar-modal">
+                <img src="@avatar" class="img-circle" alt="" data-user-avatar />
             </a>
         </div>
 
@@ -18,3 +22,280 @@
         </div>
     </div>
 </div>
+
+<!-- Modal0 -->
+<div class="modal fade" id="avatar-modal" tabindex="-1" aria-labelledby="avatar-modal-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                
+                Update your avatar
+            </div>
+            
+            <div class="modal-body">
+                <div class="alert alert-danger" id="avatar-error" style="display: none;"></div>
+                <div id="avatar-dropzone" class="dropzone text-center">
+                    <div id="avatar-preview"></div>
+                    <div class="dz-message">
+                        Drop here your avatar file
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-success" id="avatar-select-button">Select file...</button>
+                <button type="button" class="btn btn-primary" id="start-avatar-crop" disabled>Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal1 -->
+<div class="modal fade" id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                
+                Crop your avatar
+            </div>
+            
+            <div class="modal-body text-center">
+                <div class="img-cropper">
+                    <img alt=""/>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="start-avatar-upload">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Css
+{
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/dropzone/dist/dropzone.css" />
+        <link rel="stylesheet" href="~/lib/cropperjs/dist/cropper.min.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css"
+              asp-fallback-href="~/lib/dropzone/dist/min/dropzone.min.css"
+              asp-fallback-test-class="dropzone"
+              asp-fallback-test-property="min-height"
+              asp-fallback-test-value="150px" />
+    </environment>
+}
+
+@section Scripts
+{
+    <environment names="Development">
+        <script src="~/lib/dropzone/dist/dropzone.js" asp-append-version="true"></script>
+        <script src="~/lib/cropperjs/dist/cropper.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"
+                asp-fallback-src="~/lib/dropzone/dist/min/dropzone.min.js"
+                asp-fallback-test="window.Dropzone"
+                crossorigin="anonymous"
+                integrity="sha256-eO9VTVeZLaplH86Iwt8l39+l7GZpLOTsVWYziS5oY0Q="></script>
+    </environment>
+
+    <script type="text/javascript">
+        Dropzone.autoDiscover = false;
+        (function() {
+            var isUploading = false,
+                cropper = undefined,
+                $avatarModal = $('#avatar-modal'),
+                $avatarCropModal = $('#crop-avatar-modal'),
+                $avatarDropzone = $('#avatar-dropzone'),
+                $dropzoneError = $('#avatar-error'),
+                $dropzoneMessage = $avatarDropzone.find('.dz-message'),
+                $startAvatarCrop = $('#start-avatar-crop'),
+                $startAvatarUpload = $('#start-avatar-upload');
+
+            var dz = new Dropzone(
+                '#avatar-dropzone',
+                {
+                    url: '@Url.Action("Upload", "Avatar")',
+                    params: {
+                        avatar_x: 0,
+                        avatar_y: 0,
+                        avatar_width: 0,
+                        avatar_height: 0
+                    },
+                    paramName: 'avatar_image',
+                    thumbnailWidth: 128,
+                    thumbnailHeight: 128,
+                    clickable: ['#avatar-select-button'],
+                    autoQueue: false,
+                    maxFiles: 2,
+                    maxFilesize: 2,
+                    acceptedFiles: 'image/*',
+                    accept: function(file, done) {
+                        $dropzoneError.text('').hide();
+                        $startAvatarCrop.removeAttr('disabled');
+                        $dropzoneMessage.hide();
+
+                        if (this.files.length > 1)
+                            dz.removeFile(dz.files[0]);
+
+                        done();
+                    },
+                    error: function(file, message) {
+                        $dropzoneError.text(message).show();
+                        if (!isUploading)
+                            this.removeFile(file);
+                        else {
+                            $avatarModal.find('button:not(#start-avatar-crop)').removeAttr('disabled');
+                            if (this.files.length === 0)
+                                $startAvatarCrop.attr('disabled', '');
+                        }
+
+                        isUploading = false;
+                    },
+                    success: function(file, response) {
+                        if (response && response.imageUrl)
+                            $('img[data-user-avatar]').attr('src', response.imageUrl);
+                    },
+                    previewsContainer: '#avatar-preview',
+                    previewTemplate:
+                        '<div class="dz-preview dz-image-preview">' +
+                            '<div class="dz-image"><img data-dz-thumbnail /></div>' +
+                            '<div class="dz-details">' +
+                            '<div class="dz-size"><span data-dz-size></span></div>' +
+                            '<div class="dz-filename"><span data-dz-name></span></div>' +
+                            '</div>' +
+                            '<div class="dz-progress">' +
+                            '<span class="dz-upload" data-dz-uploadprogress></span>' +
+                            '</div>' +
+                            '</div>'
+                }
+            );
+
+            // Dropzone events
+            dz
+                .on('removedfile',
+                    function() {
+                        if (this.files.length === 0)
+                            $dropzoneMessage.show();
+                    })
+                .on('thumbnail',
+                    function(file) {
+                        dz.options.params.avatar_x = '0';
+                        dz.options.params.avatar_y = '0';
+                        dz.options.params.avatar_width = '' + Math.round(file.width);
+                        dz.options.params.avatar_height = '' + Math.round(file.height);
+                    })
+                .on('sending',
+                    function() {
+                        isUploading = true;
+                        $avatarModal.find('button').attr('disabled', '');
+                    })
+                .on('success',
+                    function() {
+                        isUploading = false;
+                        $avatarModal.modal('hide');
+                    });
+
+            // Button event
+            $startAvatarCrop.on('click',
+                function() {
+                    var files = dz.getAcceptedFiles();
+                    if (files.length === 0)
+                        return;
+
+                    // Force background to be white
+                    var canvas = document.createElement('canvas');
+                    canvas.width = files[0].width;
+                    canvas.height = files[0].height;
+                    var ctx = canvas.getContext('2d');
+
+                    ctx.beginPath();
+                    ctx.rect(0, 0, files[0].width, files[0].height);
+                    ctx.fillStyle = "white";
+                    ctx.fill();
+
+                    var tmpImage = new Image();
+                    tmpImage.onload = function() {
+                        ctx.drawImage(tmpImage, 0, 0);
+
+                        var img = $avatarCropModal.find('img')[0];
+                        img.onload = function() {
+                            $avatarCropModal.modal('show');
+                        };
+                        img.src = canvas.toDataURL('image/jpeg');
+                    };
+                    tmpImage.src = files[0].dataURL;
+                });
+
+            //
+            $startAvatarUpload.on('click',
+                function() {
+                    $avatarCropModal.modal('hide');
+                    dz.enqueueFiles(dz.getAcceptedFiles());
+                });
+
+            // Modal events
+            $avatarModal
+                .on('show.bs.modal', function() {
+                    dz.removeAllFiles();
+                    $avatarModal.find('button:not(#start-avatar-crop)')
+                        .removeAttr('disabled');
+                })
+                .on('hide.bs.modal',
+                    function() {
+                        if (isUploading) {
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+
+                            return false;
+                        }
+
+                        return true;
+                    })
+                .on('hidden.bs.modal',
+                    function() {
+                        $dropzoneError.text('').hide();
+                    });
+
+            // Crop modal events
+            $avatarCropModal
+                .on('shown.bs.modal',
+                    function() {
+                        cropper = new Cropper(
+                            $avatarCropModal.find('img')[0],
+                            {
+                                viewMode: 1,
+                                aspectRatio: 1 / 1,
+                                zoomable: false,
+                                rotable: false,
+                                scalable: false,
+                                minCropBoxWidth: 128,
+                                minCropBoxHeight: 128,
+                                crop: function(e) {
+                                    dz.options.params.avatar_x = '' + Math.round(e.detail.x);
+                                    dz.options.params.avatar_y = '' + Math.round(e.detail.y);
+                                    dz.options.params.avatar_width = '' + Math.round(e.detail.width);
+                                    dz.options.params.avatar_height = '' + Math.round(e.detail.height);
+                                }
+                            });
+                    })
+                .on('hidden.bs.modal',
+                    function() {
+                        cropper.destroy();
+                        cropper = undefined;
+
+                        $avatarCropModal.find('img')[0].src = '';
+                    });
+        })();
+    </script>
+}

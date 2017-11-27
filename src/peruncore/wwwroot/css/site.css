@@ -254,3 +254,11 @@ h2, h4 {
 .display-block, label.display-block {
     display: block;
 }
+
+.img-cropper {
+    width: 100%;
+}
+
+.img-cropper img {
+    max-width: 100%;
+}
