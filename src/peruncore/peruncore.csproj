@@ -57,7 +57,5 @@
   <ItemGroup>
     <Folder Include="log\" />
     <Folder Include="wwwroot\images\useravatar" />
-    <Folder Include="wwwroot\upload" />
-    <Folder Include="wwwroot\upload\" />
   </ItemGroup>
 </Project>
