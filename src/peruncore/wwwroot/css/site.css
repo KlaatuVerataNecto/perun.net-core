@@ -271,10 +271,13 @@ h2, h4 {
 .user-avatar .overlay {
     display: none;
     position: absolute;
-    top: 0;
-    right: 0;
+    bottom: 5px;
+    margin-left: 50%;
+    transform: translateX(-58%);
     padding: 3px;
     background: white;
+    border: 1px solid #333;
+    border-radius: 3px;
 }
 
 .user-avatar:hover .overlay {
