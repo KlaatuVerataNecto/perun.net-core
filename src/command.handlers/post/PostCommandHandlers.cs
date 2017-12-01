@@ -17,7 +17,7 @@ namespace command.handlers.post
         public void Handle(CreatePostCommand command)
         {
             // TODO: Validate command
-            var post = new Post(command.Title);
+            var post = new Post(command.CommandId ,command.Title, command.ImageName);
             _repositoryPost.Add(post);
         }
     }

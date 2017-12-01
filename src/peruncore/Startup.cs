@@ -72,7 +72,19 @@ namespace peruncore
                 options.DefaultAuthenticateScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
                 options.DefaultScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
             })
-            .AddCookie(Configuration.GetSection("AuthSchemeSettings:Application").Value)
+            .AddCookie(
+                Configuration.GetSection("AuthSchemeSettings:Application").Value,
+                options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    //options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                    options.LoginPath = "/login";
+                    options.LogoutPath = "/user/logout";
+                    options.AccessDeniedPath = "/error/accessdenied";
+                    options.SlidingExpiration = true;
+                    options.ReturnUrlParameter = "return_url";
+                }
+            )
             .AddGoogle(options =>
              { 
                  options.ClientId = Configuration.GetSection("SocialLoginSettings:GoogleClientId").Value;
@@ -80,7 +92,8 @@ namespace peruncore
                  options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
                  options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
                  options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
-            })
+
+             })
             .AddFacebook(options =>
             {
                 options.ClientId = Configuration.GetSection("SocialLoginSettings:FacebookClientId").Value;
@@ -88,17 +101,17 @@ namespace peruncore
                 options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
             });
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = Configuration.GetSection("AuthSchemeSettings:Application").Value;
-                options.Cookie.HttpOnly = true;
-                //options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                options.LoginPath = "/login";
-                options.LogoutPath = "/user/logout";
-                options.AccessDeniedPath = "/error/accessdenied";
-                options.SlidingExpiration = true;
-                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-            });
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    //options.Cookie.Name = Configuration.GetSection("AuthSchemeSettings:Application").Value;
+            //    options.Cookie.HttpOnly = true;
+            //    //options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+            //    options.LoginPath = "/login";
+            //    options.LogoutPath = "/user/logout";
+            //    options.AccessDeniedPath = "/error/accessdenied";
+            //    options.SlidingExpiration = true;
+            //    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+            //});
 
             // DI Config.
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");

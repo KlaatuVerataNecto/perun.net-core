@@ -5,7 +5,7 @@ using infrastructure.user.entities;
 using infrastructure.email.entities;
 using infrastucture.libs.providers;
 using domain.model;
-
+using System;
 
 namespace persistance.ef.common
 {
@@ -86,8 +86,12 @@ namespace persistance.ef.common
             modelBuilder.Entity<EmailQueueDb>()
                 .ToTable("email_queue");
 
-            modelBuilder.Entity<Post>().ToTable("posts").Property<string>("title").HasField("_title");
             modelBuilder.Entity<Post>().ToTable("posts").Property<int>("id").HasField("_id");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<string>("title").HasField("_title");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<string>("postimage").HasField("_postImage");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<string>("guid").HasField("_guid");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<DateTime>("date_created").HasField("_dateCreated");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<bool>("is_published").HasField("_isPublished");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

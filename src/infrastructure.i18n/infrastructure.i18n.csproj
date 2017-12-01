@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="post\PostValidationMsg.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PostValidationMsg.resx</DependentUpon>
+    </Compile>
     <Compile Update="user\UserValidationMsg.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -13,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="post\PostValidationMsg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PostValidationMsg.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="user\UserValidationMsg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserValidationMsg.Designer.cs</LastGenOutput>

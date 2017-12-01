@@ -1,9 +1,11 @@
 using System;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using command.messages.post;
 using infrastructure.cqs;
-
+using peruncore.Models.Post;
 
 namespace peruncore.Controllers
 {
@@ -18,19 +20,29 @@ namespace peruncore.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(int id, string slug)
         {
             return View();
         }
 
-        // Demonstration of how to use command dispatcher
-
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(PostModel model)
+        {
+            //TODO: Use Automapper
             var command = new CreatePostCommand();
             command.CommandId = Guid.NewGuid();
-            command.Title = "Hello";
+            command.Title = model.title;
+            command.ImageName = model.post_image.FileName;
 
             try
             {
