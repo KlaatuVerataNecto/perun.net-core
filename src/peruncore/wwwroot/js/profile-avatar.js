@@ -13,7 +13,7 @@ Dropzone.autoDiscover = false;
     var dz = new Dropzone(
         '#avatar-dropzone',
         {
-            url: '/profile/avatar',
+            url: '/avatar/upload',
             params: {
                 avatar_x: 0,
                 avatar_y: 0,

@@ -309,3 +309,4 @@ fabric.properties
 
 peruncore/wwwroot/images/*
 peruncore/wwwroot/upload/*
+peruncore/wwwroot/lib/*

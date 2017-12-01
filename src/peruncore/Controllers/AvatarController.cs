@@ -6,15 +6,14 @@ using System.Security.Claims;
 using infrastructure.user.interfaces;
 using infrastucture.libs.image;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.Web.CodeGeneration;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+using Microsoft.AspNetCore.Authentication;
 
 #endregion
 
@@ -99,7 +98,7 @@ namespace peruncore.Controllers
                 return BadRequest("Unable to change avatar");
 
             // TODO: DRY
-            HttpContext.Authentication.SignInAsync(
+            HttpContext.SignInAsync(
                 _authSchemeSettings.Application,
                 ClaimsPrincipalFactory.Build(
                     identity.GetUserId(),

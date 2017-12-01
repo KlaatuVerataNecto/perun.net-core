@@ -194,12 +194,5 @@ namespace peruncore.Controllers
             return RedirectToAction("password", "settings");
 
         }
-
-
-        // TODO: add [Authorize]
-        public IActionResult Avatar()
-        {
-            return View();
-        }
     }
 }
