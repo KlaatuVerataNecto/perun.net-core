@@ -331,6 +331,7 @@
           <e p="js" t="Include">
             <e p="all.min.js" t="Include" />
             <e p="custom.validation.js" t="Include" />
+            <e p="profile-avatar.js" t="Include" />
             <e p="site.js" t="Include" />
             <e p="site.min.js" t="Include" />
           </e>

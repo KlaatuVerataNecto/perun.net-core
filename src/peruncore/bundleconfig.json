@@ -3,6 +3,7 @@
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/custom.validation.js",
+      "wwwroot/js/profile-avatar.js",
       "wwwroot/js/site.js"
     ]
   },
