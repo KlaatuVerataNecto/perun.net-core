@@ -1,0 +1,16 @@
+﻿<environment names="Development">
+    <script src="~/lib/dropzone/dist/dropzone.js" asp-append-version="true"></script>
+    <script src="~/lib/cropperjs/dist/cropper.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"
+            asp-fallback-src="~/lib/dropzone/dist/min/dropzone.min.js"
+            asp-fallback-test="window.Dropzone"
+            crossorigin="anonymous"
+            integrity="sha256-eO9VTVeZLaplH86Iwt8l39+l7GZpLOTsVWYziS5oY0Q="></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.1.3/cropper.min.js"
+            asp-fallback-src="~/lib/cropperjs/dist/cropper.min.js"
+            asp-fallback-test="window.Cropper"
+            crossorigin="anonymous"
+            integrity="sha256-bq5l5V1OLHsZ9XsWslrYp0L+t4lfUrPEdX+DbNiRJzI="></script>
+</environment>
