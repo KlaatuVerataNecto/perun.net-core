@@ -7,12 +7,8 @@
         ? "/demo/users/demo.jpg"
         : Model.Avatar;
 }
-@section Css {
-    @{await Html.RenderPartialAsync("_ImageUploadCssPartial"); }
-}
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ImageUploadScriptsPartial");}
-}
+@section Css { @{await Html.RenderPartialAsync("_ImageUploadCssPartial"); }}
+@section Scripts {@{await Html.RenderPartialAsync("_ImageUploadScriptsPartial");}}
 <div class="profile-cover">
     <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
     <div class="media">
