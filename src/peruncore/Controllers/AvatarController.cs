@@ -65,23 +65,22 @@ namespace peruncore.Controllers
                 _imageUploadSettings.AvatarImagePath,
                 Guid.NewGuid() + _imageUploadSettings.DefaultImageExtension);
 
+            // Copy the file
             using (var stream = new FileStream(filePathUploaded, FileMode.Create))
-            {
                 model.avatar_image.CopyTo(stream);
+            
+            // Crop the image
+            var config = new ImageConfigBuilder()
+                         .WithSourceFilePath(filePathUploaded)
+                         .WithSaveFilePath(filePathResized)
+                         .WithQuality(_imageUploadSettings.UserAvatarQuality)
+                         .WithX(model.avatar_x)
+                         .WithY(model.avatar_y)
+                         .WithWidth(model.avatar_width)
+                         .WithHeight(model.avatar_height)
+                         .Build();
 
-                // Resize image
-                var config = new ImageConfigBuilder()
-                             .WithSourceFilePath(filePathUploaded)
-                             .WithSaveFilePath(filePathResized)
-                             .WithQuality(_imageUploadSettings.UserAvatarQuality)
-                             .WithX(model.avatar_x)
-                             .WithY(model.avatar_y)
-                             .WithWidth(model.avatar_width)
-                             .WithHeight(model.avatar_height)
-                             .Build();
-
-                _imageService.Crop(config);
-            }
+            _imageService.Crop(config);
             
             //
             var identity = (ClaimsIdentity)User.Identity;
