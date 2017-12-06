@@ -243,6 +243,7 @@
       </e>
       <e p="perun.net-core.sln" t="IncludeFlat" />
       <e p="peruncore" t="IncludeRecursive">
+        <e p=".bowerrc" t="Include" />
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
         <e p="appsettings.Staging.json" t="Include" />
@@ -378,6 +379,8 @@
             <e p="Password.cshtml" t="Include" />
           </e>
           <e p="Shared" t="Include">
+            <e p="_ImageUploadCssPartial.cshtml" t="Include" />
+            <e p="_ImageUploadScriptsPartial.cshtml" t="Include" />
             <e p="_Layout.cshtml" t="Include" />
             <e p="_SocialLoginPartial.cshtml" t="Include" />
             <e p="_ValidationCssPartial.cshtml" t="Include" />
