@@ -307,6 +307,6 @@ fabric.properties
 
 !infrastructure.user
 
-peruncore/wwwroot/images/*
-peruncore/wwwroot/upload/*
+peruncore/wwwroot/images/useravatar/*
+peruncore/wwwroot/images/upload/*
 peruncore/wwwroot/lib/*
