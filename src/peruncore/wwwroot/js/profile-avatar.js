@@ -1,4 +1,5 @@
 Dropzone.autoDiscover = false;
+
 (function() {
     var isUploading = false,
         cropper = undefined,
@@ -7,7 +8,6 @@ Dropzone.autoDiscover = false;
         $avatarDropzone = $('#avatar-dropzone'),
         $dropzoneError = $('#avatar-error'),
         $dropzoneMessage = $avatarDropzone.find('.dz-message'),
-        $startAvatarCrop = $('#start-avatar-crop'),
         $startAvatarUpload = $('#start-avatar-upload');
 
     var dz = new Dropzone(
@@ -28,31 +28,38 @@ Dropzone.autoDiscover = false;
             maxFiles: 2,
             maxFilesize: 2,
             acceptedFiles: 'image/*',
-            accept: function(file, done) {
+            accept: function (file, done) {
+                $(".dz-progress").remove(); // hide progress bar
+                $(".dz-size").remove(); // hide size info
+                $(".dz-filename").remove(); // hide filename info
+
                 $dropzoneError.text('').hide();
-                $startAvatarCrop.removeAttr('disabled');
                 $dropzoneMessage.hide();
 
-                if (this.files.length > 1)
+                if (this.files.length > 1) {
                     dz.removeFile(dz.files[0]);
+                }
 
                 done();
             },
             error: function(file, message) {
                 $dropzoneError.text(message).show();
-                if (!isUploading)
+                if (!isUploading) {
                     this.removeFile(file);
+                }
                 else {
                     $avatarModal.find('button:not(#start-avatar-crop)').removeAttr('disabled');
-                    if (this.files.length === 0)
+                    if (this.files.length === 0) {
                         $startAvatarCrop.attr('disabled', '');
+                    }
                 }
 
                 isUploading = false;
             },
             success: function(file, response) {
-                if (response && response.imageUrl)
+                if (response && response.imageUrl) {
                     $('img[data-user-avatar]').attr('src', response.imageUrl);
+                }
             },
             previewsContainer: '#avatar-preview',
             previewTemplate:
@@ -73,8 +80,9 @@ Dropzone.autoDiscover = false;
     dz
         .on('removedfile',
             function() {
-                if (this.files.length === 0)
+                if (this.files.length === 0) {
                     $dropzoneMessage.show();
+                }
             })
         .on('thumbnail',
             function(file) {
@@ -83,6 +91,8 @@ Dropzone.autoDiscover = false;
                 dz.options.params.avatar_width = Math.round(file.width);
                 // noinspection JSSuspiciousNameCombination
                 dz.options.params.avatar_height = Math.round(file.height);
+                $avatarModal.modal('hide');
+                startAvatarCrop();
             })
         .on('sending',
             function() {
@@ -92,15 +102,15 @@ Dropzone.autoDiscover = false;
         .on('success',
             function() {
                 isUploading = false;
-                $avatarModal.modal('hide');
+                $avatarModal.modal('hide');               
             });
 
-    // Button event
-    $startAvatarCrop.on('click',
-        function() {
+    function startAvatarCrop()
+    {
             var files = dz.getAcceptedFiles();
-            if (files.length === 0)
+            if (files.length === 0) {
                 return;
+            }
 
             // Force background to be white
             var canvas = document.createElement('canvas');
@@ -124,7 +134,9 @@ Dropzone.autoDiscover = false;
                 img.src = canvas.toDataURL('image/jpeg');
             };
             tmpImage.src = files[0].dataURL;
-        });
+    }
+
+    // Button events
 
     //
     $startAvatarUpload.on('click',
@@ -145,10 +157,8 @@ Dropzone.autoDiscover = false;
                 if (isUploading) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-
                     return false;
                 }
-
                 return true;
             })
         .on('hidden.bs.modal',
@@ -185,7 +195,6 @@ Dropzone.autoDiscover = false;
             function() {
                 cropper.destroy();
                 cropper = undefined;
-
                 $avatarCropModal.find('img')[0].src = '';
             });
 })();

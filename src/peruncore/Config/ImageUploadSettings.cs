@@ -9,5 +9,7 @@ namespace peruncore.Config
         public int UserAvatarQuality { get; set; }
         public int UserAvatarWidth { get; set; }
         public int UserAvatarHeight { get; set; }
+        public string AvatarImageDirURL { get; set; }
+        public string ImageDefaultDirURL { get; set; }
     }
 }

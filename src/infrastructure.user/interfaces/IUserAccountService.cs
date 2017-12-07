@@ -5,6 +5,7 @@ namespace infrastructure.user.interfaces
 {
     public interface IUserAccountService
     {
+        UserProfile getUserProfile(int userId);
         string changeUsername(int userid, string username);
         string changeAvatar(int userid, string avatar);
         UserIdentity changeUsernameByToken(int userid, string username, string token);

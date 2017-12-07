@@ -283,3 +283,38 @@ h2, h4 {
 .user-avatar:hover .overlay {
     display: block;
 }
+
+.change-cover {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.change-cover-text {
+    display: none;
+}
+
+.change-cover:hover > .change-cover-text {
+    display: inline;
+    padding-left:5px;
+}
+
+.change-cover input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

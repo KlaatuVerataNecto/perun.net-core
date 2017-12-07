@@ -2,29 +2,36 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var avatar = string.IsNullOrWhiteSpace(Model?.Avatar)
-        ? "/demo/users/demo.jpg"
-        : Model.Avatar;
 }
+@if (Model.CanUpdate)
+{
 @section Css { @{await Html.RenderPartialAsync("_ImageUploadCssPartial"); }}
 @section Scripts {@{await Html.RenderPartialAsync("_ImageUploadScriptsPartial");}}
+}
 <div class="profile-cover">
     <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
+    <span class="btn btn-default change-cover">
+        <span class="glyphicon glyphicon-camera"></span><span class="change-cover-text">Upload Cover Photo</span>
+        <input type="file" hidden/>
+    </span>
     <div class="media">
         <div class="media-left user-avatar">
             <a href="#" class="profile-thumb" data-toggle="modal" data-target="#avatar-modal">
-                <span class="overlay">change</span>
-                <img src="@avatar" class="img-circle" alt="" data-user-avatar/>
+                @if (Model.CanUpdate)
+                {<span class="overlay">change</span>
+                }
+                <img src="@Model.Avatar" class="img-circle" alt="" data-user-avatar/>
             </a>
         </div>
 
         <div class="media-body">
-            <h1>Klaatu Verata Necto<small class="display-block">Spain</small></h1>
+            <h1>@Model.Username<small class="display-block">@Model.Country</small></h1>
         </div>
     </div>
 </div>
 
+@if (Model.CanUpdate)
+{
 <!-- Modal0 -->
 <div class="modal fade" id="avatar-modal" tabindex="-1" aria-labelledby="avatar-modal-label">
     <div class="modal-dialog" role="document">
@@ -50,7 +57,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-success" id="avatar-select-button">Select file...</button>
-                <button type="button" class="btn btn-primary" id="start-avatar-crop" disabled>Crop</button>
             </div>
         </div>
     </div>
@@ -76,8 +82,9 @@
             
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="start-avatar-upload">Upload</button>
+                <button type="button" class="btn btn-primary" id="start-avatar-upload">Save</button>
             </div>
         </div>
     </div>
 </div>
+}

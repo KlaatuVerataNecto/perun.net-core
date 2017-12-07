@@ -14,6 +14,7 @@ using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 #endregion
 
@@ -33,10 +34,13 @@ namespace peruncore.Controllers
 
         #endregion
 
-        public AvatarController(IOptions<ImageUploadSettings> imageUploadSettings,
+        public AvatarController(
+            IOptions<ImageUploadSettings> imageUploadSettings,
             IOptions<AuthSchemeSettings> authSchemeSettings,
-            IHostingEnvironment hostingEnvironment, IImageService imageService,
-            IUserAccountService userAccountService, ILogger<AvatarController> logger)
+            IHostingEnvironment hostingEnvironment, 
+            IImageService imageService,
+            IUserAccountService userAccountService, 
+            ILogger<AvatarController> logger)
         {
             _imageUploadSettings = imageUploadSettings.Value;
             _authSchemeSettings = authSchemeSettings.Value;
@@ -51,6 +55,7 @@ namespace peruncore.Controllers
         #region == Actions ==
 
         [HttpPost]
+        [Authorize]
         public ActionResult Upload(UserAvatarModel model)
         {
             model = model ?? new UserAvatarModel();
@@ -84,14 +89,12 @@ namespace peruncore.Controllers
             
             //
             var identity = (ClaimsIdentity)User.Identity;
-            var absUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
-            var imageUrl = absUrl + "/images/useravatar/" +
-                           Path.GetFileName(filePathResized);
+            //var absUrl = string.Format("{0}://{1}", Request.Scheme, Request.Host);
+            //var imageUrl = absUrl + "/images/useravatar/" + Path.GetFileName(filePathResized);
+            var imageUrl = Path.GetFileName(filePathResized);
 
-            var userUsername =
-                _userAccountService.getUsernameByUserId(identity.GetUserId());
-            var avatarChange =
-                _userAccountService.changeAvatar(userUsername.UserId, imageUrl);
+            var userUsername = _userAccountService.getUsernameByUserId(identity.GetUserId());
+            var avatarChange =_userAccountService.changeAvatar(userUsername.UserId, imageUrl);
 
             if (avatarChange == null)
                 return BadRequest("Unable to change avatar");
@@ -111,7 +114,7 @@ namespace peruncore.Controllers
             );
 
             // Done
-            return Json(new {imageUrl});
+            return Json(new {imageUrl = _imageUploadSettings.AvatarImageDirURL + imageUrl});
         }
 
         #endregion

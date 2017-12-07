@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+
 using infrastructure.user.entities;
 using infrastructure.user.interfaces;
 using infrastructure.user.models;
@@ -32,10 +33,20 @@ namespace infrastructure.user.services
             _logger = logger;
         }
 
-        public UserIdentity changeUsernameByToken(int userid , string username, string token)
+        public UserProfile getUserProfile(int userId)
+        {
+            var user = _userRepository.getUserById(userId);
+            if (user == null)
+            {
+                return null;
+            }
+            return _mapper.Map<UserProfile>(user);
+        }
+
+        public UserIdentity changeUsernameByToken(int userId, string username, string token)
         {
             if (!_userRepository.isUsernameAvailable(username)) return null;
-            var login = _userRepository.getByIdWithUserNameToken(userid);
+            var login = _userRepository.getByIdWithUserNameToken(userId);
 
             if(login == null || 
                login.User == null ||
@@ -53,10 +64,10 @@ namespace infrastructure.user.services
             return _mapper.Map<UserIdentity>(login);
         }
 
-        public string changeUsername(int userid, string username)
+        public string changeUsername(int userId, string username)
         {
             if (!_userRepository.isUsernameAvailable(username)) return null;
-            var user = _userRepository.getUserById(userid);
+            var user = _userRepository.getUserById(userId);
 
             if (user == null)
             {
@@ -70,9 +81,9 @@ namespace infrastructure.user.services
             return username;
         }
 
-        public string changeAvatar(int userid, string avatar)
+        public string changeAvatar(int userId, string avatar)
         {
-            var user = _userRepository.getUserById(userid);
+            var user = _userRepository.getUserById(userId);
             if (user == null)
             {
                 _logger.LogError("Invalid user tries to change avatar.");
@@ -87,13 +98,13 @@ namespace infrastructure.user.services
         }
 
         // TODO: Redundand data retrieved
-        public UserUsername getUsernameByUserId(int userid)
+        public UserUsername getUsernameByUserId(int userId)
         {
-            var user = _userRepository.getUserById(userid);
+            var user = _userRepository.getUserById(userId);
 
             if (user == null)
             {
-                _logger.LogError("Application login not found for user: .", new object[] { userid });
+                _logger.LogError("Application login not found for user: .", new object[] { userId });
                 return null;
             }
 
@@ -104,13 +115,13 @@ namespace infrastructure.user.services
         }
 
 
-        public UserLogin getApplicationLoginById(int userid)
+        public UserLogin getApplicationLoginById(int userId)
         { 
-            var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());
+            var login = _userRepository.getIdAndProvider(userId, _authSchemeNameService.getDefaultProvider());
 
             if (login == null)
             {
-                _logger.LogError("Application login not found for user: .", new object[] { userid });
+                _logger.LogError("Application login not found for user: .", new object[] { userId });
                 return null;
             }
 
@@ -118,13 +129,13 @@ namespace infrastructure.user.services
         }
 
         // TODO: validate password too
-        public EmailChange createEmailChangeRequest(int userid, string password, string newemail, int tokenLength, int expiryDays)
+        public EmailChange createEmailChangeRequest(int userId, string password, string newemail, int tokenLength, int expiryDays)
         {
             if (!_userRepository.isEmailAvailable(newemail)) return null;
-            var login = _userRepository.getByIdWithResetInfo(userid, _authSchemeNameService.getDefaultProvider());
+            var login = _userRepository.getByIdWithResetInfo(userId, _authSchemeNameService.getDefaultProvider());
             if (login == null)
             {
-                _logger.LogError("User intents to generate Email Change Token with invalid userid.", new object[] { userid });
+                _logger.LogError("User intents to generate Email Change Token with invalid userid.", new object[] { userId });
                 return null;
             }
 
@@ -206,9 +217,9 @@ namespace infrastructure.user.services
             return null;
         }
 
-        public List<UserLogin> getLoginsByUserId(int userid)
+        public List<UserLogin> getLoginsByUserId(int userId)
         {
-            var list = _userRepository.getLoginsByUserId(userid);
+            var list = _userRepository.getLoginsByUserId(userId);
             var myLogins = new List<UserLogin>();
 
             foreach (var l in list)
@@ -232,9 +243,9 @@ namespace infrastructure.user.services
             _userRepository.updateLogin(login);
         }
 
-        public bool changePassword(int userid, string currentPassowrd, string newPassowrd, int saltLength)
+        public bool changePassword(int userId, string currentPassowrd, string newPassowrd, int saltLength)
         {
-            var login = _userRepository.getIdAndProvider(userid, _authSchemeNameService.getDefaultProvider());
+            var login = _userRepository.getIdAndProvider(userId, _authSchemeNameService.getDefaultProvider());
 
             if (login == null)
                 return false;

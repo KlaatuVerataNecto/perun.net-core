@@ -35,7 +35,6 @@ namespace persistance.ef.repository
                                 .Where(x => x.id == id
                                             && x.is_locked == false
                                            ).SingleOrDefault();
-
             return obj;
         }
 

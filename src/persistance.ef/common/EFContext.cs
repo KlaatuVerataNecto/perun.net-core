@@ -5,7 +5,7 @@ using infrastructure.user.entities;
 using infrastructure.email.entities;
 using infrastucture.libs.providers;
 using domain.model;
-
+using infrastructure.user.models;
 
 namespace persistance.ef.common
 {
