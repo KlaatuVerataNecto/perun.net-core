@@ -10,10 +10,12 @@
 }
 <div class="profile-cover">
     <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
-    <span class="btn btn-default change-cover">
+    @if (Model.CanUpdate)
+    {<span class="btn btn-default change-cover">
         <span class="glyphicon glyphicon-camera"></span><span class="change-cover-text">Upload Cover Photo</span>
         <input type="file" hidden/>
-    </span>
+     </span>
+    }
     <div class="media">
         <div class="media-left user-avatar">
             <a href="#" class="profile-thumb" data-toggle="modal" data-target="#avatar-modal">
