@@ -9,25 +9,39 @@ using peruncore.Models.Post;
 using query.messages.post;
 using query.dto;
 using query.dto.common;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using peruncore.Config;
+using Microsoft.Extensions.Options;
+using infrastucture.libs.image;
 
 namespace peruncore.Controllers
 {
     public class PostController : Controller
     {
         private IQueryHandler<GetPostByGuidQuery, DTO> _getPostByGuidQuery;
-        private IQueryHandler<GetPostByIdQuery, PostDTO> _getPostByIdQuery;
+        private IQueryHandler<GetPostByIdQuery, PostDTO> _getPostByIdQuery;       
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IImageService _imageService;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ImageUploadSettings _imageUploadSettings;
         private readonly ILogger _logger;
 
         public PostController(
             IQueryHandler<GetPostByGuidQuery, DTO> getPostByGuidQuery,
             IQueryHandler<GetPostByIdQuery, PostDTO> getPostByIdQuery,
-            ICommandDispatcher commandDispatcher, 
+            ICommandDispatcher commandDispatcher,
+            IImageService imageService,
+            IHostingEnvironment hostingEnvironment,
+            IOptions<ImageUploadSettings> imageUploadSettings,
             ILogger<PostController> logger)
         {
             _getPostByGuidQuery = getPostByGuidQuery;
             _getPostByIdQuery = getPostByIdQuery;
             _commandDispatcher = commandDispatcher;
+            _hostingEnvironment = hostingEnvironment;
+            _imageUploadSettings = imageUploadSettings.Value;
+            _imageService = imageService;
             _logger = logger;
         }
 
@@ -39,7 +53,7 @@ namespace peruncore.Controllers
             if (post != null)
             {
                 // TODO: Create view
-                return View(post);
+                return View(new PostViewModel(post.title,post.image));
             }
             else
             {
@@ -60,11 +74,42 @@ namespace peruncore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(PostModel model)
         {
+            // TODO: DRY see AvatarController
+            var ext = Path.GetExtension(model.post_image.FileName);
+
+            var filePathUploaded = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.PostImageUploadPath,
+                Guid.NewGuid() + (string.IsNullOrWhiteSpace(ext) ? "jpeg" : ext)
+            );
+
+            var filePathResized = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.PostImagePath,
+                Guid.NewGuid() + _imageUploadSettings.DefaultImageExtension
+            );
+
+            // Copy the file
+            using (var stream = new FileStream(filePathUploaded, FileMode.Create))
+            model.post_image.CopyTo(stream);
+
+            // Crop the image
+            var config = new ImageConfigBuilder()
+                         .WithSourceFilePath(filePathUploaded)
+                         .WithSaveFilePath(filePathResized)
+                         .WithQuality(_imageUploadSettings.PostImageQuality)
+                         .WithMaxWidth(_imageUploadSettings.PostImageMaxWidth)
+                         .WithMaxHeight(_imageUploadSettings.PostImageMaxHeight)
+                         .Build();
+
+            _imageService.Resize(config);
+            var imageFilename = Path.GetFileName(filePathResized);
+
             //TODO: Use Automapper
             var command = new CreatePostCommand();
             command.CommandId = Guid.NewGuid();
             command.Title = model.title;
-            command.ImageName = model.post_image.FileName;
+            command.ImageName = imageFilename;
 
             try
             {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.messages", "query.mes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domain.model", "domain.model\domain.model.csproj", "{DF2BCC9D-C684-4823-8529-DF1A38B97D89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "peruncore", "peruncore\peruncore.csproj", "{E5C937E2-A113-42F5-9E17-139CECB8D36C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "peruncore", "peruncore\peruncore.csproj", "{E5C937E2-A113-42F5-9E17-139CECB8D36C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

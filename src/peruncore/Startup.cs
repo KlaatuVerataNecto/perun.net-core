@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using infrastructure.email.interfaces;
 using infrastructure.user.interfaces;
+using infrastucture.libs.image;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -57,6 +58,9 @@ namespace peruncore
 
             // Add mini profiler.
             services.AddMiniProfiler().AddEntityFramework();
+            
+            // Image service
+            services.AddSingleton<IImageService, DefaultImageService>();
 
             //services.AddAuthorization(o =>
             //{

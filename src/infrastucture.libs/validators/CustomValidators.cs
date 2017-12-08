@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace infrastructure.libs.validators
@@ -86,6 +88,18 @@ namespace infrastructure.libs.validators
             if (((DateTime)theObj) <= DateTime.Now)
             {
                 throw new ArgumentNullException(msg);
+            }
+        }
+
+        public static void IsValidFilePath(string value, string paramName)
+        {
+            var filePath = Path.GetDirectoryName(value);
+            var fileName = Path.GetFileName(value);
+            if (filePath.Intersect(Path.GetInvalidPathChars()).Any() ||
+                fileName.Intersect(Path.GetInvalidFileNameChars()).Any())
+            {
+                throw new ArgumentException(
+                    "The file name contains invalid characters.", paramName);
             }
         }
     }

@@ -254,3 +254,67 @@ h2, h4 {
 .display-block, label.display-block {
     display: block;
 }
+
+/*==*/
+.img-cropper {
+    width: 100%;
+}
+
+.img-cropper img {
+    max-width: 100%;
+}
+
+.user-avatar {
+    position: relative;
+}
+
+.user-avatar .overlay {
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    margin-left: 50%;
+    transform: translateX(-58%);
+    padding: 3px;
+    background: white;
+    border: 1px solid #333;
+    border-radius: 3px;
+}
+
+.user-avatar:hover .overlay {
+    display: block;
+}
+
+.change-cover {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.change-cover-text {
+    display: none;
+}
+
+.change-cover:hover > .change-cover-text {
+    display: inline;
+    padding-left:5px;
+}
+
+.change-cover input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
