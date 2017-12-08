@@ -3,26 +3,27 @@ using System.Linq;
 
 using infrastructure.cqs;
 using persistance.dapper.common;
-using query.dto;
+using query.dto.common;
 using query.messages.post;
+
 
 namespace query.handlers.post
 {
-    public class GetPostByIdQueryHandler : IQueryHandler<GetPostByIdQuery, PostDTO>/*, IQueryHandler<GetPostByGuidQuery, DTO>*/
+    public class GetDTOByGuidQueryHandler : IQueryHandler<GetPostByGuidQuery, DTO>
     {
         private readonly IDapperConnectionFactory _dapperConnectionFactory;
 
-        public GetPostByIdQueryHandler(IDapperConnectionFactory dapperConnectionFactory)
+        public GetDTOByGuidQueryHandler(IDapperConnectionFactory dapperConnectionFactory)
         {
             _dapperConnectionFactory = dapperConnectionFactory;
         }
 
-        public PostDTO Handle(GetPostByIdQuery query)
+        public DTO Handle(GetPostByGuidQuery query)
         {
             using (var dapper = _dapperConnectionFactory.CreateConnection())
             {
                 dapper.Open();
-                return dapper.Connection.Query<PostDTO>("select * from posts where id = @Id", new { Id = query.PostId}).FirstOrDefault();
+                return dapper.Connection.Query<DTO>("select * from posts where guid = @Guid", new { Guid = query.Guid }).FirstOrDefault();
             }
         }
     }

@@ -6,16 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using command.messages.post;
 using infrastructure.cqs;
 using peruncore.Models.Post;
+using query.messages.post;
+using query.dto;
+using query.dto.common;
 
 namespace peruncore.Controllers
 {
     public class PostController : Controller
     {
+        private IQueryHandler<GetPostByGuidQuery, DTO> _getPostByGuidQuery;
+        private IQueryHandler<GetPostByIdQuery, PostDTO> _getPostByIdQuery;
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly ILogger _logger;
 
-        public PostController(ICommandDispatcher commandDispatcher, ILogger<PostController> logger)
+        public PostController(
+            IQueryHandler<GetPostByGuidQuery, DTO> getPostByGuidQuery,
+            IQueryHandler<GetPostByIdQuery, PostDTO> getPostByIdQuery,
+            ICommandDispatcher commandDispatcher, 
+            ILogger<PostController> logger)
         {
+            _getPostByGuidQuery = getPostByGuidQuery;
+            _getPostByIdQuery = getPostByIdQuery;
             _commandDispatcher = commandDispatcher;
             _logger = logger;
         }
@@ -23,7 +34,18 @@ namespace peruncore.Controllers
         [HttpGet]
         public IActionResult Index(int id, string slug)
         {
-            return View();
+            var post = _getPostByIdQuery.Handle(new GetPostByIdQuery { PostId = id });
+
+            if (post != null)
+            {
+                // TODO: Create view
+                return View(post);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+          
         }
 
         [HttpGet]
@@ -54,7 +76,17 @@ namespace peruncore.Controllers
                 return RedirectToAction("Index", "Error");
             }
 
-            return Content(command.CommandId + ";" + command.Title);
+            var post = _getPostByGuidQuery.Handle(new GetPostByGuidQuery { Guid = command.CommandId });
+
+            if (post != null)
+            {
+                return RedirectToAction("Index", new { id = post.id, slug = post.urlSlug });
+            }
+            else
+            {
+                _logger.LogError("Post not created after dispathcing command:", command);
+                return RedirectToAction("Index","Error");
+            }
         }
     }
 }
