@@ -39,7 +39,6 @@ Dropzone.autoDiscover = false;
                 if (this.files.length > 1) {
                     dz.removeFile(dz.files[0]);
                 }
-
                 done();
             },
             error: function(file, message) {
@@ -78,12 +77,12 @@ Dropzone.autoDiscover = false;
 
     // Dropzone events
     dz
-        .on('removedfile',
-            function() {
-                if (this.files.length === 0) {
-                    $dropzoneMessage.show();
-                }
-            })
+        //.on('removedfile',
+        //    function() {
+        //        if (this.files.length === 0) {
+        //            $dropzoneMessage.show();
+        //        }
+        //    })
         .on('thumbnail',
             function(file) {
                 dz.options.params.avatar_x = 0;
@@ -91,7 +90,7 @@ Dropzone.autoDiscover = false;
                 dz.options.params.avatar_width = Math.round(file.width);
                 // noinspection JSSuspiciousNameCombination
                 dz.options.params.avatar_height = Math.round(file.height);
-                $avatarModal.modal('hide');
+                //$avatarModal.modal('hide');
                 startAvatarCrop();
             })
         .on('sending',

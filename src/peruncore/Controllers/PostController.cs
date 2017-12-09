@@ -45,7 +45,7 @@ namespace peruncore.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [Route("post/{id:int}")]
         public IActionResult Index(int id, string slug)
         {
             var post = _getPostByIdQuery.Handle(new GetPostByIdQuery { PostId = id });
@@ -53,7 +53,7 @@ namespace peruncore.Controllers
             if (post != null)
             {
                 // TODO: Create view
-                return View(new PostViewModel(post.title,post.image));
+                return View(new PostViewModel(post.title, _imageUploadSettings.PostImageDirURL + post.postimage));
             }
             else
             {
