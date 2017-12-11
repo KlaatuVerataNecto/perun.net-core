@@ -21,17 +21,17 @@ Dropzone.autoDiscover = false;
                 avatar_height: 0
             },
             paramName: 'avatar_image',
-            thumbnailWidth: 300,
-            thumbnailHeight: 300,
+            thumbnailWidth: 120,
+            thumbnailHeight: 120,
             clickable: ['#avatar-select-button'],
             autoQueue: false,
             maxFiles: 2,
             maxFilesize: 2,
             acceptedFiles: 'image/*',
             accept: function (file, done) {
-                $(".dz-progress").remove(); // hide progress bar
-                $(".dz-size").remove(); // hide size info
-                $(".dz-filename").remove(); // hide filename info
+                // $(".dz-progress").remove(); // hide progress bar
+                // $(".dz-size").remove(); // hide size info
+                // $(".dz-filename").remove(); // hide filename info
 
                 $dropzoneError.text('').hide();
                 $dropzoneMessage.hide();
@@ -39,6 +39,7 @@ Dropzone.autoDiscover = false;
                 if (this.files.length > 1) {
                     dz.removeFile(dz.files[0]);
                 }
+                
                 done();
             },
             error: function(file, message) {
@@ -48,9 +49,9 @@ Dropzone.autoDiscover = false;
                 }
                 else {
                     $avatarModal.find('button:not(#start-avatar-crop)').removeAttr('disabled');
-                    if (this.files.length === 0) {
-                        $startAvatarCrop.attr('disabled', '');
-                    }
+                    // if (this.files.length === 0) {
+                    //     $startAvatarCrop.attr('disabled', '');
+                    // }
                 }
 
                 isUploading = false;
@@ -64,13 +65,13 @@ Dropzone.autoDiscover = false;
             previewTemplate:
             '<div class="dz-preview dz-image-preview">' +
             '<div class="dz-image"><img data-dz-thumbnail /></div>' +
-            '<div class="dz-details">' +
-            '<div class="dz-size"><span data-dz-size></span></div>' +
-            '<div class="dz-filename"><span data-dz-name></span></div>' +
-            '</div>' +
-            '<div class="dz-progress">' +
-            '<span class="dz-upload" data-dz-uploadprogress></span>' +
-            '</div>' +
+            // '<div class="dz-details">' +
+            // '<div class="dz-size"><span data-dz-size></span></div>' +
+            // '<div class="dz-filename"><span data-dz-name></span></div>' +
+            // '</div>' +
+            // '<div class="dz-progress">' +
+            // '<span class="dz-upload" data-dz-uploadprogress></span>' +
+            // '</div>' +
             '</div>'
         }
     );
@@ -104,35 +105,42 @@ Dropzone.autoDiscover = false;
                 $avatarModal.modal('hide');               
             });
 
-    function startAvatarCrop()
-    {
-            var files = dz.getAcceptedFiles();
-            if (files.length === 0) {
-                return;
-            }
+    function startAvatarCrop() {
+        var files = dz.getAcceptedFiles();
+        if (files.length === 0) {
+            return;
+        }
 
-            // Force background to be white
-            var canvas = document.createElement('canvas');
-            canvas.width = files[0].width;
-            canvas.height = files[0].height;
-            var ctx = canvas.getContext('2d');
+        // Force background to be white
+        var canvas = document.createElement('canvas');
+        canvas.width = files[0].width;
+        canvas.height = files[0].height;
+        var ctx = canvas.getContext('2d');
 
-            ctx.beginPath();
-            ctx.rect(0, 0, files[0].width, files[0].height);
-            ctx.fillStyle = "white";
-            ctx.fill();
+        ctx.beginPath();
+        ctx.rect(0, 0, files[0].width, files[0].height);
+        ctx.fillStyle = "white";
+        ctx.fill();
 
-            var tmpImage = new Image();
-            tmpImage.onload = function() {
-                ctx.drawImage(tmpImage, 0, 0);
+        var tmpImage = new Image();
+        tmpImage.onload = function () {
+            ctx.drawImage(tmpImage, 0, 0);
 
-                var img = $avatarCropModal.find('img')[0];
-                img.onload = function() {
-                    $avatarCropModal.modal('show');
-                };
-                img.src = canvas.toDataURL('image/jpeg');
+            var img = $avatarCropModal.find('img')[0];
+            img.onload = function () {
+                $avatarCropModal.modal('show');
+                $avatarCropModal.show();
+                console.log('load');
             };
-            tmpImage.src = files[0].dataURL;
+            img.src = canvas.toDataURL('image/jpeg');
+        };
+        
+        var reader = new FileReader();
+        reader.onload = function (dt) {
+            tmpImage.src = dt.currentTarget.result;
+        };
+        
+        reader.readAsDataURL(files[0]);
     }
 
     // Button events
