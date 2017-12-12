@@ -12,18 +12,22 @@
     <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
     @if (Model.CanUpdate)
     {<span class="btn btn-default change-cover">
-        <span class="glyphicon glyphicon-camera"></span><span class="change-cover-text">Upload Cover Photo</span>
-        <input type="file" hidden/>
+        <span class="glyphicon glyphicon-camera"></span>
+        <span class="change-cover-text">Upload Cover Photo</span>
+        <input type="file" accept="image/*" hidden/>
      </span>
     }
     <div class="media">
-        <div class="media-left user-avatar">
-            <a href="#" class="profile-thumb" data-toggle="modal" data-target="#avatar-modal">
+        <div class="media-left profile-thumb">
+            <div class="user-avatar ">
+                <img src="@Model.Avatar" class="img-avatar img-circle" alt="" data-user-avatar />
                 @if (Model.CanUpdate)
-                {<span class="overlay">change</span>
+                {<span class="change-avatar">
+                    <span class="glyphicon glyphicon-camera txt-change-avatar"></span>
+                    <input type="file" id="file-change-avatar" accept="image/*" hidden />
+                </span>
                 }
-                <img src="@Model.Avatar" class="img-circle" alt="" data-user-avatar/>
-            </a>
+            </div>    
         </div>
 
         <div class="media-body">
@@ -31,6 +35,15 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
 
 @if (Model.CanUpdate)
 {
@@ -65,14 +78,13 @@
 </div>
 
 <!-- Modal1 -->
-<div class="modal fade" id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
+<div class="modal" id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                
                 Crop your avatar
             </div>
             

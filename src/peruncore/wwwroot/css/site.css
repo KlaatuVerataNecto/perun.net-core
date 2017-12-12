@@ -256,6 +256,7 @@ h2, h4 {
 }
 
 /*==*/
+/*
 .img-cropper {
     width: 100%;
 }
@@ -283,6 +284,42 @@ h2, h4 {
 .user-avatar:hover .overlay {
     display: block;
 }
+*/
+
+/* Change User Profile Image */
+.user-avatar {
+    position: relative;
+}
+
+.change-avatar {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    padding: 5px;
+    display: table;
+}
+
+.txt-change-avatar {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+}
+
+.user-avatar:hover .img-avatar {
+    opacity: 0.2;
+}
+
+.user-avatar:hover .change-avatar {
+    opacity: 1;
+}
+
+/* Change User Cover */
 
 .change-cover {
     position: absolute;
@@ -303,14 +340,12 @@ h2, h4 {
     padding-left:5px;
 }
 
-.change-cover input[type=file] {
+.change-cover input[type=file], .change-avatar input[type=file] {
     position: absolute;
     top: 0;
     right: 0;
     min-width: 100%;
     min-height: 100%;
-    font-size: 100px;
-    text-align: right;
     filter: alpha(opacity=0);
     opacity: 0;
     outline: none;
@@ -318,3 +353,13 @@ h2, h4 {
     cursor: inherit;
     display: block;
 }
+
+
+/*.cropper-crop-box, .cropper-view-box {
+    border-radius: 50%;
+}
+
+.cropper-view-box {
+    box-shadow: 0 0 0 1px #39f;
+    outline: 0;
+}*/
