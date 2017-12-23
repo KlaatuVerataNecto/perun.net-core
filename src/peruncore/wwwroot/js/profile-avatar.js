@@ -3,6 +3,7 @@
     $fileChangeAvatar = $('#file-change-avatar');
     $avatarCropModal = $('#crop-avatar-modal');
     $btnAvatarUpload = $('#btn-avatar-upload');
+    //$imgCropped = $('#crop-avatar-img');
 
     var form_data = new FormData();
 
@@ -19,7 +20,9 @@
     });
 
     $btnAvatarUpload.click(function () {
-        form_data.append("avatar_image", $avatarCropModal.find('img')[0]);          
+        //var i = $avatarCropModal.find('img')[0].src;
+        var imgBlob = new Blob([$avatarCropModal.find('img')[0].src], { type: "image/jpeg" });
+        form_data.append("avatar_image", imgBlob);          
 
         $.ajax('/avatar/upload', {
             method: "POST",
