@@ -63,10 +63,12 @@ namespace peruncore.Controllers
             if (!TryValidateModel(model))
                 return BadRequest();
 
-            var ext = Path.GetExtension(model.avatar_image.FileName);
+            //var ext = Path.GetExtension(model.avatar_image.FileName);
+            var ext = _imageService.getImageExtensionByContentType(model.avatar_image.ContentType);
             var filePathUploaded = Path.Combine(_hostingEnvironment.ContentRootPath,
                 _imageUploadSettings.AvatarImageUploadPath,
-                Guid.NewGuid() + (string.IsNullOrWhiteSpace(ext) ? "jpeg" : ext));
+                                                Guid.NewGuid() + ext);
+            
             var filePathResized = Path.Combine(_hostingEnvironment.ContentRootPath,
                 _imageUploadSettings.AvatarImagePath,
                 Guid.NewGuid() + _imageUploadSettings.DefaultImageExtension);
@@ -74,9 +76,19 @@ namespace peruncore.Controllers
             // Copy the file
             using (var stream = new FileStream(filePathUploaded, FileMode.Create))
                 model.avatar_image.CopyTo(stream);
-            
+
             // Crop the image
             var config = new ImageConfigBuilder()
+                         .WithSourceFilePath(filePathUploaded)
+                         .WithSaveFilePath(filePathResized)
+                .WithMaxWidth(_imageUploadSettings.AvatarImageWidth)
+                         .WithQuality(_imageUploadSettings.AvatarImageQuality)                         
+                         .Build();
+
+            _imageService.Resize(config);
+
+            // Crop the image
+            /*var config = new ImageConfigBuilder()
                          .WithSourceFilePath(filePathUploaded)
                          .WithSaveFilePath(filePathResized)
                          .WithQuality(_imageUploadSettings.AvatarImageQuality)
@@ -86,7 +98,7 @@ namespace peruncore.Controllers
                          .WithHeight(model.avatar_height)
                          .Build();
 
-            _imageService.Crop(config);
+            _imageService.Crop(config);*/
             
             //
             var identity = (ClaimsIdentity)User.Identity;

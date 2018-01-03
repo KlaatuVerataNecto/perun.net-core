@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.Primitives;
-using System;
 
 #endregion
 
@@ -21,6 +20,17 @@ namespace infrastucture.libs.image
         /// </summary>
         public DefaultImageService()
         {
+        }
+
+        public string getImageExtensionByContentType(string contentType)
+        {
+            switch(contentType)
+            {
+                case "image/jpeg": return ".jpg";
+                case "image/gif": return ".gif";
+                case "image/png": return ".png"; 
+                default: return "jpg";
+            }
         }
 
         #region # IImageService #

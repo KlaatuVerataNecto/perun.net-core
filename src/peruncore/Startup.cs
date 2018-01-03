@@ -33,12 +33,14 @@ namespace peruncore
             //{
             //    options.Filters.Add(new RequireHttpsAttribute());
             //});
+            services.AddMvc();
 
-            services.AddMvc(options =>
+            // That's IIS Express specific
+            /*services.AddMvc(options =>
             {
                 options.SslPort = 44361;
                 options.Filters.Add(new RequireHttpsAttribute());
-            });
+            });*/
 
             services.AddMemoryCache();
             services.AddSession();

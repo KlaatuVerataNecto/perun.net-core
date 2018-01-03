@@ -14,7 +14,7 @@
     {<span class="btn btn-default change-cover">
         <span class="glyphicon glyphicon-camera"></span>
         <span class="change-cover-text">Upload Cover Photo</span>
-        <input type="file" accept="image/*" hidden/>
+        <input type="file" accept="image/*" hidden />
      </span>
     }
     <div class="media">
@@ -31,54 +31,15 @@
         </div>
 
         <div class="media-body">
-            <h1>@Model.Username<small class="display-block">@Model.Country</small></h1>
+            <h1>@Model.Username<small class="display-block">Spain</small></h1>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 @if (Model.CanUpdate)
 {
-<!-- Modal0 -->
-<div class="modal fade" id="avatar-modal" tabindex="-1" aria-labelledby="avatar-modal-label">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                
-                Update your avatar
-            </div>
-            
-            <div class="modal-body">
-                <div class="alert alert-danger" id="avatar-error" style="display: none;"></div>
-                <div id="avatar-dropzone" class="dropzone text-center">
-                    <div id="avatar-preview"></div>
-                    <div class="dz-message">
-                        Drop here your avatar file
-                    </div>
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" id="avatar-select-button">Select file...</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal1 -->
-<div class="modal" id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
+<div id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,7 +51,7 @@
             
             <div class="modal-body text-center">
                 <div class="img-cropper">
-                    <img alt=""/>
+                    <img alt="" id="preview-image" />
                 </div>
             </div>
             

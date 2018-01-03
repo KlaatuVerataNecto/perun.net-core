@@ -1,5 +1,4 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -19,7 +18,6 @@
         @RenderSection("Css", required: false)
         <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
     </environment>
-    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
