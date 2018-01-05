@@ -311,14 +311,6 @@ h2, h4 {
     font-size: 24px;
 }
 
-.user-avatar:hover .img-avatar {
-    opacity: 0.7;
-}
-
-.user-avatar:hover .change-avatar {
-    opacity: 1;
-}
-
 /* Change User Cover */
 
 .change-cover {
