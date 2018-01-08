@@ -4,6 +4,7 @@
     $fileChangeAvatar = $('#file-change-avatar');
     $avatarCropModal = $('#crop-avatar-modal');
     $btnAvatarUpload = $('#btn-avatar-upload');
+    $btnAvatarCancel = $('#btn-avatar-cancel');
 
     var $image = $("#preview-image");
     var $input = $("#file-change-avatar");
@@ -27,7 +28,15 @@
                     scalable: false,
                     minCropBoxWidth: 300,
                     minCropBoxHeight: 300
-                });               
+                });    
+            $avatarCropModal.show();
+        };
+
+        oFReader.onloadend = function (oFREvent) {
+            setTimeout(func, 1000);
+            function func() {
+                $avatarCropModal.show();
+            }
         };
   });
 
@@ -55,12 +64,18 @@
 
     });
 
-    // Crop modal events
-    $avatarCropModal
-        .on('shown.bs.modal',
-        function () {
-            // noinspection PointlessArithmeticExpressionJS
+    $btnAvatarCancel.click(function () {
+        $avatarCropModal.hide();
+        $image.attr('src', "");
+        $input.val("");
+        cropper.destroy();
+        cropper = undefined;
+    });
 
+    // Crop modal events
+    /*$avatarCropModal
+        .on('shown.bs.modal',
+        function () {         
             cropper = new Cropper(
                 $avatarCropModal.find('img')[0],
                 {
@@ -84,7 +99,7 @@
             cropper.destroy();
             cropper = undefined;
             $avatarCropModal.find('img')[0].src = '';
-        });
+        }); */
 
 })();
 
@@ -129,7 +144,7 @@ function dataURLtoMimeType(dataURL) {
                 mimeType = "image/jpeg";
                 break;
             default:
-                mimeType = ""; // Or you can use the blob.type as fallback
+                mimeType = "";
                 break;
         }
 

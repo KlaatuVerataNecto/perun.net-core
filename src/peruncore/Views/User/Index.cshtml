@@ -40,14 +40,11 @@
 @if (Model.CanUpdate)
 {
 <!-- Modal1 -->
-<div id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
+<div id="crop-avatar-modal" class="modal" tabindex="-1" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                Crop your avatar
+                 Create Profile Picture
             </div>
             
             <div class="modal-body text-center">
@@ -57,7 +54,7 @@
             </div>
             
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="btn-avatar-cancel">Cancel</button>
                 <button type="button" class="btn btn-primary" id="btn-avatar-upload">Save</button>
             </div>
         </div>
