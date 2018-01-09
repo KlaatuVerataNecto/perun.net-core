@@ -225,6 +225,7 @@ h2, h4 {
         }
 }
 
+
 .profile-cover-img {
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -233,6 +234,12 @@ h2, h4 {
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
 }
+    
+
+/*.profile-cover-img {
+    max-width: 1140px;
+    height: 350px;
+}*/
 
 @media (max-width: 768px) {
     .profile-cover-img {
@@ -310,9 +317,12 @@ h2, h4 {
     color: #fff;
     font-size: 24px;
 }
-
+.preloader {
+    width: 40px !important;
+    height: 40px !important;
+    display: none;
+}
 /* Change User Cover */
-
 .change-cover {
     position: absolute;
     top: 10px;

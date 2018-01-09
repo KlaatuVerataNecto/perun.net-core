@@ -1,22 +1,65 @@
 (function () 
 {
+  
+    $('#image-cropper').cropit(
+        {
+            onImageError: function () {
+                coverRepositionEnd();
+            }
+        }
+    );
+
     mimeType = undefined;
     $fileChangeAvatar = $('#file-change-avatar');
     $avatarCropModal = $('#crop-avatar-modal');
     $btnAvatarUpload = $('#btn-avatar-upload');
     $btnAvatarCancel = $('#btn-avatar-cancel');
 
-    var $image = $("#preview-image");
-    var $input = $("#file-change-avatar");
+    $imageAvatar = $(".img-avatar");
+    $preloader = $(".preloader");
+    $imageAvatarPreview = $("#preview-image");
+    $input = $("#file-change-avatar");
+
+
+    $fileChangeCover = $("#file-change-cover");
+
+    $fileChangeCover.change(function ()
+    {
+        var oFReader = new FileReader();
+
+        oFReader.onload = function (oFREvent) {
+            coverRepositionStart();
+            $('#image-cropper').cropit('imageSrc', this.result);
+        };
+
+        oFReader.readAsDataURL(this.files[0]);
+    });
+
+
+    function coverRepositionStart()
+    {
+        $(".change-cover").hide();
+        $(".profile-cover .media").hide();
+        $("#change-cover-buttons").show();
+        
+    }
+
+    function coverRepositionEnd()
+    {
+        $(".change-cover").show();
+        $(".profile-cover .media").show();
+        $("#change-cover-buttons").hide();
+    }
+
 
     $fileChangeAvatar.change(function() 
     {
         var oFReader = new FileReader();
-        oFReader.readAsDataURL(this.files[0]);
+
         oFReader.onload = function (oFREvent) 
         {
             mimeType = dataURLtoMimeType(this.result);
-            $image.attr('src', this.result);
+            $imageAvatarPreview.attr('src', this.result);
             cropper = new Cropper(
                 $avatarCropModal.find('img')[0],
                 {
@@ -28,16 +71,15 @@
                     scalable: false,
                     minCropBoxWidth: 300,
                     minCropBoxHeight: 300
-                });    
+                });               
+        };
+
+        oFReader.onloadend = function (oFREvent)
+        {
             $avatarCropModal.show();
         };
 
-        oFReader.onloadend = function (oFREvent) {
-            setTimeout(func, 1000);
-            function func() {
-                $avatarCropModal.show();
-            }
-        };
+        oFReader.readAsDataURL(this.files[0]);
   });
 
     $btnAvatarUpload.click(function () 
@@ -52,11 +94,15 @@
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function () {
-                    console.log('Upload success');
+                beforeSend: function (xhr) {
+                    avatarStart();
+                },
+                success: function (data) {
+                    $imageAvatar.attr("src", data.imageUrl);
+                    avatarDone();
                 },
                 error: function () {
-                    console.log('Upload error');
+                    avatarDone();
                 }
             });
 
@@ -64,56 +110,48 @@
 
     });
 
-    $btnAvatarCancel.click(function () {
+    $btnAvatarCancel.click(function ()
+    {
+        avatarDone();
+    });
+
+    function avatarStart()
+    {
+        $preloader.show();
+        $btnAvatarUpload.prop('disabled', true);
+        $btnAvatarCancel.prop('disabled', true);
+    }
+
+    function avatarDone()
+    {
         $avatarCropModal.hide();
-        $image.attr('src', "");
+        $imageAvatarPreview.attr('src', "");
         $input.val("");
         cropper.destroy();
         cropper = undefined;
-    });
-
-    // Crop modal events
-    /*$avatarCropModal
-        .on('shown.bs.modal',
-        function () {         
-            cropper = new Cropper(
-                $avatarCropModal.find('img')[0],
-                {
-                    viewMode: 1,
-                    aspectRatio: 1 / 1,
-                    zoomable: false,
-                    rotable: false,
-                    scalable: false,
-                    minCropBoxWidth: 300,
-                    minCropBoxHeight: 300,
-                    crop: function (e) {
-                        form_data.append("avatar_x", Math.round(e.detail.x));
-                        form_data.append("avatar_y", Math.round(e.detail.y));
-                        form_data.append("avatar_width",Math.round(e.detail.width));
-                        form_data.append("avatar_height",Math.round(e.detail.height));
-                    }
-                });
-        })
-        .on('hidden.bs.modal',
-        function () {
-            cropper.destroy();
-            cropper = undefined;
-            $avatarCropModal.find('img')[0].src = '';
-        }); */
-
+        $preloader.hide();
+        $btnAvatarUpload.prop('disabled', false);
+        $btnAvatarCancel.prop('disabled', false);
+    }      
 })();
+
+
 
 // TODO: separate this to common library
 
-function dataURLtoMimeType(dataURL) {
+function dataURLtoMimeType(dataURL)
+{
         var BASE64_MARKER = ';base64,';
         var data;
 
-        if (dataURL.indexOf(BASE64_MARKER) == -1) {
+        if (dataURL.indexOf(BASE64_MARKER) == -1)
+        {
             var parts = dataURL.split(',');
             var contentType = parts[0].split(':')[1];
             data = decodeURIComponent(parts[1]);
-        } else {
+        }
+        else
+        {
             var parts = dataURL.split(BASE64_MARKER);
             var contentType = parts[0].split(':')[1];
             var raw = window.atob(parts[1]);
@@ -121,17 +159,20 @@ function dataURLtoMimeType(dataURL) {
 
             data = new Uint8Array(rawLength);
 
-            for (var i = 0; i < rawLength; ++i) {
+            for (var i = 0; i < rawLength; ++i)
+            {
                 data[i] = raw.charCodeAt(i);
             }
         }
 
         var arr = data.subarray(0, 4);
         var header = "";
-        for(var i = 0; i < arr.length; i++) {
+        for (var i = 0; i < arr.length; i++)
+        {
             header += arr[i].toString(16);
         }
-        switch (header) {
+        switch (header)
+        {
             case "89504e47":
                 mimeType = "image/png";
                 break;

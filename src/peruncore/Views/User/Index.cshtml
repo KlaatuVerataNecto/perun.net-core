@@ -5,26 +5,28 @@
 }
 @if (Model.CanUpdate)
 {
-@section Css { @{await Html.RenderPartialAsync("_ImageUploadCssPartial"); }}
-@section Scripts {@{await Html.RenderPartialAsync("_ImageUploadScriptsPartial");}}
+@section Css { @{await Html.RenderPartialAsync("_ProfileCssPartial"); }}
+@section Scripts {@{await Html.RenderPartialAsync("_ProfileScriptsPartial");}}
 <style>.user-avatar:hover .img-avatar {opacity: 0.7;} .user-avatar:hover .change-avatar {opacity: 1;}</style>
 }
 <div class="profile-cover">
-    <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
+    <div id="image-cropper">
+    <div class="profile-cover-img cropit-preview" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
     @if (Model.CanUpdate)
     {<span class="btn btn-default change-cover">
         <span class="glyphicon glyphicon-camera"></span>
         <span class="change-cover-text">Upload Cover Photo</span>
-        <input type="file" accept="image/*" hidden />
+        <input type="file" accept="image/*" hidden  id="file-change-cover"/>
      </span>
     }
+    </div>
     <div class="media">
         <div class="media-left profile-thumb">
             <div class="user-avatar ">
-                <img src="@Model.Avatar" class="img-avatar img-circle" alt="" data-user-avatar />
+                <img src="@Model.Avatar" class="img-avatar img-circle" alt="@Model.Username" />
                 @if (Model.CanUpdate)
-                {<span class="change-avatar">
-                    <span class="glyphicon glyphicon-camera txt-change-avatar"></span>
+                {<span class="change-avatar">                    
+                    <span class="glyphicon glyphicon-camera txt-change-avatar"></span>                   
                     <input type="file" id="file-change-avatar" accept="image/*" hidden />
                 </span>
                 }
@@ -36,6 +38,12 @@
         </div>
     </div>
 </div>
+<nav id="change-cover-buttons" class="navbar navbar-light  navbar-static-top" style="padding:10px; border:solid #ccc 1px;display:none;">
+    <form class="form-inline pull-right">
+        <button class="btn btn-sm align-middle btn-outline-secondary" type="button">Cancel</button>
+        <button class="btn btn-sm align-middle btn-outline-secondary" type="button">Save Cover</button>
+    </form>
+</nav>
 
 @if (Model.CanUpdate)
 {
@@ -54,6 +62,7 @@
             </div>
             
             <div class="modal-footer">
+                <img src="~/images/common/preloader.gif" class="preloader">
                 <button type="button" class="btn btn-default" id="btn-avatar-cancel">Cancel</button>
                 <button type="button" class="btn btn-primary" id="btn-avatar-upload">Save</button>
             </div>
