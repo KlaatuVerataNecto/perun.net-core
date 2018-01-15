@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace peruncore.Controllers
 {
-    public class AvatarController : Controller
+    public class ImageController : Controller
     {
 
         #region # Variables #
@@ -34,13 +34,13 @@ namespace peruncore.Controllers
 
         #endregion
 
-        public AvatarController(
+        public ImageController(
             IOptions<ImageUploadSettings> imageUploadSettings,
             IOptions<AuthSchemeSettings> authSchemeSettings,
             IHostingEnvironment hostingEnvironment, 
             IImageService imageService,
             IUserAccountService userAccountService, 
-            ILogger<AvatarController> logger)
+            ILogger<ImageController> logger)
         {
             _imageUploadSettings = imageUploadSettings.Value;
             _authSchemeSettings = authSchemeSettings.Value;
@@ -56,14 +56,40 @@ namespace peruncore.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Upload(UserAvatarModel model)
+        public ActionResult Cover(UserCoverModel model)
         {
             // TODO: DRY see PostController
+            // TODO: Validate
+            if (!TryValidateModel(model))
+                return BadRequest();
+
+            var ext = _imageService.getImageExtensionByContentType(model.cover_image.ContentType);
+            var filePathUploaded = Path.Combine(_hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.CoverImagePath,
+                                    Guid.NewGuid() + ext);
+
+            using (var stream = new FileStream(filePathUploaded, FileMode.Create))
+                model.cover_image.CopyTo(stream);
+
+            var imageFilename = Path.GetFileName(filePathUploaded);
+
+            var identity = (ClaimsIdentity)User.Identity;
+            var userUsername = _userAccountService.getUsernameByUserId(identity.GetUserId());
+            var avatarChange = _userAccountService.changeCover(userUsername.UserId, imageFilename);
+
+            return Json(new { imageUrl = _imageUploadSettings.CoverImageDirURL + imageFilename });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Avatar(UserAvatarModel model)
+        {
+            // TODO: DRY see PostController
+            // TODO: Validate
             model = model ?? new UserAvatarModel();
             if (!TryValidateModel(model))
                 return BadRequest();
 
-            //var ext = Path.GetExtension(model.avatar_image.FileName);
             var ext = _imageService.getImageExtensionByContentType(model.avatar_image.ContentType);
             var filePathUploaded = Path.Combine(_hostingEnvironment.ContentRootPath,
                 _imageUploadSettings.AvatarImageUploadPath,

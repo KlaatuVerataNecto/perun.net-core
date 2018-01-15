@@ -19,10 +19,10 @@ namespace peruncore
                 .UseStartup<Startup>()
                 .UseKestrel(options =>
                 {
-                    options.Listen(IPAddress.Loopback, 44361, listenOptions =>
-                    {
-                        listenOptions.UseHttps("localhost.pfx", "peruncore");
-                    });
+                    //options.Listen(IPAddress.Loopback, 44361, listenOptions =>
+                    //{
+                    //    listenOptions.UseHttps("localhost.pfx", "peruncore");
+                    //});
                 })
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
                     .ReadFrom.Configuration(hostingContext.Configuration)

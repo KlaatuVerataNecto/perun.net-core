@@ -1,5 +1,4 @@
-﻿using infrastructure.i18n.user;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace peruncore.Models.User

@@ -54,6 +54,8 @@ namespace peruncore.Controllers
                     string.Empty,
                     userProfile.Avatar,
                 _imageUploadSettings.AvatarImageDirURL,
+                userProfile.Cover,
+                _imageUploadSettings.CoverImageDirURL,
                 _imageUploadSettings.ImageDefaultDirURL,
                 canChange
             );

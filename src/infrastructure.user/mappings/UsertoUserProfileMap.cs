@@ -13,7 +13,8 @@ namespace infrastructure.user.mappings
             (
                 x.id,
                 x.username, 
-                x.avatar           
+                x.avatar,
+                x.cover
             ));
         }
     }

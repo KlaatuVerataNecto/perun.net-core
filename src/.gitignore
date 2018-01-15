@@ -307,7 +307,26 @@ fabric.properties
 
 !infrastructure.user
 
+peruncore/wwwroot/lib/*
+
+peruncore/wwwroot/images/upload/avatar/*
+peruncore/wwwroot/images/upload/cover/*
+peruncore/wwwroot/images/upload/post/*
+
 peruncore/wwwroot/images/avatar/*
 peruncore/wwwroot/images/upload/*
 peruncore/wwwroot/images/post/*
-peruncore/wwwroot/lib/*
+peruncore/wwwroot/images/cover/*
+
+!peruncore/wwwroot/images/upload/avatar/.gitkeep 
+!peruncore/wwwroot/images/upload/cover/.gitkeep 
+!peruncore/wwwroot/images/upload/post/.gitkeep 
+
+!peruncore/wwwroot/images/avatar/.gitkeep 
+!peruncore/wwwroot/images/upload/.gitkeep 
+!peruncore/wwwroot/images/post/.gitkeep 
+!peruncore/wwwroot/images/cover/.gitkeep 
+
+peruncore/wwwroot/css/all.min.css
+peruncore/wwwroot/css/site.min.css
+peruncore/wwwroot/js/all.min.css

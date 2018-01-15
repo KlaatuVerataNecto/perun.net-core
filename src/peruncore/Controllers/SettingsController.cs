@@ -30,7 +30,7 @@ namespace peruncore.Controllers
             IEmailService emailService,
             IOptions<AuthSchemeSettings> authSchemeSettings, 
             IOptions<AuthSettings> authSettings,
-            ILogger<AvatarController> logger
+            ILogger<SettingsController> logger
             )
         {
             _authSettings = authSettings.Value;

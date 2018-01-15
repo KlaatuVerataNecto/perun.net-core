@@ -10,6 +10,9 @@ namespace peruncore.Config
         public int AvatarImageWidth { get; set; }
         public int AvatarImageHeight { get; set; }
 
+        public string CoverImageUploadPath { get; set; }
+        public string CoverImagePath { get; set; }
+        public string CoverImageDirURL { get; set; }
 
         public string PostImageUploadPath { get; set; }
         public string PostImagePath { get; set; }

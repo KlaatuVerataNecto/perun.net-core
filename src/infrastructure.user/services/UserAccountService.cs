@@ -81,7 +81,7 @@ namespace infrastructure.user.services
             return username;
         }
 
-        public string changeAvatar(int userId, string avatar)
+        public string changeAvatar(int userId, string avatarImage)
         {
             var user = _userRepository.getUserById(userId);
             if (user == null)
@@ -91,10 +91,26 @@ namespace infrastructure.user.services
             }
             
 
-            user.avatar = avatar;
+            user.avatar = avatarImage;
             _userRepository.updateUser(user);
 
-            return avatar;
+            return avatarImage;
+        }
+
+        public string changeCover(int userId, string coverImage)
+        {
+            var user = _userRepository.getUserById(userId);
+            if (user == null)
+            {
+                _logger.LogError("Invalid user tries to change avatar.");
+                return null;
+            }
+
+
+            user.cover = coverImage;
+            _userRepository.updateUser(user);
+
+            return coverImage;
         }
 
         // TODO: Redundand data retrieved
