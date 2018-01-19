@@ -13,7 +13,8 @@
     <div id="image-cropper">
     <div class="profile-cover-img cropit-preview" style="background-image: url(@Model.Cover)"></div>
     @if (Model.CanUpdate)
-    {<span class="btn btn-default change-cover">
+    {<div class="overlay-cover overlay" style="display: none"><div class="overlay-row"><div class="overlay-center"><img src="~/images/common/preloader.gif" class="center-block"></div></div></div>
+     <span class="btn btn-default change-cover">
         <span class="glyphicon glyphicon-camera"></span>
         <span class="change-cover-text">Upload Cover Photo</span>
         <input type="file" accept="image/*" hidden  id="file-cover-change"/>
@@ -41,8 +42,10 @@
 @if (Model.CanUpdate)
 {
 <nav id="change-cover-buttons" class="navbar navbar-light  navbar-static-top" style="padding:10px; border:solid #ccc 1px;display:none;">
-    <form class="form-inline pull-right">
-        <img src="~/images/common/preloader.gif" class="preloader">
+    <div class="pull-left align-middle text-info" style="padding:10px;">
+        <i class="glyphicon glyphicon-arrow-up mr-5"></i><span class="mr-5">Drag to reposition Cover</span><i class="glyphicon glyphicon-arrow-up"></i>
+    </div>
+    <form class="form-inline pull-right">        
         <button class="btn btn-default" type="button" id="btn-cover-cancel">Cancel</button>
         <button class="btn btn-default" type="button" id="btn-cover-save">Save Cover</button>
     </form>
@@ -59,6 +62,7 @@
                 <div class="img-cropper">
                     <img alt="" id="preview-image" />
                 </div>
+                <div class="overlay-avatar overlay" style="display: none"><div class="overlay-row"><div class="overlay-center"><img src="~/images/common/preloader.gif" class="center-block"></div></div></div>
             </div>
             
             <div class="modal-footer">

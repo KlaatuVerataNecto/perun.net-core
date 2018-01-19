@@ -4,7 +4,6 @@
     MIN_COVER_HEIGHT = 350;
 
     mimeType = undefined;
-    $preloader = $('.preloader');
 
     $fileChangeAvatar = $('#file-avatar-change');
     $avatarCropModal = $('#crop-avatar-modal');
@@ -95,9 +94,10 @@
     // TODO: selectors to vars
 
     function coverUploadStart() {
-
+        $('.overlay-cover').show();
     }
     function coverUploadDone() {
+        $('.overlay-cover').hide();
         coverDone();
     }
 
@@ -178,18 +178,18 @@
     });
 
     function avatarStart() {
-        $preloader.show();
+        $('.overlay-avatar').show();
         $btnAvatarUpload.prop('disabled', true);
         $btnAvatarCancel.prop('disabled', true);
     }
 
     function avatarDone() {
+        $('.overlay-avatar').hide();
         $avatarCropModal.hide();
         $avatarImagePreview.attr('src', '');
         $fileChangeAvatar.val('');
         cropper.destroy();
         cropper = undefined;
-        $preloader.hide();
         $btnAvatarUpload.prop('disabled', false);
         $btnAvatarCancel.prop('disabled', false);
     }      
