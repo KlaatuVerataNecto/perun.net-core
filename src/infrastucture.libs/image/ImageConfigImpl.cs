@@ -15,7 +15,7 @@
         /// <param name="width"></param>
         /// <param name="height"></param>
         public ImageConfigImpl(string sourceFilePath, string saveFilePath,
-            int quality, int? x = null, int? y = null, int? width = null, int? height = null)
+            int quality, int? x = null, int? y = null, int? width = null, int? height = null, int? maxWidth = null, int? maxHeight = null)
         {
             SourceFilePath = sourceFilePath;
             SaveFilePath = saveFilePath;
@@ -24,6 +24,8 @@
             Y = y;
             Width = width;
             Height = height;
+            MaxWidth = maxWidth;
+            MaxHeight = maxHeight;
         }
 
         #region # IImageConfig #
@@ -45,10 +47,13 @@
 
         /// <inheritdoc />
         public int? Width { get; }
-
+   
         /// <inheritdoc />
         public int? Height { get; }
 
+        public int? MaxWidth { get; }
+
+        public int? MaxHeight { get; }
         #endregion
 
     }

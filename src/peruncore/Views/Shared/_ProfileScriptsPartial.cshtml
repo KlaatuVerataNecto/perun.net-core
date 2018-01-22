@@ -1,0 +1,12 @@
+﻿<environment names="Development">
+    <script src="~/lib/cropperjs/dist/cropper.js" asp-append-version="true"></script>
+    <script src="~/lib/cropit/dist/jquery.cropit.js" asp-append-version="true"></script>
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.1.3/cropper.min.js"
+            asp-fallback-src="~/lib/cropperjs/dist/cropper.min.js"
+            asp-fallback-test="window.Cropper"
+            crossorigin="anonymous"
+            integrity="sha256-bq5l5V1OLHsZ9XsWslrYp0L+t4lfUrPEdX+DbNiRJzI="></script>
+</environment>

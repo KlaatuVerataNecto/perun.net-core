@@ -16,6 +16,9 @@
         int? Width { get; }
         
         int? Height { get; }
-        
+
+        int? MaxWidth { get; }
+
+        int? MaxHeight { get; }
     }
 }

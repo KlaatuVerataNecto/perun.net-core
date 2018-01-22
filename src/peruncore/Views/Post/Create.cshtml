@@ -1,0 +1,26 @@
+﻿@model peruncore.Models.Post.PostModel
+@{
+    ViewData["Title"] = "Create Post";
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+<h1>Create Post</h1>
+
+<form method="post" enctype="multipart/form-data" asp-controller="post" asp-action="create">
+    <div class="form-group">
+        <label class="btn btn-default btn-file">
+            Browse <input type="file" name="post_image" hidden>
+        </label>
+    </div>
+    <div class="form-group">
+        <label asp-for="title" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="title" class="form-control" />
+            <span asp-validation-for="title" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+</form>

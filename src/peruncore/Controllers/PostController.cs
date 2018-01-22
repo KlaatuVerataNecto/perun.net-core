@@ -1,36 +1,115 @@
 using System;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using command.messages.post;
 using infrastructure.cqs;
-
+using peruncore.Models.Post;
+using query.messages.post;
+using query.dto;
+using query.dto.common;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using peruncore.Config;
+using Microsoft.Extensions.Options;
+using infrastucture.libs.image;
 
 namespace peruncore.Controllers
 {
     public class PostController : Controller
     {
+        private IQueryHandler<GetPostByGuidQuery, DTO> _getPostByGuidQuery;
+        private IQueryHandler<GetPostByIdQuery, PostDTO> _getPostByIdQuery;       
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IImageService _imageService;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ImageUploadSettings _imageUploadSettings;
         private readonly ILogger _logger;
 
-        public PostController(ICommandDispatcher commandDispatcher, ILogger<PostController> logger)
+        public PostController(
+            IQueryHandler<GetPostByGuidQuery, DTO> getPostByGuidQuery,
+            IQueryHandler<GetPostByIdQuery, PostDTO> getPostByIdQuery,
+            ICommandDispatcher commandDispatcher,
+            IImageService imageService,
+            IHostingEnvironment hostingEnvironment,
+            IOptions<ImageUploadSettings> imageUploadSettings,
+            ILogger<PostController> logger)
         {
+            _getPostByGuidQuery = getPostByGuidQuery;
+            _getPostByIdQuery = getPostByIdQuery;
             _commandDispatcher = commandDispatcher;
+            _hostingEnvironment = hostingEnvironment;
+            _imageUploadSettings = imageUploadSettings.Value;
+            _imageService = imageService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        [Route("post/{id:int}")]
+        public IActionResult Index(int id, string slug)
+        {
+            var post = _getPostByIdQuery.Handle(new GetPostByIdQuery { PostId = id });
+
+            if (post != null)
+            {
+                // TODO: Create view
+                return View(new PostViewModel(post.title, _imageUploadSettings.PostImageDirURL + post.postimage));
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+          
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Create()
         {
             return View();
         }
 
-        // Demonstration of how to use command dispatcher
-
-        [HttpGet]
-        public IActionResult Create()
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(PostModel model)
         {
+            // TODO: DRY see AvatarController
+            var ext = Path.GetExtension(model.post_image.FileName);
+
+            var filePathUploaded = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.PostImageUploadPath,
+                Guid.NewGuid() + (string.IsNullOrWhiteSpace(ext) ? "jpeg" : ext)
+            );
+
+            var filePathResized = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.PostImagePath,
+                Guid.NewGuid() + _imageUploadSettings.DefaultImageExtension
+            );
+
+            // Copy the file
+            using (var stream = new FileStream(filePathUploaded, FileMode.Create))
+            model.post_image.CopyTo(stream);
+
+            // Crop the image
+            var config = new ImageConfigBuilder()
+                         .WithSourceFilePath(filePathUploaded)
+                         .WithSaveFilePath(filePathResized)
+                         .WithQuality(_imageUploadSettings.PostImageQuality)
+                         .WithMaxWidth(_imageUploadSettings.PostImageMaxWidth)
+                         .WithMaxHeight(_imageUploadSettings.PostImageMaxHeight)
+                         .Build();
+
+            _imageService.Resize(config);
+            var imageFilename = Path.GetFileName(filePathResized);
+
+            //TODO: Use Automapper
             var command = new CreatePostCommand();
             command.CommandId = Guid.NewGuid();
-            command.Title = "Hello";
+            command.Title = model.title;
+            command.ImageName = imageFilename;
 
             try
             {
@@ -42,7 +121,17 @@ namespace peruncore.Controllers
                 return RedirectToAction("Index", "Error");
             }
 
-            return Content(command.CommandId + ";" + command.Title);
+            var post = _getPostByGuidQuery.Handle(new GetPostByGuidQuery { Guid = command.CommandId });
+
+            if (post != null)
+            {
+                return RedirectToAction("Index", new { id = post.id, slug = post.urlSlug });
+            }
+            else
+            {
+                _logger.LogError("Post not created after dispathcing command:", command);
+                return RedirectToAction("Index","Error");
+            }
         }
     }
 }

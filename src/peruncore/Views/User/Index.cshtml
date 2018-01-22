@@ -2,123 +2,91 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var avatar = string.IsNullOrWhiteSpace(Model?.Avatar)
-        ? "/demo/users/demo.jpg"
-        : Model.Avatar;
 }
-
+@if (Model.CanUpdate)
+{
+@section Css { @{await Html.RenderPartialAsync("_ProfileCssPartial"); }}
+@section Scripts {@{await Html.RenderPartialAsync("_ProfileScriptsPartial");}}
+<style>.user-avatar:hover .img-avatar {opacity: 0.7;} .user-avatar:hover .change-avatar {opacity: 1;}</style>
+}
 <div class="profile-cover">
-    <div class="profile-cover-img" style="background-image: url(/demo/users/covers/demo.jpg)"></div>
+    <div id="image-cropper">
+    <div class="profile-cover-img cropit-preview" style="background-image: url(@Model.Cover)"></div>
+    @if (Model.CanUpdate)
+    {<div class="overlay-cover overlay" style="display: none"><div class="overlay-row"><div class="overlay-center"><img src="~/images/common/preloader.gif" class="center-block"></div></div></div>
+     <span class="btn btn-default change-cover">
+        <span class="glyphicon glyphicon-camera"></span>
+        <span class="change-cover-text">Upload Cover Photo</span>
+        <input type="file" accept="image/*" hidden  id="file-cover-change"/>
+     </span>
+    }
+    </div>
     <div class="media">
-        <div class="media-left user-avatar">
-            <a href="#" class="profile-thumb" data-toggle="modal" data-target="#avatar-modal">
-                <span class="overlay">change</span>
-                <img src="@avatar" class="img-circle" alt="" data-user-avatar/>
-            </a>
+        <div class="media-left profile-thumb">
+            <div class="user-avatar ">
+                <img src="@Model.Avatar" class="img-avatar img-circle" alt="@Model.Username" />
+                @if (Model.CanUpdate)
+                {<span class="change-avatar">                    
+                    <span class="glyphicon glyphicon-camera txt-change-avatar"></span>                   
+                    <input type="file" id="file-avatar-change" accept="image/*" hidden />
+                </span>
+                }
+            </div>    
         </div>
 
         <div class="media-body">
-            <h1>Klaatu Verata Necto<small class="display-block">Spain</small></h1>
+            <h1>@Model.Username<small class="display-block">Spain</small></h1>
         </div>
     </div>
 </div>
-
-<!-- Modal0 -->
-<div class="modal fade" id="avatar-modal" tabindex="-1" aria-labelledby="avatar-modal-label">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                
-                Update your avatar
-            </div>
-            
-            <div class="modal-body">
-                <div class="alert alert-danger" id="avatar-error" style="display: none;"></div>
-                <div id="avatar-dropzone" class="dropzone text-center">
-                    <div id="avatar-preview"></div>
-                    <div class="dz-message">
-                        Drop here your avatar file
-                    </div>
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" id="avatar-select-button">Select file...</button>
-                <button type="button" class="btn btn-primary" id="start-avatar-crop" disabled>Crop</button>
-            </div>
-        </div>
+@if (Model.CanUpdate)
+{
+<nav id="change-cover-buttons" class="navbar navbar-light  navbar-static-top" style="padding:10px; border:solid #ccc 1px;display:none;">
+    <div class="pull-left align-middle text-info" style="padding:10px;">
+        <i class="glyphicon glyphicon-arrow-up mr-5"></i><span class="mr-5">Drag to reposition Cover</span><i class="glyphicon glyphicon-arrow-up"></i>
     </div>
-</div>
-
-<!-- Modal1 -->
-<div class="modal fade" id="crop-avatar-modal" tabindex="-1" aria-labelledby="crop-avatar-modal-label" data-backdrop="static">
+    <form class="form-inline pull-right">        
+        <button class="btn btn-default" type="button" id="btn-cover-cancel">Cancel</button>
+        <button class="btn btn-default" type="button" id="btn-cover-save">Save Cover</button>
+    </form>
+</nav>
+<!-- Modal Profile Picture Crop -->
+<div id="crop-avatar-modal" class="modal" tabindex="-1" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                
-                Crop your avatar
+                 Create Profile Picture
             </div>
             
             <div class="modal-body text-center">
                 <div class="img-cropper">
-                    <img alt=""/>
+                    <img alt="" id="preview-image" />
                 </div>
+                <div class="overlay-avatar overlay" style="display: none"><div class="overlay-row"><div class="overlay-center"><img src="~/images/common/preloader.gif" class="center-block"></div></div></div>
             </div>
             
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="start-avatar-upload">Upload</button>
+                <img src="~/images/common/preloader.gif" class="preloader">
+                <button type="button" class="btn btn-default" id="btn-avatar-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-avatar-save">Save</button>
             </div>
         </div>
     </div>
 </div>
-
-@section Css
-{
-    <environment names="Development">
-        <link rel="stylesheet" href="~/lib/dropzone/dist/dropzone.css" />
-        <link rel="stylesheet" href="~/lib/cropperjs/dist/cropper.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css"
-              asp-fallback-href="~/lib/dropzone/dist/min/dropzone.min.css"
-              asp-fallback-test-class="dropzone"
-              asp-fallback-test-property="min-height"
-              asp-fallback-test-value="150px" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.1.3/cropper.min.css"
-              asp-fallback-href="~/lib/cropperjs/dist/cropper.min.css"
-              asp-fallback-test-class="cropper-container"
-              asp-fallback-test-property="direction"
-              asp-fallback-test-value="ltr" />
-    </environment>
-}
-
-@section Scripts
-{
-    <environment names="Development">
-        <script src="~/lib/dropzone/dist/dropzone.js" asp-append-version="true"></script>
-        <script src="~/lib/cropperjs/dist/cropper.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"
-                asp-fallback-src="~/lib/dropzone/dist/min/dropzone.min.js"
-                asp-fallback-test="window.Dropzone"
-                crossorigin="anonymous"
-                integrity="sha256-eO9VTVeZLaplH86Iwt8l39+l7GZpLOTsVWYziS5oY0Q="></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.1.3/cropper.min.js"
-                asp-fallback-src="~/lib/cropperjs/dist/cropper.min.js"
-                asp-fallback-test="window.Cropper"
-                crossorigin="anonymous"
-                integrity="sha256-bq5l5V1OLHsZ9XsWslrYp0L+t4lfUrPEdX+DbNiRJzI="></script>
-    </environment>
+<!-- Modal Cover Picture Message -->
+<div id="cover-message-modal" class="modal" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Error uploading cover picture.
+            </div>
+            <div class="modal-body text-center">
+                Image dimensions too low. Image must be at least 1140 x 350 pixels. 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btn-cover-message-cancel">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 }

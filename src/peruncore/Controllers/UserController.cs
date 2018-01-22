@@ -3,18 +3,29 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
 using peruncore.Models.User;
+using infrastructure.user.interfaces;
 
 namespace peruncore.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserAccountService _userAccountService;
         private readonly AuthSchemeSettings _authSchemeSettings;
-        public UserController(IOptions<AuthSchemeSettings> authSchemeSettings)
+        private readonly ImageUploadSettings _imageUploadSettings;
+
+        public UserController(
+            IUserAccountService userAccountService,
+            IOptions<ImageUploadSettings> imageUploadSettings,
+            IOptions<AuthSchemeSettings> authSchemeSettings
+            )
         {
+            _userAccountService = userAccountService;
             _authSchemeSettings = authSchemeSettings.Value;
+            _imageUploadSettings = imageUploadSettings.Value;
         }
 
         [Authorize]
@@ -27,13 +38,29 @@ namespace peruncore.Controllers
 
 
         [Route("user/{id:int}/{username}")]
-        [Authorize]
         public IActionResult Index(int id, string username)
         {
-            return View(new ProfileViewModel
+            var userProfile = _userAccountService.getUserProfile(id);
+
+            if(userProfile == null)
             {
-                Avatar = ((ClaimsIdentity)User.Identity).GetAvatar()
-            });
+                return RedirectToAction("Index", "Error");
+            }
+
+            bool canChange = User.Identity.IsAuthenticated && ((ClaimsIdentity)User.Identity).GetUserId() == userProfile.UserId;
+
+            var model = new ProfileViewModel(
+                    userProfile.Username,
+                    string.Empty,
+                    userProfile.Avatar,
+                _imageUploadSettings.AvatarImageDirURL,
+                userProfile.Cover,
+                _imageUploadSettings.CoverImageDirURL,
+                _imageUploadSettings.ImageDefaultDirURL,
+                canChange
+            );
+
+            return View(model);
         }
     }
 }

@@ -27,9 +27,9 @@ namespace peruncore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string return_url)
         {
-            return View();
+            return View(new LoginModel { return_url = return_url});
         }
 
         [HttpPost]
@@ -67,7 +67,15 @@ namespace peruncore.Controllers
 
             HttpContext.Session.SetInt32("LoginId", userIdentity.LoginId);
 
-            return RedirectToAction("Index", "Home");
+            //TODO: validate return_url
+            if (string.IsNullOrEmpty(model.return_url))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return Redirect(model.return_url);
+            }
         }
     }
 }

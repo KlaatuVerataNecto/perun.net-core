@@ -30,7 +30,7 @@ namespace peruncore.Controllers
             IEmailService emailService,
             IOptions<AuthSchemeSettings> authSchemeSettings, 
             IOptions<AuthSettings> authSettings,
-            ILogger<AvatarController> logger
+            ILogger<SettingsController> logger
             )
         {
             _authSettings = authSettings.Value;
@@ -193,13 +193,6 @@ namespace peruncore.Controllers
             TempData["password_change_ok"] = UserValidationMsg.password_change_ok;
             return RedirectToAction("password", "settings");
 
-        }
-
-
-        // TODO: add [Authorize]
-        public IActionResult Avatar()
-        {
-            return View();
         }
     }
 }

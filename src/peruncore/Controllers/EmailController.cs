@@ -20,7 +20,7 @@ namespace peruncore.Controllers
         private readonly ILogger _logger;
 
         public EmailController(
-            ILogger<AvatarController> logger,
+            ILogger<EmailController> logger,
             IUserAccountService userAccountService,
             IOptions<AuthSchemeSettings> authSchemeSettings
             )

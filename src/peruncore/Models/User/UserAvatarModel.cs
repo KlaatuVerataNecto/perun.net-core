@@ -1,5 +1,4 @@
-﻿using infrastructure.i18n.user;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace peruncore.Models.User
@@ -10,7 +9,7 @@ namespace peruncore.Models.User
         [Required]
         public IFormFile avatar_image { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessageResourceType = typeof(UserValidationMsg),
+        /*[Range(0, int.MaxValue, ErrorMessageResourceType = typeof(UserValidationMsg),
             ErrorMessageResourceName = "crop_area_invalid")]
         public int avatar_x { get; set; }
 
@@ -25,6 +24,6 @@ namespace peruncore.Models.User
         [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(UserValidationMsg),
             ErrorMessageResourceName = "crop_area_invalid")]
         public int avatar_height { get; set; }
-
+        */
     }
 }

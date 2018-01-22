@@ -1,11 +1,14 @@
-﻿using infrastructure.cqs;
+﻿using Dapper;
+using System.Linq;
+
+using infrastructure.cqs;
 using persistance.dapper.common;
 using query.dto;
 using query.messages.post;
 
 namespace query.handlers.post
 {
-    public class GetPostByIdQueryHandler : IQueryHandler<GetPostByIdQuery, PostDTO>
+    public class GetPostByIdQueryHandler : IQueryHandler<GetPostByIdQuery, PostDTO>/*, IQueryHandler<GetPostByGuidQuery, DTO>*/
     {
         private readonly IDapperConnectionFactory _dapperConnectionFactory;
 
@@ -16,7 +19,11 @@ namespace query.handlers.post
 
         public PostDTO Handle(GetPostByIdQuery query)
         {
-            throw new System.NotImplementedException();
+            using (var dapper = _dapperConnectionFactory.CreateConnection())
+            {
+                dapper.Open();
+                return dapper.Connection.Query<PostDTO>("select * from posts where id = @Id", new { Id = query.PostId}).FirstOrDefault();
+            }
         }
     }
 }

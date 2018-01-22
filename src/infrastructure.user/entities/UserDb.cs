@@ -11,6 +11,7 @@ namespace infrastructure.user.entities
         public DateTime last_seen { get; set; }
         public DateTime date_created { get; set; }
         public string avatar { get; set; }
+        public string cover { get; set; }
         public bool is_locked { get; set; }
         public ICollection<LoginDb> Logins { get; set; }
         public UserUsernameDb UsernameToken { get; set; }

@@ -34,4 +34,11 @@
     <ProjectReference Include="..\query.messages\query.messages.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\post\" />
+    <Folder Include="wwwroot\images\upload\avatar\" />
+    <Folder Include="wwwroot\images\upload\post\" />
+    <Folder Include="wwwroot\images\avatar\" />
+  </ItemGroup>
+
 </Project>

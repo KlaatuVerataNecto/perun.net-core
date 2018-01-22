@@ -20,7 +20,8 @@ namespace infrastucture.libs.image
         private int? _y;
         private int? _width;
         private int? _height;
-
+        private int? _maxWidth;
+        private int? _maxHeight;
         #endregion
 
         /// <summary>
@@ -97,8 +98,24 @@ namespace infrastucture.libs.image
             return this;
         }
 
+        public ImageConfigBuilder WithMaxWidth(int value)
+        {
+            CustomValidators.IntNotNegative(value, null);
+
+            _maxWidth = value;
+            return this;
+        }
+
+        public ImageConfigBuilder WithMaxHeight(int value)
+        {
+            CustomValidators.IntNotNegative(value, null);
+
+            _maxHeight = value;
+            return this;
+        }
+
         public IImageConfig Build() => new ImageConfigImpl(_sourceFilePath,
-            _saveFilePath, _quality, _x, _y, _width, _height);
+            _saveFilePath, _quality, _x, _y, _width, _height, _maxWidth, _maxHeight);
 
         #endregion
 
