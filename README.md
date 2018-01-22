@@ -1,17 +1,26 @@
 # perun.net-core
-ASP.NET MVC Core 1.1 base project with custom user and social logins
+ASP.NET MVC Core 2.0 base project with custom user and social logins
 
-Simple web application project template powered by ASP.NET Core 1.1 that at the moment features:
-
-- Powered by ASP.NET Core 1.1.
+Simple web application project template powered by ASP.NET Core 2.0 that at the moment features:
+- Powered by ASP.NET Core 2.0.
 - Runs on Linux (Ubuntu Server).
 - Uses MySQL for database.
 - Combines custom login system with social logins (Google, Facebook).
 - Unobtrusive validation.
 - Remote validation.
 
+Done:
+- User avatar upload.
+- Creating Post (Title ++ Image).
+
 Todo:
-- Avatar image upload (already in progress).
+- Post vote up and down.
+- Post tagging.
+- Post comments.
+- Post comment voting.
+- Post "Facebook Like".
+- User Profile with activity view.
+- Gamification - points for creation of Posts and receiving votes
 - Multilanguage support.
 - Unit Tests.
 
@@ -24,12 +33,3 @@ It features the following libraries:
 
 Tutorials and how-to: 
 http://klaatuveratanecto.com/
-
-The complete application will consist of:
-- Post creation (title, image) by the user.
-- Post vote up and down.
-- Post tagging.
-- Post comments.
-- Post comment voting.
-- Post "Facebook Like".
-- Gamification - points for creation of Posts and receiving votes
