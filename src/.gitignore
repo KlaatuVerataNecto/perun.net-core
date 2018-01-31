@@ -326,6 +326,10 @@ peruncore/wwwroot/images/cover/*
 !peruncore/wwwroot/images/upload/.gitkeep 
 !peruncore/wwwroot/images/post/.gitkeep 
 !peruncore/wwwroot/images/cover/.gitkeep 
+!peruncore/wwwroot/images/upload/post/.gitkeep
+!peruncore/wwwroot/images/upload/avatar/.gitkeep
+
+!peruncore/log/.gitkeep
 
 peruncore/wwwroot/css/all.min.css
 peruncore/wwwroot/css/site.min.css
