@@ -314,9 +314,10 @@ peruncore/wwwroot/images/upload/cover/*
 peruncore/wwwroot/images/upload/post/*
 
 peruncore/wwwroot/images/avatar/*
-peruncore/wwwroot/images/upload/*
 peruncore/wwwroot/images/post/*
 peruncore/wwwroot/images/cover/*
+peruncore/wwwroot/images/upload/post/*
+peruncore/wwwroot/images/upload/avatar/*
 
 !peruncore/wwwroot/images/upload/avatar/.gitkeep 
 !peruncore/wwwroot/images/upload/cover/.gitkeep 
