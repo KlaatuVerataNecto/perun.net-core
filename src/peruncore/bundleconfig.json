@@ -2,7 +2,7 @@
   {
     "outputFileName": "wwwroot/css/all.min.css",
     "inputFiles": [
-      "bootstrap.flatly.min.css",
+      "wwwroot/css/bootstrap.flatly.min.css",
       "wwwroot/css/site.css"
     ]
   },
@@ -10,7 +10,7 @@
     "outputFileName": "wwwroot/js/all.min.js",
     "inputFiles": [
       "wwwroot/js/custom.validation.js",
-      "wwwroot/js/profile-avatar.js",
+      "wwwroot/js/profile.js",
       "wwwroot/js/site.js"
     ],
     "minify": {
