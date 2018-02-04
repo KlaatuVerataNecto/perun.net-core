@@ -9,7 +9,6 @@
   {
     "outputFileName": "wwwroot/js/all.min.js",
     "inputFiles": [
-      "wwwroot/js/custom.validation.js",
       "wwwroot/js/profile.js",
       "wwwroot/js/site.js"
     ],
