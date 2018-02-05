@@ -1,9 +1,3 @@
-/*
-SQLyog Community v12.4.3 (64 bit)
-MySQL - 10.1.21-MariaDB : Database - peruncore
-*********************************************************************
-*/
-
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -12,7 +6,6 @@ MySQL - 10.1.21-MariaDB : Database - peruncore
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 
 /*Table structure for table `email_queue` */
 
@@ -53,9 +46,9 @@ CREATE TABLE `posts` (
   `date_created` datetime NOT NULL,
   `is_published` tinyint(1) NOT NULL,
   `postimage` varchar(50) NOT NULL,
-  `guid` char(16) NOT NULL,
+  `guid` char(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `users` */
 
@@ -71,7 +64,7 @@ CREATE TABLE `users` (
   `is_locked` tinyint(1) NOT NULL,
   `cover` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `users_email` */
 
@@ -103,7 +96,7 @@ CREATE TABLE `users_login` (
   `access_token` text,
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `users_password` */
 
@@ -130,7 +123,7 @@ CREATE TABLE `users_username` (
   `token` text,
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
