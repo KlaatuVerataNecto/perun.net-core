@@ -4,7 +4,7 @@
     MIN_COVER_HEIGHT = 350;
 
     mimeType = undefined;
-
+    // Profile Picture
     $fileChangeAvatar = $('#file-avatar-change');
     $avatarCropModal = $('#crop-avatar-modal');
     $btnAvatarUpload = $('#btn-avatar-save');
@@ -12,6 +12,7 @@
     $avatarImage = $('.img-avatar');
     $avatarImagePreview = $('#preview-image');
 
+    // Cover
     $coverImage = $('.profile-cover-img');
     $coverCropper = $('#image-cropper');
     $fileChangeCover = $('#file-cover-change');
