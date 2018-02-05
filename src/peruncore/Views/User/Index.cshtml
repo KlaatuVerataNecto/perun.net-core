@@ -17,7 +17,7 @@
      <span class="btn btn-default change-cover">
         <span class="glyphicon glyphicon-camera"></span>
         <span class="change-cover-text">Upload Cover Photo</span>
-        <input type="file" accept="image/*" id="file-cover-change" style="display: none"/>
+        <input type="file" accept="image/*" id="file-cover-change" hidden="hidden" />
      </span>
     }
     </div>
@@ -28,7 +28,7 @@
                 @if (Model.CanUpdate)
                 {<span class="change-avatar">                    
                     <span class="glyphicon glyphicon-camera txt-change-avatar"></span>                   
-                    <input type="file" id="file-avatar-change" accept="image/*" hidden />
+                    <input type="file" id="file-avatar-change" accept="image/*" hidden="hidden" />
                 </span>
                 }
             </div>    
