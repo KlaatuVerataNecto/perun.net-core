@@ -36,4 +36,8 @@
     <Folder Include="wwwroot\images\upload\post\" />
     <Folder Include="wwwroot\images\avatar\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\js\all.min.js" />
+    <Content Remove="wwwroot\js\site.min.js" />
+  </ItemGroup>
 </Project>
