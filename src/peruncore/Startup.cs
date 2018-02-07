@@ -3,17 +3,16 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.HttpOverrides;
 
 using infrastructure.email.interfaces;
 using infrastructure.user.interfaces;
 using infrastucture.libs.image;
 using peruncore.Config;
 using peruncore.Infrastructure.Auth;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace peruncore
 {
@@ -29,10 +28,6 @@ namespace peruncore
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            //services.Configure<MvcOptions>(options =>
-            //{
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
             services.AddMvc();
 
             // That's IIS Express specific
@@ -107,18 +102,6 @@ namespace peruncore
                 options.SignInScheme = Configuration.GetSection("AuthSchemeSettings:Application").Value;
             });
 
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    //options.Cookie.Name = Configuration.GetSection("AuthSchemeSettings:Application").Value;
-            //    options.Cookie.HttpOnly = true;
-            //    //options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-            //    options.LoginPath = "/login";
-            //    options.LogoutPath = "/user/logout";
-            //    options.AccessDeniedPath = "/error/accessdenied";
-            //    options.SlidingExpiration = true;
-            //    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-            //});
-
             // DI Config.
             string connectionString = Configuration.GetConnectionString("MySQLDatabase");
             var containerBuilder = new ContainerBuilder();
@@ -131,8 +114,10 @@ namespace peruncore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //var options = new RewriteOptions().AddRedirectToHttps();
-            //app.UseRewriter(options);
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            });
 
             if (env.IsDevelopment())
             {
