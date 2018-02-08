@@ -1,5 +1,7 @@
-# perun.net-core
-ASP.NET MVC Core 2.0 base project with custom user and social logins
+# Perun.net-core
+ASP.NET MVC Core 2.0 base project with custom user and social logins.
+
+Demo: https://peruncore.com
 
 Simple web application project template powered by ASP.NET Core 2.0 that at the moment features:
 - Powered by ASP.NET Core 2.0.
@@ -8,6 +10,7 @@ Simple web application project template powered by ASP.NET Core 2.0 that at the 
 - Combines custom login system with social logins (Google, Facebook).
 - Unobtrusive validation.
 - Remote validation.
+- CQS approach (Dapper for querying, EF Core for writting)
 
 Done:
 - User avatar upload.
@@ -30,6 +33,3 @@ It features the following libraries:
 - Autofac - default dependency injection.
 - Serilog - logging.
 - MiniProfiler - profiling application and sql (in progress).
-
-Tutorials and how-to: 
-http://klaatuveratanecto.com/
