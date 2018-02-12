@@ -5,17 +5,24 @@
         done();
     },
     uploadprogress: function (file, progress, bytesSent) {
-        //$(".progress-text").html(progress + "%");
         $("#progressbar").val(progress);
+    },
+    addedfile: function(){
+        $("#progressbar-wrapper").show();
+        $("#dropzoneForm").slideUp();
     },
     init: function () {
         this.on("maxfilesexceeded", function (file) {
             alert("No more files please!");
         });
         this.on("success", function (file, response) {
-            file.previewElement.innerHTML = "";
-            var obj = jQuery.parseJSON(response)
-            console.log(obj);
+            console.debug(response);
+            $("#post_form").show();
+            $("#progressbar-wrapper").hide();
+            $("#post_image_file").val(response.imageFile);
+            $("#post_image_url").attr("src", response.imageUrl);
+            $("#post_image_url").show();
+  
         });
         this.on('error', function (file, response) {
             $(file.previewElement).find('.dz-error-message').text(response);
