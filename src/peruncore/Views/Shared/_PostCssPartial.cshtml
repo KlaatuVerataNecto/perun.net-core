@@ -1,0 +1,7 @@
+﻿<environment names="Development">
+    <link rel="stylesheet" href="~/lib/dropzonejs/dist/dropzone.css" />
+</environment>
+<environment names="Staging,Production">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css"
+          asp-fallback-href="~/lib/dropzonejs/dist/dropzone.min.css" />
+</environment>

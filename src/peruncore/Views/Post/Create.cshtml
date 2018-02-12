@@ -2,25 +2,27 @@
 @{
     ViewData["Title"] = "Create Post";
 }
+@section Css { @{await Html.RenderPartialAsync("_PostCssPartial"); }}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{await Html.RenderPartialAsync("_PostScriptsPartial"); }
 }
 <h1>Create Post</h1>
 
+<form method="post" enctype="multipart/form-data" asp-controller="image" asp-action="post" class="dropzone" id="dropzoneForm"></form>
+
+<progress id="progressbar" value="0" max="100"></progress>
+
 <form method="post" enctype="multipart/form-data" asp-controller="post" asp-action="create">
     <div class="form-group">
-        <label class="btn btn-default btn-file">
-            Browse <input type="file" name="post_image" hidden>
-        </label>
-    </div>
-    <div class="form-group">
-        <label asp-for="title" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="title" class="form-control" />
+            <input asp-for="title" class="form-control" placeholder="Title" />
             <span asp-validation-for="title" class="text-danger"></span>
         </div>
     </div>
+    <input type="hidden" name="post_image" />
     <div class="form-group">
         <button type="submit" class="btn btn-default">Submit</button>
     </div>
 </form>
+

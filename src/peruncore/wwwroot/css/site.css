@@ -393,3 +393,10 @@ h2, h4 {
     vertical-align: middle;
     float: none;
 }
+
+progress {
+    margin-top:5px;
+    width:100%;    
+    border: 0;
+    height: 18px;
+}

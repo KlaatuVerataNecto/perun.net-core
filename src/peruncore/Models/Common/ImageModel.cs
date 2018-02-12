@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-
-namespace peruncore.Models.User
+namespace peruncore.Models.Common
 {
-    public class UserCoverModel
+    public class ImageModel
     {
         [Required]
-        public IFormFile cover_image { get; set; }
+        public IFormFile file { get; set; }
     }
 }

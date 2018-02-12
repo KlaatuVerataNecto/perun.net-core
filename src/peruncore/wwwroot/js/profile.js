@@ -62,7 +62,7 @@
         var blob = dataURItoBlob(imageData);
 
         var formData = new FormData();
-        formData.append('cover_image', blob); 
+        formData.append('file', blob); 
 
         $.ajax('/image/cover', {
             method: "POST",
@@ -151,7 +151,7 @@
     $btnAvatarUpload.click(function () {
         cropper.getCroppedCanvas().toBlob(function (blob) {
             var formData = new FormData();
-            formData.append('avatar_image', blob); 
+            formData.append('file', blob); 
 
             $.ajax('/image/avatar', {
                 method: "POST",

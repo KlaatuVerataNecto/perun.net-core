@@ -1,0 +1,9 @@
+﻿<environment names="Development">
+    <script src="~/lib/dropzonejs/dist/dropzone.js" asp-append-version="true"></script>
+    <script src="~/js/post.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"
+            asp-fallback-src="~/lib/dropzonejs/dist/dropzone.min.js"
+            crossorigin="anonymous"></script>
+</environment>
