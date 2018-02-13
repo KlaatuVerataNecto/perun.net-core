@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="post_image_empty" xml:space="preserve">
+    <value>Ooops, we couldn't upload your image. Please try again.</value>
+  </data>
+  <data name="post_image_not_in_range" xml:space="preserve">
+    <value>Something went wrong, we couldn't upload your image. Please try again.</value>
+  </data>
   <data name="post_title_empty" xml:space="preserve">
     <value>Title is empty.</value>
   </data>

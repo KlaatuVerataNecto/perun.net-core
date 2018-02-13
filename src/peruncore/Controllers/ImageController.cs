@@ -176,6 +176,8 @@ namespace peruncore.Controllers
 
             var imageFilename = Path.GetFileName(filePathResized);
 
+            TempData["uploaded_image"] = imageFilename;
+
             // Done
             return Json(new { imageUrl = _imageUploadSettings.PostImageDirURL + imageFilename, imageFile = imageFilename });
         }

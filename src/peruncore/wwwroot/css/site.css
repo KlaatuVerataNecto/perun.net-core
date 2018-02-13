@@ -11,8 +11,7 @@ body {
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
+    position: absol
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 80px;
@@ -399,4 +398,10 @@ progress {
     width:100%;    
     border: 0;
     height: 18px;
+}
+
+/*-----------*/
+.padding-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }

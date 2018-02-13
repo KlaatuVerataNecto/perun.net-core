@@ -7,7 +7,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     @{await Html.RenderPartialAsync("_PostScriptsPartial"); }
 }
-<h1>Create Post</h1>
+<h2>Create Post</h2>
 
 <form method="post" enctype="multipart/form-data" asp-controller="image" asp-action="post" class="dropzone" id="dropzoneForm"></form>
 <div id="progressbar-wrapper" style="display:none">
@@ -16,15 +16,20 @@
 </div>
 <form method="post" enctype="multipart/form-data" asp-controller="post" asp-action="create" id="post_form" style="display:none">
     <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-md-10 padding-0">
             <input asp-for="title" class="form-control" placeholder="Title" />
             <span asp-validation-for="title" class="text-danger"></span>
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-10 padding-0">
+            <img src="" id="post_image_url" style="display:none" class="img-responsive" />
+        </div>
+    </div>
     <input type="hidden" name="post_image" id="post_image_file" />
     <div class="form-group">
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default pull-right">Submit</button>
     </div>
 </form>
-<img src="" id="post_image_url" style="display:none" class="img-responsive" />
+
 

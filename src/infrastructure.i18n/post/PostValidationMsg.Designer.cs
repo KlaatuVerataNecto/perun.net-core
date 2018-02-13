@@ -61,6 +61,24 @@ namespace infrastructure.i18n.post {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ooops, we couldn&apos;t upload your image. Please try again..
+        /// </summary>
+        public static string post_image_empty {
+            get {
+                return ResourceManager.GetString("post_image_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something went wrong, we couldn&apos;t upload your image. Please try again..
+        /// </summary>
+        public static string post_image_not_in_range {
+            get {
+                return ResourceManager.GetString("post_image_not_in_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title is empty..
         /// </summary>
         public static string post_title_empty {

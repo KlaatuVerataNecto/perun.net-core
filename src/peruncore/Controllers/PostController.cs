@@ -73,43 +73,20 @@ namespace peruncore.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PostModel model)
-        {
-            // TODO: DRY see AvatarController
-            var ext = Path.GetExtension(model.post_image.FileName);
-
-            var filePathUploaded = Path.Combine(
-                _hostingEnvironment.ContentRootPath,
-                _imageUploadSettings.PostImageUploadPath,
-                Guid.NewGuid() + (string.IsNullOrWhiteSpace(ext) ? "jpeg" : ext)
-            );
-
-            var filePathResized = Path.Combine(
-                _hostingEnvironment.ContentRootPath,
-                _imageUploadSettings.PostImagePath,
-                Guid.NewGuid() + _imageUploadSettings.DefaultImageExtension
-            );
-
-            // Copy the file
-            using (var stream = new FileStream(filePathUploaded, FileMode.Create))
-            model.post_image.CopyTo(stream);
-
-            // Crop the image
-            var config = new ImageConfigBuilder()
-                         .WithSourceFilePath(filePathUploaded)
-                         .WithSaveFilePath(filePathResized)
-                         .WithQuality(_imageUploadSettings.PostImageQuality)
-                         .WithMaxWidth(_imageUploadSettings.PostImageMaxWidth)
-                         .WithMaxHeight(_imageUploadSettings.PostImageMaxHeight)
-                         .Build();
-
-            _imageService.Resize(config);
-            var imageFilename = Path.GetFileName(filePathResized);
+        {    
+            if (TempData["uploaded_image"] != model.post_image)
+            {
+                _logger.LogError("Post image filename uploaded doesn't correspond to one in session 'uploaded_image' ");
+                TempData["uploaded_image"] = null;
+                return RedirectToAction("Index", "Error");
+            }
+            TempData["uploaded_image"] = null;
 
             //TODO: Use Automapper
             var command = new CreatePostCommand();
             command.CommandId = Guid.NewGuid();
             command.Title = model.title;
-            command.ImageName = imageFilename;
+            command.ImageName = model.post_image;
 
             try
             {
