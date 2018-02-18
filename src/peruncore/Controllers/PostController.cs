@@ -9,7 +9,6 @@ using peruncore.Models.Post;
 using query.messages.post;
 using query.dto;
 using query.dto.common;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using peruncore.Config;
 using Microsoft.Extensions.Options;
@@ -74,12 +73,13 @@ namespace peruncore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(PostModel model)
         {    
-            if (TempData["uploaded_image"] != model.post_image)
+            if (TempData["uploaded_image"] == null || TempData["uploaded_image"].ToString() != model.post_image)
             {
                 _logger.LogError("Post image filename uploaded doesn't correspond to one in session 'uploaded_image' ");
                 TempData["uploaded_image"] = null;
                 return RedirectToAction("Index", "Error");
             }
+
             TempData["uploaded_image"] = null;
 
             //TODO: Use Automapper

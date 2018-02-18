@@ -14,6 +14,7 @@
     Uploading ...
     <progress id="progressbar" value="0" max="100"></progress>
 </div>
+<br/>
 <form method="post" enctype="multipart/form-data" asp-controller="post" asp-action="create" id="post_form" style="display:none">
     <div class="form-group">
         <div class="col-md-10 padding-0">
@@ -22,13 +23,15 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-10 padding-0">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+    <div class="form-group p-0 mtb-10">
+        <div class="col-md-10">
             <img src="" id="post_image_url" style="display:none" class="img-responsive" />
         </div>
     </div>
-    <input type="hidden" name="post_image" id="post_image_file" />
     <div class="form-group">
-        <button type="submit" class="btn btn-default pull-right">Submit</button>
+        <input type="hidden" name="post_image" id="post_image_file" />
     </div>
 </form>
 
