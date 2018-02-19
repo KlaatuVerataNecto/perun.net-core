@@ -9,14 +9,16 @@
     },
     addedfile: function(){
         $("#progressbar-wrapper").show();
-        $("#dropzoneForm").slideUp();
+        $("#dropzoneForm").hide();
     },
     init: function () {
         this.on("maxfilesexceeded", function (file) {
-            alert("No more files please!");
+            $("#progressbar-wrapper").hide();
+            $("#post-upload-error-msg").html("One file per submission only.");
+            $("#post-upload-error").show();
         });
         this.on("success", function (file, response) {
-            console.debug(response);
+            $("#post_upload_error").hide();
             $("#post_form").show();
             $("#progressbar-wrapper").hide();
             $("#post_image_file").val(response.imageFile);
@@ -25,7 +27,20 @@
   
         });
         this.on('error', function (file, response) {
-            $(file.previewElement).find('.dz-error-message').text(response);
+            $("#progressbar-wrapper").hide();
+            $("#post-upload-error-msg").html(response);
+            $("#post-upload-error").show();
         });
     }
 };
+
+$("#post-try-again-button").click(function (){
+    $("#post-upload-error").hide();
+    $("#post-upload-error-msg").html("");
+    $("#progressbar-wrapper").hide();
+    $("#post_image_file").val("");
+    $("#post_image_url").attr("src", "");
+    $("#post_image_url").hide();
+    $("#post_form").hide();
+    $("#dropzoneForm").slideDown();
+});

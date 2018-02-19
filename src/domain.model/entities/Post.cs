@@ -1,5 +1,6 @@
 ﻿using System;
 using domain.model.common;
+using infrastructure.libs.validators;
 
 namespace domain.model
 {
@@ -9,18 +10,24 @@ namespace domain.model
         private string _title;
         private string _postImage;
         private bool _isPublished;
+        private string _urlSlug;
         private DateTime _dateCreated;
 
         private string _guid;
 
         public Post() { }
 
-        public Post(Guid guid, string title, string image)
+        public Post(Guid guid, string title, string image, string urlSlug)
         {
-            // TODO: validate 
+            CustomValidators.StringNotNullorEmpty(title, "title is empty.");
+            CustomValidators.StringNotNullorEmpty(image, "image is empty.");
+            CustomValidators.StringNotNullorEmpty(urlSlug, "urlSlug is empty.");
+            CustomValidators.NotNull(guid, "guid is empty.");
+
             _title = title;
             _postImage = image;
             _guid = guid.ToString();
+            _urlSlug = urlSlug;
             _dateCreated = DateTime.Now;
             _isPublished = true;
         }
@@ -44,8 +51,5 @@ namespace domain.model
         {
             throw new NotImplementedException();
         }
-        //public int Id { get => _id; }
-        //public string Title { get => _title; }
-        //public string PostImage { get => _postimage; }
     }
 }

@@ -91,6 +91,7 @@ namespace persistance.ef.common
             modelBuilder.Entity<Post>().ToTable("posts").Property<string>("guid").HasField("_guid");
             modelBuilder.Entity<Post>().ToTable("posts").Property<string>("title").HasField("_title");
             modelBuilder.Entity<Post>().ToTable("posts").Property<string>("postimage").HasField("_postImage");
+            modelBuilder.Entity<Post>().ToTable("posts").Property<string>("urlslug").HasField("_urlSlug");
             modelBuilder.Entity<Post>().ToTable("posts").Property<bool>("is_published").HasField("_isPublished");
             modelBuilder.Entity<Post>().ToTable("posts").Property<DateTime>("date_created").HasField("_dateCreated");
         }

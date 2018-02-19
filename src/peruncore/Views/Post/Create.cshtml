@@ -9,6 +9,12 @@
 }
 <h2>Create Post</h2>
 
+<div id="post-upload-error" style="display:none">
+    <div class="alert alert-danger" id="post-upload-error-msg">
+    </div>
+    <button class="btn btn-default" id="post-try-again-button">Try Again</button>
+</div>
+
 <form method="post" enctype="multipart/form-data" asp-controller="image" asp-action="post" class="dropzone" id="dropzoneForm"></form>
 <div id="progressbar-wrapper" style="display:none">
     Uploading ...

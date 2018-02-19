@@ -2,6 +2,9 @@ using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Hosting;
+using AutoMapper;
 
 using command.messages.post;
 using infrastructure.cqs;
@@ -9,10 +12,9 @@ using peruncore.Models.Post;
 using query.messages.post;
 using query.dto;
 using query.dto.common;
-using Microsoft.AspNetCore.Hosting;
 using peruncore.Config;
-using Microsoft.Extensions.Options;
 using infrastucture.libs.image;
+
 
 namespace peruncore.Controllers
 {
@@ -25,34 +27,38 @@ namespace peruncore.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ImageUploadSettings _imageUploadSettings;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
         public PostController(
             IQueryHandler<GetPostByGuidQuery, DTO> getPostByGuidQuery,
             IQueryHandler<GetPostByIdQuery, PostDTO> getPostByIdQuery,
             ICommandDispatcher commandDispatcher,
+            IMapper mapper,
             IImageService imageService,
             IHostingEnvironment hostingEnvironment,
             IOptions<ImageUploadSettings> imageUploadSettings,
-            ILogger<PostController> logger)
+            ILogger<PostController> logger
+            )
         {
             _getPostByGuidQuery = getPostByGuidQuery;
             _getPostByIdQuery = getPostByIdQuery;
             _commandDispatcher = commandDispatcher;
+            _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
             _imageUploadSettings = imageUploadSettings.Value;
             _imageService = imageService;
             _logger = logger;
         }
 
-        [Route("post/{id:int}")]
-        public IActionResult Index(int id, string slug)
+        [Route("post/{id:int}/{slug?}")]
+        public IActionResult Index(int id, string slug, string thanks)
         {
+            // query post by id and url slug
             var post = _getPostByIdQuery.Handle(new GetPostByIdQuery { PostId = id });
 
             if (post != null)
             {
-                // TODO: Create view
-                return View(new PostViewModel(post.title, _imageUploadSettings.PostImageDirURL + post.postimage));
+                return View(new PostViewModel(post.title, _imageUploadSettings.PostImageDirURL + post.postimage, !String.IsNullOrEmpty(thanks)));
             }
             else
             {
@@ -65,6 +71,7 @@ namespace peruncore.Controllers
         [Authorize]
         public IActionResult Create()
         {
+            // render upload form
             return View();
         }
 
@@ -72,7 +79,8 @@ namespace peruncore.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PostModel model)
-        {    
+        {   
+            // Validate if previously uploaded image is the same as the one in the post 
             if (TempData["uploaded_image"] == null || TempData["uploaded_image"].ToString() != model.post_image)
             {
                 _logger.LogError("Post image filename uploaded doesn't correspond to one in session 'uploaded_image' ");
@@ -82,14 +90,12 @@ namespace peruncore.Controllers
 
             TempData["uploaded_image"] = null;
 
-            //TODO: Use Automapper
-            var command = new CreatePostCommand();
-            command.CommandId = Guid.NewGuid();
-            command.Title = model.title;
-            command.ImageName = model.post_image;
+            // Create command using Automapper
+            var command = _mapper.Map<CreatePostCommand>(model);
 
             try
             {
+                // dispatch command
                 _commandDispatcher.Send(command);
             }
             catch (Exception ex)
@@ -98,14 +104,17 @@ namespace peruncore.Controllers
                 return RedirectToAction("Index", "Error");
             }
 
+            // query created  post
             var post = _getPostByGuidQuery.Handle(new GetPostByGuidQuery { Guid = command.CommandId });
 
             if (post != null)
             {
-                return RedirectToAction("Index", new { id = post.id, slug = post.urlSlug });
+                // redirect to created post using post id and url slug
+                return RedirectToAction("Index", new { id = post.id, slug = post.urlSlug, thanks = 1 });
             }
             else
             {
+                // command has failed to create
                 _logger.LogError("Post not created after dispathcing command:", command);
                 return RedirectToAction("Index","Error");
             }

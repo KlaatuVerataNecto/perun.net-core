@@ -16,8 +16,8 @@ namespace command.handlers.post
 
         public void Handle(CreatePostCommand command)
         {
-            // TODO: Validate command
-            var post = new Post(command.CommandId ,command.Title, command.ImageName);
+            // Command is validated on construction so let's create the domain object
+            var post = new Post(command.CommandId ,command.Title, command.ImageName, command.UrlSlug);
             _repositoryPost.Add(post);
         }
     }
