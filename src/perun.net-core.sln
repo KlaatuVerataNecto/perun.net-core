@@ -3,33 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "persistance.dapper", "persistance.dapper\persistance.dapper.csproj", "{51824C10-DBE7-4558-9615-FA2CB9B44CE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.user", "infrastructure.user\infrastructure.user.csproj", "{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.user", "infrastructure.user\infrastructure.user.csproj", "{2830C6C3-51EA-4850-A0BF-AFD2BA4720B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastucture.libs", "infrastucture.libs\infrastucture.libs.csproj", "{9F4618CA-F542-4302-9517-D12154294702}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastucture.libs", "infrastucture.libs\infrastucture.libs.csproj", "{9F4618CA-F542-4302-9517-D12154294702}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.i18n", "infrastructure.i18n\infrastructure.i18n.csproj", "{69762B4F-D8DC-4F36-877C-B3ADF93B39CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.i18n", "infrastructure.i18n\infrastructure.i18n.csproj", "{69762B4F-D8DC-4F36-877C-B3ADF93B39CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "persistance.ef", "persistance.ef\persistance.ef.csproj", "{614BAAE5-F861-45FF-AD82-26A58D0B4180}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "persistance.ef", "persistance.ef\persistance.ef.csproj", "{614BAAE5-F861-45FF-AD82-26A58D0B4180}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.email", "infrastructure.email\infrastructure.email.csproj", "{B4710377-B88D-452C-AFD8-F8F4E97574BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.email", "infrastructure.email\infrastructure.email.csproj", "{B4710377-B88D-452C-AFD8-F8F4E97574BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "command.messages", "command.messages\command.messages.csproj", "{556295F3-6070-4909-A871-F453D097AE52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "command.messages", "command.messages\command.messages.csproj", "{556295F3-6070-4909-A871-F453D097AE52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "command.handlers", "command.handlers\command.handlers.csproj", "{670C9536-787E-4DC5-843C-38D695E2FAE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "command.handlers", "command.handlers\command.handlers.csproj", "{670C9536-787E-4DC5-843C-38D695E2FAE6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infrastructure.cqs", "infrastructure.cqs\infrastructure.cqs.csproj", "{A8D0DE93-F43B-48EB-AC09-44157F3693DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infrastructure.cqs", "infrastructure.cqs\infrastructure.cqs.csproj", "{A8D0DE93-F43B-48EB-AC09-44157F3693DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.dto", "query.dto\query.dto.csproj", "{D16F6B5B-44C1-489F-9D36-D27BDE9A8BF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "query.dto", "query.dto\query.dto.csproj", "{D16F6B5B-44C1-489F-9D36-D27BDE9A8BF8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.handlers", "query.handlers\query.handlers.csproj", "{C9202E78-7D16-40D7-88FE-81C46018E789}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "query.handlers", "query.handlers\query.handlers.csproj", "{C9202E78-7D16-40D7-88FE-81C46018E789}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.messages", "query.messages\query.messages.csproj", "{6B5FBC1B-B8B9-4CD9-9FEF-13A620AF8278}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "query.messages", "query.messages\query.messages.csproj", "{6B5FBC1B-B8B9-4CD9-9FEF-13A620AF8278}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "domain.model", "domain.model\domain.model.csproj", "{DF2BCC9D-C684-4823-8529-DF1A38B97D89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "domain.model", "domain.model\domain.model.csproj", "{DF2BCC9D-C684-4823-8529-DF1A38B97D89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "peruncore", "peruncore\peruncore.csproj", "{E5C937E2-A113-42F5-9E17-139CECB8D36C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "peruncore", "peruncore\peruncore.csproj", "{E5C937E2-A113-42F5-9E17-139CECB8D36C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
