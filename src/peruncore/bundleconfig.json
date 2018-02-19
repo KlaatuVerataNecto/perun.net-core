@@ -3,14 +3,18 @@
     "outputFileName": "wwwroot/css/all.min.css",
     "inputFiles": [
       "wwwroot/css/bootstrap.flatly.min.css",
-      "wwwroot/css/site.css"
+      "wwwroot/css/app.css"
     ]
   },
   {
     "outputFileName": "wwwroot/js/all.min.js",
     "inputFiles": [
-      "wwwroot/js/profile.js",
-      "wwwroot/js/site.js"
+      "wwwroot/js/infrastructure/language.en.js",
+      "wwwroot/js/infrastructure/urlhelper.js",
+      "wwwroot/js/infrastructure/perpagejs.js",
+      "wwwroot/js/pages/profile.js",
+      "wwwroot/js/pages/post.js",
+      "wwwroot/js/app.js"
     ],
     "minify": {
       "enabled": true,

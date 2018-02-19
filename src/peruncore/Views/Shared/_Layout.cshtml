@@ -8,8 +8,10 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/bootstrap.flatly.min.css" />
-        @RenderSection("Css", required: false)
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/jquery.validate.password/jquery.validate.password.css" />
+        <link rel="stylesheet" href="~/lib/cropperjs/dist/cropper.css" />
+        <link rel="stylesheet" href="~/lib/dropzonejs/dist/dropzone.css" />
+        <link rel="stylesheet" href="~/css/app.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -73,8 +75,17 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        @RenderSection("Scripts", required: false)
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/jquery.validate.password/jquery.validate.password.js"></script>
+        <script src="~/lib/cropperjs/dist/cropper.js" asp-append-version="true"></script>
+        <script src="~/lib/cropit/dist/jquery.cropit.js" asp-append-version="true"></script>
+        <script src="~/lib/dropzonejs/dist/dropzone.js" asp-append-version="true"></script>
+        <script src="~/js/infrastructure/perpagejs.js"></script>
+        <script src="~/js/infrastructure/validations.js"></script>
+        <script src="~/js/pages/profile.js" asp-append-version="true"></script>
+        <script src="~/js/pages/post.js" asp-append-version="true"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"

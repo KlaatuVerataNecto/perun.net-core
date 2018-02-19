@@ -2,11 +2,6 @@
 @{
     ViewData["Title"] = "Create Post";
 }
-@section Css { @{await Html.RenderPartialAsync("_PostCssPartial"); }}
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    @{await Html.RenderPartialAsync("_PostScriptsPartial"); }
-}
 <h2>Create Post</h2>
 
 <div id="post-upload-error" style="display:none">
@@ -20,7 +15,7 @@
     Uploading ...
     <progress id="progressbar" value="0" max="100"></progress>
 </div>
-<br/>
+<br />
 <form method="post" enctype="multipart/form-data" asp-controller="post" asp-action="create" id="post_form" style="display:none">
     <div class="form-group">
         <div class="col-md-10 padding-0">
@@ -40,5 +35,5 @@
         <input type="hidden" name="post_image" id="post_image_file" />
     </div>
 </form>
-
+<form><input type="hidden" id="page" value="post" /></form>
 

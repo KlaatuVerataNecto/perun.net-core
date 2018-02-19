@@ -5,8 +5,6 @@
 }
 @if (Model.CanUpdate)
 {
-@section Css { @{await Html.RenderPartialAsync("_ProfileCssPartial"); }}
-@section Scripts {@{await Html.RenderPartialAsync("_ProfileScriptsPartial");}}
 <style>.user-avatar:hover .img-avatar {opacity: 0.7;} .user-avatar:hover .change-avatar {opacity: 1;}</style>
 }
 <div class="profile-cover">
@@ -90,3 +88,4 @@
     </div>
 </div>
 }
+<form><input type="hidden" id="page" value="profile" /></form>

@@ -3,9 +3,6 @@
     ViewData["Title"] = "Username";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 <div class="col-md-6 col-md-offset-3">
     <form asp-action="Username">
         <div class="form-horizontal">
@@ -33,4 +30,5 @@
         </div>
     </form>
 </div>
+<form><input type="hidden" id="page" value="username" /></form>
 

@@ -3,12 +3,6 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
-@section Css {
-    @{await Html.RenderPartialAsync("_ValidationCssPartial"); }
-}
 <div class="col-md-6 col-md-offset-3">
     <form asp-action="FinishForgot">
         <div class="form-horizontal">
@@ -47,5 +41,5 @@
         <input asp-for="userid" type="hidden" /><input asp-for="token" type="hidden" />
     </form>
 </div>
-
+<form><input type="hidden" id="page" value="password" /></form>
 
