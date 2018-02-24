@@ -4,4 +4,14 @@
 }
 
 <h1>@Model.Title</h1>
+
+@if (Model.IsThanksOnCreate)
+{
+<div class="alert alert-success alert-dismissible show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Sweet!</strong> Thanks for adding content!
+</div>
+}
 <p><img src="@Model.Image" alt="@Model.Title"/></p>

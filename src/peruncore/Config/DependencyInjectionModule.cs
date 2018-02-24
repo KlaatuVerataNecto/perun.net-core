@@ -15,6 +15,7 @@ using persistance.ef.common;
 using persistance.ef.repository;
 using peruncore.Infrastructure.Auth;
 using infrastructure.user.interfaces;
+using peruncore.Controllers;
 
 namespace peruncore.Config
 {
@@ -60,6 +61,7 @@ namespace peruncore.Config
 
             // Add Automapper
             builder.RegisterAssemblyTypes(userInfrastructureAssembly).AssignableTo(typeof(Profile)).As<Profile>();
+            builder.RegisterAssemblyTypes(typeof(UserController).GetTypeInfo().Assembly).AssignableTo(typeof(Profile)).As<Profile>();
 
             builder.Register(c => new MapperConfiguration(cfg =>
             {
@@ -69,6 +71,9 @@ namespace peruncore.Config
             })).AsSelf().SingleInstance();
 
             builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
+
+
+
 
 
             // Query Handlers 

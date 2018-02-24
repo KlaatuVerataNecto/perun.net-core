@@ -17,13 +17,6 @@ namespace peruncore
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseKestrel(options =>
-                {
-                    //options.Listen(IPAddress.Loopback, 44361, listenOptions =>
-                    //{
-                    //    listenOptions.UseHttps("localhost.pfx", "peruncore");
-                    //});
-                })
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
                     .ReadFrom.Configuration(hostingContext.Configuration)
                     .Enrich.FromLogContext()

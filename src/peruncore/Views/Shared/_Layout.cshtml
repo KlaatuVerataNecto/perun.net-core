@@ -8,14 +8,13 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/bootstrap.flatly.min.css" />
-        @RenderSection("Css", required: false)
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/jquery.validate.password/jquery.validate.password.css" />
+        <link rel="stylesheet" href="~/lib/cropperjs/dist/cropper.css" />
+        <link rel="stylesheet" href="~/lib/dropzonejs/dist/dropzone.css" />
+        <link rel="stylesheet" href="~/css/app.css" />
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        @RenderSection("Css", required: false)
+        <link rel="stylesheet" href="~/css/lib.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
     </environment>
 </head>
@@ -71,27 +70,24 @@
         </footer>
 
     <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        @RenderSection("Scripts", required: false)
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery.validate.password/jquery.validate.password.js" asp-append-version="true"></script>
+        <script src="~/lib/cropperjs/dist/cropper.js" asp-append-version="true"></script>
+        <script src="~/lib/cropit/dist/jquery.cropit.js" asp-append-version="true"></script>
+        <script src="~/lib/dropzonejs/dist/dropzone.js" asp-append-version="true"></script>
+        <script src="~/js/infrastructure/perpagejs.js" asp-append-version="true"></script>
+        <script src="~/js/infrastructure/validations.js" asp-append-version="true"></script>
+        <script src="~/js/pages/profile.js" asp-append-version="true"></script>
+        <script src="~/js/pages/post.js" asp-append-version="true"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        @RenderSection("Scripts", required: false)
+        <script src="~/js/lib.min.js" asp-append-version="true"></script>
         <script src="~/js/all.min.js" asp-append-version="true"></script>
     </environment>
-    <mini-profiler position="@RenderPosition.Right" max-traces="5" />
+    <mini-profiler position="@RenderPosition.BottomLeft" max-traces="5" />
 </body>
 </html>

@@ -4,9 +4,6 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
 <div class="col-md-6 col-md-offset-3">
     <p>Login</p>
     <hr />
@@ -41,4 +38,4 @@
         @Html.Partial("_SocialLoginPartial", new LoginsViewPermissionModel())
     </form>
 </div>
-
+<form><input type="hidden" id="page" value="login" /></form>

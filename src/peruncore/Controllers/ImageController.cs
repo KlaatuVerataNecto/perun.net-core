@@ -15,6 +15,7 @@ using peruncore.Models.User;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using peruncore.Models.Common;
 
 #endregion
 
@@ -56,20 +57,20 @@ namespace peruncore.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Cover(UserCoverModel model)
+        public ActionResult Cover(ImageModel model)
         {
             // TODO: DRY see PostController
             // TODO: Validate
             if (!TryValidateModel(model))
                 return BadRequest();
 
-            var ext = _imageService.getImageExtensionByContentType(model.cover_image.ContentType);
+            var ext = _imageService.getImageExtensionByContentType(model.file.ContentType);
             var filePathUploaded = Path.Combine(_hostingEnvironment.ContentRootPath,
                 _imageUploadSettings.CoverImagePath,
                                     Guid.NewGuid() + ext);
 
             using (var stream = new FileStream(filePathUploaded, FileMode.Create))
-                model.cover_image.CopyTo(stream);
+                model.file.CopyTo(stream);
 
             var imageFilename = Path.GetFileName(filePathUploaded);
 
@@ -82,15 +83,15 @@ namespace peruncore.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Avatar(UserAvatarModel model)
+        public ActionResult Avatar(ImageModel model)
         {
             // TODO: DRY see PostController
             // TODO: Validate
-            model = model ?? new UserAvatarModel();
+            model = model ?? new ImageModel();
             if (!TryValidateModel(model))
                 return BadRequest();
 
-            var ext = _imageService.getImageExtensionByContentType(model.avatar_image.ContentType);
+            var ext = _imageService.getImageExtensionByContentType(model.file.ContentType);
             var filePathUploaded = Path.Combine(_hostingEnvironment.ContentRootPath,
                 _imageUploadSettings.AvatarImageUploadPath,
                                                 Guid.NewGuid() + ext);
@@ -101,7 +102,7 @@ namespace peruncore.Controllers
 
             // Copy the file
             using (var stream = new FileStream(filePathUploaded, FileMode.Create))
-                model.avatar_image.CopyTo(stream);
+                model.file.CopyTo(stream);
 
             // Crop the image
             var config = new ImageConfigBuilder()
@@ -112,19 +113,6 @@ namespace peruncore.Controllers
                          .Build();
 
             _imageService.Resize(config);
-
-            // Crop the image
-            /*var config = new ImageConfigBuilder()
-                         .WithSourceFilePath(filePathUploaded)
-                         .WithSaveFilePath(filePathResized)
-                         .WithQuality(_imageUploadSettings.AvatarImageQuality)
-                         .WithX(model.avatar_x)
-                         .WithY(model.avatar_y)
-                         .WithWidth(model.avatar_width)
-                         .WithHeight(model.avatar_height)
-                         .Build();
-
-            _imageService.Crop(config);*/
             
             //
             var identity = (ClaimsIdentity)User.Identity;
@@ -152,6 +140,46 @@ namespace peruncore.Controllers
 
             // Done
             return Json(new {imageUrl = _imageUploadSettings.AvatarImageDirURL + imageFilename});
+        }
+
+        public IActionResult Post(ImageModel model)
+        {
+            // TODO: DRY 
+            var ext = Path.GetExtension(model.file.FileName);
+
+            var filePathUploaded = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.PostImageUploadPath,
+                Guid.NewGuid() + (string.IsNullOrWhiteSpace(ext) ? "jpeg" : ext)
+            );
+
+            var filePathResized = Path.Combine(
+                _hostingEnvironment.ContentRootPath,
+                _imageUploadSettings.PostImagePath,
+                Guid.NewGuid() + _imageUploadSettings.DefaultImageExtension
+            );
+
+            // Copy the file
+            using (var stream = new FileStream(filePathUploaded, FileMode.Create))
+                model.file.CopyTo(stream);
+
+            // Crop the image
+            var config = new ImageConfigBuilder()
+                         .WithSourceFilePath(filePathUploaded)
+                         .WithSaveFilePath(filePathResized)
+                         .WithQuality(_imageUploadSettings.PostImageQuality)
+                         .WithMaxWidth(_imageUploadSettings.PostImageMaxWidth)
+                         .WithMaxHeight(_imageUploadSettings.PostImageMaxHeight)
+                         .Build();
+
+            _imageService.Resize(config);
+
+            var imageFilename = Path.GetFileName(filePathResized);
+
+            TempData["uploaded_image"] = imageFilename;
+
+            // Done
+            return Json(new { imageUrl = _imageUploadSettings.PostImageDirURL + imageFilename, imageFile = imageFilename });
         }
 
         #endregion

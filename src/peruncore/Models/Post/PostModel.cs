@@ -11,6 +11,8 @@ namespace peruncore.Models.Post
         [Display(Name = "Title")]
         public string title { get; set; }
 
-        public IFormFile post_image { get; set; }
+        [Required(ErrorMessageResourceType = typeof(PostValidationMsg), ErrorMessageResourceName = "post_image_empty")]
+        [StringLength(40, MinimumLength = 40, ErrorMessageResourceType = typeof(PostValidationMsg), ErrorMessageResourceName = "post_image_not_in_range")]
+        public string post_image { get; set; }
     }
 }

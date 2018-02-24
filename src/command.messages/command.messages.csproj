@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\infrastructure.cqs\infrastructure.cqs.csproj" />
+    <ProjectReference Include="..\infrastucture.libs\infrastucture.libs.csproj" />
   </ItemGroup>
 
 </Project>

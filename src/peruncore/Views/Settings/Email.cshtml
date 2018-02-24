@@ -3,12 +3,6 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-@section Css {
-    @{await Html.RenderPartialAsync("_ValidationCssPartial"); }
-}
 <h2>Settings</h2>
 <div class="row">
     <div class="col-xs-2">
@@ -24,10 +18,10 @@
             <div class="tab-pane active" id="home">  
                 <h4>Change Email</h4>
                 <hr />
-                @if (TempData.ContainsKey("notification"))
+                @if (TempData.ContainsKey("email_change_ok"))
                 {
-                    <div class="alert alert-danger">@TempData["notification"].ToString()</div>
-                    @TempData.Remove("notification");
+                    <div class="alert alert-success">@TempData["email_change_ok"].ToString()</div>
+                    @TempData.Remove("email_change_ok");
                 }
                 @if (!string.IsNullOrEmpty(Model.newemail))
                 {
@@ -38,10 +32,7 @@
                 else
                 {
                    <form asp-action="ChangeEmail">
-                    <div class="form-horizontal">
-                      
-                  
-
+                    <div class="form-horizontal">                      
                         <div class="form-group">
                             <label asp-for="email" class="col-md-2 control-label"></label>
                             <div class="col-md-10">

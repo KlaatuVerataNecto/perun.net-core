@@ -23,7 +23,7 @@ namespace query.handlers.post
             using (var dapper = _dapperConnectionFactory.CreateConnection())
             {
                 dapper.Open();
-                return dapper.Connection.Query<DTO>("select * from posts where guid = @Guid", new { Guid = query.Guid }).FirstOrDefault();
+                return dapper.Connection.Query<DTO>("select * from posts where guid = @Guid", new { query.Guid }).FirstOrDefault();
             }
         }
     }

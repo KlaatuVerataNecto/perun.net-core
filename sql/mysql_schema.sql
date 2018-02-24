@@ -1,3 +1,9 @@
+/*
+SQLyog Community v12.4.3 (64 bit)
+MySQL - 10.1.21-MariaDB : Database - peruncore
+*********************************************************************
+*/
+
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -47,8 +53,9 @@ CREATE TABLE `posts` (
   `is_published` tinyint(1) NOT NULL,
   `postimage` varchar(50) NOT NULL,
   `guid` char(50) NOT NULL,
+  `urlslug` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `users` */
 
