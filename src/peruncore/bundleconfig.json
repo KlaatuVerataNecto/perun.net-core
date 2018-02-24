@@ -1,9 +1,31 @@
 [
   {
+    "outputFileName": "wwwroot/css/lib.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.cs",
+      "wwwroot/lib/jquery.validate.password/jquery.validate.password.css",
+      "wwwroot/lib/cropperjs/dist/cropper.css",
+      "wwwroot/lib/dropzonejs/dist/dropzone.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/all.min.css",
     "inputFiles": [
       "wwwroot/css/bootstrap.flatly.min.css",
       "wwwroot/css/app.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lib.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/lib/jquery.validate.password/jquery.validate.password.js",
+      "wwwroot/lib/cropperjs/dist/cropper.js",
+      "wwwroot/lib/cropit/dist/jquery.cropit.js",
+      "wwwroot/lib/dropzonejs/dist/dropzone.js"
     ]
   },
   {
