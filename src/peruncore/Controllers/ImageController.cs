@@ -144,7 +144,7 @@ namespace peruncore.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Posts(ImageModel model)
+        public IActionResult Post(ImageModel model)
         {
             // TODO: DRY 
             var ext = Path.GetExtension(model.file.FileName);
