@@ -47,7 +47,7 @@ var Profile = function () {
                 formData.append('file', blob);
 
                 $.ajax('/image/avatar', { //TODO: configurable
-                    method: "POST",
+                    method: "post",
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -150,7 +150,7 @@ var Profile = function () {
             formData.append('file', blob);
 
             $.ajax('/image/cover', { //TODO: configurable
-                method: "POST",
+                method: "post",
                 data: formData,
                 contentType: false,
                 processData: false,
