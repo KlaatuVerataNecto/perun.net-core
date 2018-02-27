@@ -142,6 +142,8 @@ namespace peruncore.Controllers
             return Json(new {imageUrl = _imageUploadSettings.AvatarImageDirURL + imageFilename});
         }
 
+        [HttpPost]
+        [Authorize]
         public IActionResult Post(ImageModel model)
         {
             // TODO: DRY 
